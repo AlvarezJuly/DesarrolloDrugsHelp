@@ -25,15 +25,18 @@ export default function Login (props) {
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
-        <Image
-          source={require('../icons/Logo.png')} 
-          style={styles.logo}
-        />
-        <Text style={styles.loginTitulo}>Inicia Sesión</Text>
+        <View style={styles.logoYTexto}>  
+          <Image
+            source={require('../icons/imagotipoV.png')} 
+            style={styles.logo}
+          />
+          <Text style={styles.loginTitulo}>Ingresa:</Text>
+        </View>
+      
         <View style={styles.containerUsuario}>
         <TextInput
           style={styles.imput}
-          placeholder="correo@gmail.com"
+          placeholder="Usuario"
           onChangeText={(text) => setEmail(text)}
           placeholderTextColor="#999"
         />
@@ -52,11 +55,11 @@ export default function Login (props) {
         </View>
 
         <TouchableOpacity style={styles.loginBoton} onPress={logueo}>
-          <Text style={styles.loginBotonTexto}>Iniciar</Text>
+          <Text style={styles.loginBotonTexto}>Iniciar Sesión</Text>
         </TouchableOpacity>
-        <Text style={styles.olvidarcontra}>¿Olvidaste tu contraseña?</Text>
+        <Text style={styles.preguntas}>¿Olvidaste tu contraseña?</Text>
         <View style={styles.contenedorNoCuenta}>
-          <Text style={styles.textoNoCuenta}>¿No tienes cuenta?</Text>
+          <Text style={styles.preguntas}>¿No tienes cuenta?</Text>
           <TouchableOpacity onPress={() => props.navigation.navigate('Signup')}>
             <Text style={styles.registrarse}>Registrarse</Text>
           </TouchableOpacity>
@@ -77,57 +80,71 @@ export default function Login (props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#84B6F4',
     alignItems: 'center',
     justifyContent: 'center',
   },
   loginContainer: {
     width: '90%',
-    backgroundColor: '#a0c4ff',
-    borderRadius: 20,
+    backgroundColor: '#EDEAE0',
+    borderRadius: 50,
     padding: 20,
     alignItems: 'center',
+    
   },
   logo: {
-    width: 60,
-    height: 60,
-    marginBottom: 20,
+    width: 75,
+    height: 75, 
+    marginHorizontal:40
   },
   loginTitulo: {
     fontSize: 18,
-    marginBottom: 20,
     fontWeight: 'bold',
+    marginEnd:140
   },
+  logoYTexto:{
+    marginVertical: 25,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
   imput: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EDEAE0',
     borderRadius: 10,
     padding: 10,
     marginBottom: 15,
-    color: '#000',
+    color: '#002E46',
+    fontWeight: 'bold',
   },
   containerUsuario:{
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#EDEAE0',
     borderRadius: 10,
     paddingHorizontal: 10,
     marginBottom: 15,
-    height: 60
+    height: 60,
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: '#002E46',
   },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    backgroundColor: '#fff',
-    borderRadius: 10,
+    backgroundColor: '#EDEAE0',
     paddingHorizontal: 10,
     marginBottom: 15,
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: '#002E46',
   },
   loginBoton: {
-    backgroundColor: '#00aaff',
+    backgroundColor: '#002E46',
     borderRadius: 10,
-    padding: 15,
-    width: '100%',
+    padding: 5,
+    height:37,
+    width: 143,
     alignItems: 'center',
     marginVertical: 10,
   },
@@ -136,18 +153,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  olvidarcontra: {
-    color: '#000',
+  preguntas: {
+    color: '#002E46',
     marginVertical: 10,
-  },
-  textoNoCuenta: {
-    color: '#000',
-    marginVertical: 10,
+    fontWeight: 'bold',
   },
   registrarse: {
-    color: 'blue',
+    color: '#84B6F4',
     marginHorizontal: 2,
   },
+  contenedorNoCuenta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   contendorOpciones: {
     flexDirection: 'row',
     marginTop: 20,
@@ -157,8 +176,5 @@ const styles = StyleSheet.create({
     height: 40,
     marginHorizontal: 10,
   },
-  contenedorNoCuenta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+
 });

@@ -30,7 +30,7 @@ export default function Signup(props) {
       });
 
       Alert.alert('Registro exitoso', 'Cuenta creada con éxito',
-      [{text: 'OK',onPress:()=> props.navigation.navigate ('Login')}
+      [{text: 'OK',onPress:()=> props.navigation.navigate ('Home')}
 
       ]);
     } catch (error) {
@@ -66,7 +66,7 @@ export default function Signup(props) {
 
         <TextInput
           style={styles.input}
-          placeholder="Escribe una contraseña"
+          placeholder="Esribe tu contraseña"
           placeholderTextColor="#999"
           secureTextEntry
           onChangeText={(text) => setPassword(text)}
@@ -92,7 +92,7 @@ export default function Signup(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#84B6F4',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
   registroContenedor:{
     width: '100%',
     height: '60%',
-    backgroundColor: '#a0c4ff',
-    borderRadius: 20,
+    backgroundColor: '#EDEAE0',
+    borderRadius: 50,
     padding: 20,
     alignItems: 'center',
   },
@@ -116,14 +116,16 @@ const styles = StyleSheet.create({
 
   input: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#EDEAE0',
     borderRadius: 10,
     padding: 10,
     marginBottom: 15,
     color: '#000',
+    borderColor: '#002E46',
+    borderWidth: 3,
   },
   registerButton: {
-    backgroundColor: '#00aaff',
+    backgroundColor: '#002E46',
     borderRadius: 10,
     padding: 15,
     width: '100%',

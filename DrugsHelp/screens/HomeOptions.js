@@ -98,10 +98,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEAE0',
     flexDirection: 'row',
     marginHorizontal: 10,
-    marginVertical: 30,
+    marginVertical: 20,
     borderRadius: 50, // Reducción del tamaño del fondo respecto al contenedor
-    width: 370, // Tamaño menor que el contenedorIcono
-    height: 130, // Tamaño menor que el contenedor
+    width: 350, 
+    height: 120, 
     alignSelf: 'center', // Centrar el fondo respecto a los botones
   },
 
@@ -110,28 +110,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#EDEAE0',
     borderRadius: 50,
-    width: 140,  
-    height: 165,
-    padding: 20,
+    width: 135,  
+    height: 145,
+    padding: 10,
     borderColor: '#002E46',
     borderWidth: 5,
   },
 
   icono: {
-    height: 110,
-    width: 110,
+    height: 100,
+    width: 100,
   },
  
   textoIconoBoton: {
-    fontSize: 14,
+    marginVertical:10,
+    marginHorizontal:5,
+    fontSize: 16,
     fontWeight: 'bold',
   },
   contenedorTexto:{
     width: 180,
     height: 110,
     marginHorizontal: 15,
-    marginVertical: 10,
+    textAlign: 'center',
     paddingHorizontal:10,
+  },
+
+  textoDesciptivo: {
+    fontSize: 12,
+    textAlign: 'center'
   },
 
   header: {
