@@ -8,26 +8,27 @@ export default function HomeOptions({ navigation }) {
     /*Menú de opciones*/
     <View style={styles.container}>
           <View style={styles.header}> 
+            <View style={styles.headerImagotipo}>
               <Image 
-                source={require('../images/Logo.png')} 
-                style={styles.logo}
+                source={require('../icons/imagotipoH.png')} 
+                style={styles.imagotipo}   
               />
-              <Text style={styles.textoHeader}>DrugsHelp</Text>
+            </View>
         </View>
              
-
               <View style={styles.contenedorBotones}>
                     
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
-                                  onPress={() => navigation.navigate('Test')}>
+                                  onPress={() => navigation.navigate('EvaluaTest')}>
                                     <Image 
-                                    source={require('../images/Test.png')} 
-                                    style={{height: 110, width:110}}
+                                    source={require('../icons/Test.png')} 
+                                    style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Test Evaluativo</Text>       
+                                <Text style={styles.textoIconoBoton}>Test Evaluativo</Text> 
+                                <Text style={styles.textoDesciptivo}>"Completa el test para evaluar tu nivel de adicción"</Text>      
                           </View>
                       </View>
 
@@ -35,9 +36,9 @@ export default function HomeOptions({ navigation }) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Asistencia')}>
                                     <Image 
-                                    source={require('../images/Asistencia.png')} 
-                                    style={{height: 110, width:110}}
-                                    />    
+                                    source={require('../icons/asistencia.png')} 
+                                    style={styles.icono} 
+                                    />                                       
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Asistencia</Text>       
@@ -48,14 +49,28 @@ export default function HomeOptions({ navigation }) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Informate')}>
                                     <Image 
-                                    source={require('../images/Informate.png')} 
-                                    style={{height: 110, width:110}}
+                                    source={require('../icons/Informate.png')} 
+                                    style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Informate</Text>       
                           </View>
                       </View>
+
+                      <View style={styles.trasfondo}>
+                          <TouchableOpacity style={styles.contenedorIcono} 
+                                  onPress={() => navigation.navigate('RutaAyuda')}>
+                                    <Image 
+                                    source={require('../icons/autocuidado.png')} 
+                                    style={styles.icono}
+                                    />    
+                          </TouchableOpacity>
+                          <View style={styles.contenedorTexto}> 
+                                <Text style={styles.textoIconoBoton}>Autocuidado</Text>       
+                          </View>
+                      </View>
+     
      
           </View>
         <View style={styles.footer}></View> 
@@ -66,7 +81,7 @@ export default function HomeOptions({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#84B6F4',
     flex: 1,
   }, 
 
@@ -80,8 +95,7 @@ const styles = StyleSheet.create({
 
   trasfondo: {
     alignItems: 'center',
-    backgroundColor: '#A4CAD4',
-    borderColor: '#00CEFF',
+    backgroundColor: '#EDEAE0',
     flexDirection: 'row',
     marginHorizontal: 10,
     marginVertical: 30,
@@ -94,18 +108,18 @@ const styles = StyleSheet.create({
   contenedorIcono: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#A4CAD4',
+    backgroundColor: '#EDEAE0',
     borderRadius: 50,
     width: 140,  
     height: 165,
     padding: 20,
-    borderColor: '#00CEFF',
+    borderColor: '#002E46',
     borderWidth: 5,
   },
 
   icono: {
     height: 110,
-    width: 90,
+    width: 110,
   },
  
   textoIconoBoton: {
@@ -116,7 +130,8 @@ const styles = StyleSheet.create({
     width: 180,
     height: 110,
     marginHorizontal: 15,
-    paddingHorizontal:10
+    marginVertical: 10,
+    paddingHorizontal:10,
   },
 
   header: {
@@ -124,25 +139,26 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    height: 100,
-    borderColor: '#00aaff',
-    backgroundColor: '#00aaff',
-    alignItems: 'center',
-    flexDirection: 'row',
+    height: 105,
+    backgroundColor: '#A7D8DE',
+    justifyContent: 'center',
+    padding: 20,
+    paddingTop: 50,
     zIndex: 1, 
   },
 
-  textoHeader: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    padding: 15,
-    marginTop: 25,
+  headerImagotipo:{
+    justifyContent: 'center',
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10, 
+    width: 250,
+    height: 70, 
   },
 
-  logo: {
-    marginTop: 25,
-    height: 60,
-    width: 60,
+  imagotipo: {
+    height: 70,
+    width: 175,
   },
 
   footer: {
@@ -151,8 +167,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: 50,
-    borderColor: '#00aaff',
-    backgroundColor: '#00aaff',
+    backgroundColor: '#A7D8DE',
     zIndex: 1, // por encima de otros elementos
   }
 });

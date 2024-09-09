@@ -26,7 +26,7 @@ export default function Login (props) {
     <View style={styles.container}>
       <View style={styles.loginContainer}>
         <Image
-          source={require('../images/Logo.png')} 
+          source={require('../icons/Logo.png')} 
           style={styles.logo}
         />
         <Text style={styles.loginTitulo}>Inicia Sesión</Text>
@@ -63,10 +63,10 @@ export default function Login (props) {
         </View>
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../images/facebook.png')} style={styles.iconoOpciones} />
+            <Image source={require('../icons/facebook.png')} style={styles.iconoOpciones} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../images/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../icons/google.png')} style={styles.iconoOpciones} />
           </TouchableOpacity>
         </View>
       </View>

@@ -78,10 +78,10 @@ export default function Signup(props) {
 
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../images/facebook.png')} style={styles.iconoOpciones} />
+            <Image source={require('../icons/facebook.png')} style={styles.iconoOpciones} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../images/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../icons/google.png')} style={styles.iconoOpciones} />
           </TouchableOpacity>
         </View>
      </View>
