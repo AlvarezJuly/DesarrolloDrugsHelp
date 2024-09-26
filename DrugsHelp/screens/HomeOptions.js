@@ -7,7 +7,7 @@ export default function HomeOptions({ navigation }) {
   return (
     /*Menú de opciones*/
     <View style={styles.container}>
-          <View style={styles.header}> 
+      <View style={styles.header}> 
             <View style={styles.headerImagotipo}>
               <Image 
                 source={require('../icons/imagotipoH.png')} 
@@ -15,11 +15,11 @@ export default function HomeOptions({ navigation }) {
               />
             </View>
         </View>
-             
               <View style={styles.contenedorBotones}>
                     
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
+                                   /** Declarar navegación */
                                   onPress={() => navigation.navigate('EvaluaTest')}>
                                     <Image 
                                     source={require('../icons/Test.png')} 
@@ -31,7 +31,6 @@ export default function HomeOptions({ navigation }) {
                                 <Text style={styles.textoDesciptivo}>"Completa el test para evaluar tu nivel de adicción"</Text>      
                           </View>
                       </View>
-
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Asistencia')}>
@@ -41,10 +40,10 @@ export default function HomeOptions({ navigation }) {
                                     />                                       
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Asistencia</Text>       
+                                <Text style={styles.textoIconoBoton}>Asistencia</Text>
+                                <Text style={styles.textoDesciptivo}>"Especialistas y centros de ayuda"</Text>        
                           </View>
                       </View>
-
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Informate')}>
@@ -54,10 +53,10 @@ export default function HomeOptions({ navigation }) {
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Informate</Text>       
+                                <Text style={styles.textoIconoBoton}>Informate</Text>
+                                <Text style={styles.textoDesciptivo}>"Lo que necesitas saber de las drogas legales e ilegales y su impacto en la sociedad"</Text>        
                           </View>
                       </View>
-
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('RutaAyuda')}>
@@ -67,11 +66,11 @@ export default function HomeOptions({ navigation }) {
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Autocuidado</Text>       
+                                <Text style={styles.textoIconoBoton}>Autocuidado</Text>
+                                <Text style={styles.textoDesciptivo}>"Guía de ayuda para tu recuperación"</Text>        
                           </View>
                       </View>
-     
-     
+          
           </View>
         <View style={styles.footer}></View> 
     </View>
@@ -116,12 +115,12 @@ const styles = StyleSheet.create({
     borderColor: '#002E46',
     borderWidth: 5,
   },
-
+  
   icono: {
     height: 100,
     width: 100,
   },
- 
+
   textoIconoBoton: {
     marginVertical:10,
     marginHorizontal:5,
