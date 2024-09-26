@@ -41,8 +41,8 @@ export function HomeOptionStack() {
                   component={Asistencia}
                   options={{
                     title: 'Asistencia',
-                    headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerTintColor: "black",
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
 
