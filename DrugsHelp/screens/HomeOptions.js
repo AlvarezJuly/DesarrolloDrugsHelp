@@ -3,7 +3,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export default function HomeOptions({ navigation }) {
+export default function HomeOptions({navigation}) {
   return (
     /*Menú de opciones*/
     <View style={styles.container}>
@@ -15,7 +15,6 @@ export default function HomeOptions({ navigation }) {
               />
             </View>
         </View>
-             
               <View style={styles.contenedorBotones}>
                     
                       <View style={styles.trasfondo}>
@@ -38,7 +37,7 @@ export default function HomeOptions({ navigation }) {
                                     <Image 
                                     source={require('../icons/asistencia.png')} 
                                     style={styles.icono} 
-                                    />                                       
+                                    />                                   
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Asistencia</Text>       
@@ -68,10 +67,12 @@ export default function HomeOptions({ navigation }) {
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Autocuidado</Text>       
-                          </View>
+                          </View>  
                       </View>
-     
-     
+
+                      
+
+                      
           </View>
         <View style={styles.footer}></View> 
     </View>
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
     height: 100,
     width: 100,
   },
- 
+
   textoIconoBoton: {
     marginVertical:10,
     marginHorizontal:5,
