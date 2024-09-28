@@ -18,8 +18,8 @@ export default function Asistencia({navigate}) {
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>espacialista</Text> 
-                                <Text style={styles.textoDesciptivo}>"Encuentra asitencia de especialistas"</Text>      
+                                <Text style={styles.textoIconoBoton}>Especialista</Text> 
+                                <Text style={styles.textoDesciptivo}>"Encuentra asitencia directa con especialistas"</Text>      
                           </View>
                       </View>
                       
@@ -27,16 +27,14 @@ export default function Asistencia({navigate}) {
     <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Centros_de_rehabilitacion')}>
-                                
-                                    
                                     <Image 
                                     source={ require('../../icons/Centros.png') } 
                                     style={styles.icono} 
                                     />                                       
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}>     
-                                  <Text style={styles.textoIconoBoton}>centros de reabilitacion</Text> 
-                                  <Text style={styles.textoDesciptivo}>"Encuantar infoemacion de sentros de reavilitacion"</Text>       
+                                  <Text style={styles.textoIconoBoton}>Centros de rehabilitación </Text> 
+                                  <Text style={styles.textoDesciptivo}>"Encuentra información de centros de rehabilitación "</Text>       
                           </View>
                       </View>
       

@@ -173,10 +173,10 @@ export default function centros_de_rehabilitacion() {
           flex: 1,
         },
         header: {
-          backgroundColor: 'blue',
+          backgroundColor: '#A7D8DE',
           padding: 15,
           alignItems: 'center',
-          marginTop :8
+          marginTop :30
         },
         headerText: {
           color: 'white',
@@ -186,7 +186,7 @@ export default function centros_de_rehabilitacion() {
         map: {
           width: width,
           height: height * 0.5,
-          marginTop: 20,
+          marginTop: 0,
         },
         cardContainer: {
           position: 'absolute',
@@ -217,7 +217,7 @@ export default function centros_de_rehabilitacion() {
         googlePlacesAutocomplete: {
           container: {
             position: 'absolute',
-            top: 60,
+            top: 80,
             width: '90%',
             zIndex: 1,
             alignSelf: 'center',
