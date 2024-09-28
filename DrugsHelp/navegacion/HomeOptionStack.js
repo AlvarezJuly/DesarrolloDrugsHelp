@@ -31,8 +31,8 @@ export function HomeOptionStack() {
                   component={EvaluaTest}
                   options={{
                     title: 'EvaluaTest',
-                    headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'}
+                    headerTintColor: "black",
+                    headerStyle: { backgroundColor: '#A7D8DE'}
                   }}
                 />
 
@@ -42,7 +42,7 @@ export function HomeOptionStack() {
                   options={{
                     title: 'Asistencia',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
 
@@ -52,7 +52,7 @@ export function HomeOptionStack() {
                   options={{
                     title: 'Informate',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
 
