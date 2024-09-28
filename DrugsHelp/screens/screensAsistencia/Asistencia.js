@@ -11,7 +11,7 @@ export default function Asistencia({navigate}) {
   return (<View style={styles.container}>
     <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
-                                  onPress={() => navegation.navigate('Centros_de_rehabilitacion')}>
+                                  onPress={() => navegation.navigate('Especialista')}>
                                     <Image 
                                     source={require('../../icons/Especialistas.png')} 
                                     style={styles.icono}
