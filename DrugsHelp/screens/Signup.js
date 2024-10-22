@@ -26,7 +26,7 @@ export default function Signup(props) {
       await setDoc(doc(db, 'user', user.uid), {
         name: nombreComp,
         email: user.email,
-        createdAt: new Date(), // guardar la fecha de registro
+        createdAt: new Date(), // Puedes guardar también la fecha de registro
       });
 
       // Mostrar alerta de éxito y navegar a la pantalla de inicio
@@ -41,21 +41,14 @@ export default function Signup(props) {
         Alert.alert('Error', 'Algo salió mal: ' + error.message);
       }
     } finally {
-      setLoading(false); // culmina el proceso de carga
+      setLoading(false); // Ocultar spinner después del proceso
     }
   };
 
   return (
     <View style={styles.container}>
-<<<<<<< HEAD
       <View style={styles.registroContenedor}>
         <Text style={styles.title}>Registrarse</Text>
-=======
-      
-    <View style={styles.registroContenedor}>
-
-      <Text style={styles.title}>Registrarse</Text>
->>>>>>> DesarrolloScreenAsistencia
         <TextInput
           style={styles.input}
           placeholder="Nombre completo"
@@ -89,17 +82,15 @@ export default function Signup(props) {
 
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../icons/facebook.png')} style={styles.iconoOpciones} />
+            <Image source={require('../assets/icons/facebook.png')} style={styles.iconoOpciones} />
+            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:5}}>Faebook</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../icons/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../assets/icons/google.png')} style={styles.iconoOpciones} />
+            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
           </TouchableOpacity>
         </View>
-<<<<<<< HEAD
       </View>
-=======
-    </View>
->>>>>>> DesarrolloScreenAsistencia
     </View>
   );
 }
@@ -129,18 +120,18 @@ const styles = StyleSheet.create({
   input: {
     width: '100%',
     backgroundColor: '#EDEAE0',
-    borderRadius: 10,
-    padding: 10,
-    marginBottom: 15,
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 10,
     color: '#000',
     borderColor: '#002E46',
     borderWidth: 3,
   },
   registerButton: {
     backgroundColor: '#002E46',
-    borderRadius: 10,
-    padding: 15,
-    width: '100%',
+    borderRadius: 15,
+    padding: 18,
+    width: '60%',
     alignItems: 'center',
     marginVertical: 10,
   },

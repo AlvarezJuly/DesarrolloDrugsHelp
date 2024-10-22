@@ -11,7 +11,7 @@ const { width, height } = Dimensions.get('window');
 
 
 //const GOOGLE_MAPS_APIKEY = 'AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4';
-export default function centros_de_rehabilitacion() {
+export default function Centros_de_rehabilitacion() {
 
   const [location, setLocation] = useState(null);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -97,10 +97,6 @@ export default function centros_de_rehabilitacion() {
 
       return (
         <View style={styles.container}>
-        {/* Cuadro Azul "Centros de Ayuda" */}
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Centros de Ayuda</Text>
-        </View>
   
         {/* Barra de búsqueda */}
         <GooglePlacesAutocomplete
@@ -172,20 +168,9 @@ export default function centros_de_rehabilitacion() {
         container: {
           flex: 1,
         },
-        header: {
-          backgroundColor: '#A7D8DE',
-          padding: 15,
-          alignItems: 'center',
-          marginTop :30
-        },
-        headerText: {
-          color: 'white',
-          fontSize: 20,
-          fontWeight: 'bold',
-        },
         map: {
           width: width,
-          height: height * 0.5,
+          height: height * 0.54,
           marginTop: 0,
         },
         cardContainer: {
@@ -217,7 +202,7 @@ export default function centros_de_rehabilitacion() {
         googlePlacesAutocomplete: {
           container: {
             position: 'absolute',
-            top: 80,
+            top: 0,
             width: '90%',
             zIndex: 1,
             alignSelf: 'center',

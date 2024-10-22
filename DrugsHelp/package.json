@@ -9,13 +9,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@expo/metro-runtime": "~3.2.1",
+    "@expo/vector-icons": "^14.0.3",
     "@react-native-async-storage/async-storage": "^1.24.0",
-=======
-    "@expo/metro-runtime": "~3.2.3",
-    "@react-native-async-storage/async-storage": "1.23.1",
->>>>>>> DesarrolloScreenAsistencia
     "@react-native-firebase/firestore": "^20.1.0",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
@@ -24,6 +20,7 @@
     "expo-location": "~17.0.1",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.12.2",
+    "ionicons": "^7.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.5",

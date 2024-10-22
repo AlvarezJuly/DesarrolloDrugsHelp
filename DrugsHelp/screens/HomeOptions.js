@@ -1,6 +1,6 @@
 import { View, Text,StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export default function HomeOptions({navigation}) {
@@ -10,24 +10,24 @@ export default function HomeOptions({navigation}) {
           <View style={styles.header}> 
             <View style={styles.headerImagotipo}>
               <Image 
-                source={require('../icons/imagotipoH.png')} 
+                source={require('../assets/icons/imagotipoH.png')} 
                 style={styles.imagotipo}   
               />
             </View>
         </View>
-              <View style={styles.contenedorBotones}>
-                    
-                      <View style={styles.trasfondo}>
+        <ScrollView>
+        <View style={styles.contenedorBotones}>
+        <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('EvaluaTest')}>
                                     <Image 
-                                    source={require('../icons/Test.png')} 
+                                    source={require('../assets/icons/Test.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Test Evaluativo</Text> 
-                                <Text style={styles.textoDesciptivo}>"Completa el test para evaluar tu nivel de adicción"</Text>      
+                                <Text style={styles.textoDesciptivo}>"Completa el test periodicamente para evaluar tu condición"</Text>      
                           </View>
                       </View>
 
@@ -35,12 +35,13 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Asistencia')}>
                                     <Image 
-                                    source={require('../icons/asistencia.png')} 
+                                    source={require('../assets/icons/asistencia.png')} 
                                     style={styles.icono} 
                                     />                                   
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Asistencia</Text>       
+                                <Text style={styles.textoIconoBoton}>Asistencia</Text> 
+                                <Text style={styles.textoDesciptivo}>"Encuentra ayuda especialisada"</Text>      
                           </View>
                       </View>
 
@@ -48,12 +49,13 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Informate')}>
                                     <Image 
-                                    source={require('../icons/Informate.png')} 
+                                    source={require('../assets/icons/Informate.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Informate</Text>       
+                                <Text style={styles.textoIconoBoton}>Informate</Text>  
+                                <Text style={styles.textoDesciptivo}>"Aclara tus dudas acerca del tema drogas"</Text>     
                           </View>
                       </View>
 
@@ -61,19 +63,33 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('RutaAyuda')}>
                                     <Image 
-                                    source={require('../icons/autocuidado.png')} 
+                                    source={require('../assets/icons/autocuidado.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Autocuidado</Text>       
+                                <Text style={styles.textoIconoBoton}>Autocuidado</Text>   
+                                <Text style={styles.textoDesciptivo}>"Tu guía de asistencia para tratar problemas de adicción"</Text>    
+                          </View>  
+                      </View>  
+
+                      <View style={styles.trasfondo}>
+                          <TouchableOpacity style={styles.contenedorIcono} 
+                                  onPress={() => navigation.navigate('Progreso')}>
+                                    <Image 
+                                    source={require('../assets/icons/progress.png')} 
+                                    style={[styles.icono, { height:90,width:130 }]} 
+
+                                    />    
+                          </TouchableOpacity>
+                          <View style={styles.contenedorTexto}> 
+                                <Text style={styles.textoIconoBoton}>Progreso</Text>   
+                                <Text style={styles.textoDesciptivo}>"Verifica y anota tus avances"</Text>    
                           </View>  
                       </View>
-
-                      
-
-                      
-          </View>
+                    
+        </View>
+        </ScrollView>   
         <View style={styles.footer}></View> 
     </View>
   )
@@ -140,7 +156,7 @@ const styles = StyleSheet.create({
 
   textoDesciptivo: {
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: 'left'
   },
 
   header: {

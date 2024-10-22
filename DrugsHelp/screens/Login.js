@@ -27,7 +27,7 @@ export default function Login (props) {
       <View style={styles.loginContainer}>
         <View style={styles.logoYTexto}>  
           <Image
-            source={require('../icons/imagotipoV.png')} 
+            source={require('../assets/icons/imagotipoV.png')} 
             style={styles.logo}
           />
           <Text style={styles.loginTitulo}>Ingresa:</Text>
@@ -66,10 +66,12 @@ export default function Login (props) {
         </View>
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../icons/facebook.png')} style={styles.iconoOpciones} />
+            <Image source={require('../assets/icons/facebook.png')} style={styles.iconoOpciones} />
+            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:4}}>Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../icons/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../assets/icons/google.png')} style={styles.iconoOpciones} />
+            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -141,10 +143,9 @@ const styles = StyleSheet.create({
   },
   loginBoton: {
     backgroundColor: '#002E46',
-    borderRadius: 10,
-    padding: 5,
-    height:37,
-    width: 143,
+    borderRadius: 15,
+    padding: 15,
+    width: '60%',
     alignItems: 'center',
     marginVertical: 10,
   },

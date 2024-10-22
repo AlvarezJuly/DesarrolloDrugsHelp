@@ -4,31 +4,31 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-export default function Asistencia({navigate}) {
+export default function Asistencia({navegation}) {
 
   const navigation = useNavigation();
   
   return (<View style={styles.container}>
     <View style={styles.trasfondo}>
-                          <TouchableOpacity style={styles.contenedorIcono} 
-                                  onPress={() => navegation.navigate('Centros_de_rehabilitacion')}>
+                      <TouchableOpacity style={styles.contenedorIcono} 
+                                  onPress={() => navigation.navigate('Especialistas')}>
                                     <Image 
-                                    source={require('../../icons/Especialistas.png')} 
+                                    source={require('../../assets/icons/Especialistas.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
-                                <Text style={styles.textoIconoBoton}>Especialista</Text> 
+                                <Text style={styles.textoIconoBoton}>Especialistas</Text> 
                                 <Text style={styles.textoDesciptivo}>"Encuentra asitencia directa con especialistas"</Text>      
                           </View>
                       </View>
                       
-    {/* Contenedor de opciones */}
-    <View style={styles.trasfondo}>
+                        {/* Contenedor de opciones */}
+                        <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
-                                  onPress={() => navigation.navigate('Centros_de_rehabilitacion')}>
+                                  onPress={() => navigation.navigate('Centros')}>
                                     <Image 
-                                    source={ require('../../icons/Centros.png') } 
+                                    source={ require('../../assets/icons/Centros.png') } 
                                     style={styles.icono} 
                                     />                                       
                           </TouchableOpacity>
@@ -37,8 +37,7 @@ export default function Asistencia({navigate}) {
                                   <Text style={styles.textoDesciptivo}>"Encuentra información de centros de rehabilitación "</Text>       
                           </View>
                       </View>
-      
-  </View>
+    </View>
     
   )
 
