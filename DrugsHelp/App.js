@@ -3,10 +3,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import Welcome from "./screens/Welcome";
 import Login from "./screens/Login";
 import Signup from "./screens/Signup";
+import Asistencia from "./screens/screensAsistencia/Asistencia";
+import centros_de_rehabilitacion from "./screens/screensAsistencia/centros_de_rehabilitacion";
 //Como la HomeOptions tiene las opciones entones se creo la navegación interna y en esa 
 //se navegación se llama a la pantall y aqui lo que se tiene que llamar es el componente
 import "react-native-gesture-handler";
 import { HomeOptionStack } from "./navegacion/HomeOptionStack";
+
+
+
 
 
 export default function App() {
@@ -39,6 +44,18 @@ export default function App() {
               headerShown: false
             }}
           />
+          
+      
+      <Stack.Screen
+          name="Asistencia"
+          component={Asistencia}
+          options={{headerShown:false
+          }}/>
+        <Stack.Screen
+          name="Centros_de_rehabilitacion"
+          component={centros_de_rehabilitacion}
+          options={{headerShown:false
+          }}/>
 
           <Stack.Screen
             name="Signup"
@@ -50,8 +67,9 @@ export default function App() {
               headerStyle: { backgroundColor: '#00aaff' },
               headerTintColor: "white",
             }}
-          />
-
+        
+          />  
+          
       </Stack.Navigator>
     );
   }
@@ -63,4 +81,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
 

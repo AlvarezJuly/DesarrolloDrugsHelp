@@ -47,8 +47,15 @@ export default function Signup(props) {
 
   return (
     <View style={styles.container}>
+<<<<<<< HEAD
       <View style={styles.registroContenedor}>
         <Text style={styles.title}>Registrarse</Text>
+=======
+      
+    <View style={styles.registroContenedor}>
+
+      <Text style={styles.title}>Registrarse</Text>
+>>>>>>> DesarrolloScreenAsistencia
         <TextInput
           style={styles.input}
           placeholder="Nombre completo"
@@ -88,7 +95,11 @@ export default function Signup(props) {
             <Image source={require('../icons/google.png')} style={styles.iconoOpciones} />
           </TouchableOpacity>
         </View>
+<<<<<<< HEAD
       </View>
+=======
+    </View>
+>>>>>>> DesarrolloScreenAsistencia
     </View>
   );
 }

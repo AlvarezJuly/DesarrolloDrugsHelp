@@ -3,7 +3,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-export default function HomeOptions({ navigation }) {
+export default function HomeOptions({navigation}) {
   return (
     /*Menú de opciones*/
     <View style={styles.container}>
@@ -15,7 +15,6 @@ export default function HomeOptions({ navigation }) {
               />
             </View>
         </View>
-             
               <View style={styles.contenedorBotones}>
                     
                       <View style={styles.trasfondo}>
@@ -38,7 +37,7 @@ export default function HomeOptions({ navigation }) {
                                     <Image 
                                     source={require('../icons/asistencia.png')} 
                                     style={styles.icono} 
-                                    />                                       
+                                    />                                   
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Asistencia</Text>       
@@ -68,10 +67,12 @@ export default function HomeOptions({ navigation }) {
                           </TouchableOpacity>
                           <View style={styles.contenedorTexto}> 
                                 <Text style={styles.textoIconoBoton}>Autocuidado</Text>       
-                          </View>
+                          </View>  
                       </View>
-     
-     
+
+                      
+
+                      
           </View>
         <View style={styles.footer}></View> 
     </View>
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     marginTop: 100, // Para que los botones no queden detrás del header
     marginBottom: 70, // Para que los botones no queden detrás del footer
     paddingHorizontal: 10,
+    paddingVertical :30,
     flexDirection: 'column', 
     justifyContent: 'space-around',
   },
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     borderRadius: 50, // Reducción del tamaño del fondo respecto al contenedor
     width: 350, 
-    height: 120, 
+    height: 105,
     alignSelf: 'center', // Centrar el fondo respecto a los botones
   },
 
@@ -111,17 +113,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#EDEAE0',
     borderRadius: 50,
     width: 135,  
-    height: 145,
+    height: 135,
     padding: 10,
     borderColor: '#002E46',
     borderWidth: 5,
   },
 
   icono: {
-    height: 100,
-    width: 100,
+    height: 95,
+    width: 95,
   },
- 
+
   textoIconoBoton: {
     marginVertical:10,
     marginHorizontal:5,

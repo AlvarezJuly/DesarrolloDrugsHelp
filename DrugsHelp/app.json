@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+
+
+      
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,6 +25,35 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "android": {
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4"
+        }
+      }
+    },
+    
+  "plugins": [
+    [
+      "expo-location",
+      {
+        "locationAlwaysAndWhenInUsePermission": {
+          "ios": {
+            "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
+          },
+          "android": {
+            "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
+          }
+        }
+      }
+    ]]
+    
   }
-}
+}  
+  
+  
+
+
+
+
