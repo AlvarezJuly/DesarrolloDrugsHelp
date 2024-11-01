@@ -11,6 +11,7 @@ import Asistencia from '../screens/screensAsistencia/Asistencia';
 import Centros_de_rehabilitacion from '../screens/screensAsistencia/Centros_de_rehabilitacion';
 import Especialista from '../screens/screensAsistencia/Especialista'; 
 import Progreso from '../screens/screensProgreso/Progreso';
+import Diagnostico from '../screens/screensEvaluaTest/Diagnostico';
 
 
 //declaracion de la stack
@@ -36,6 +37,16 @@ export function HomeOptionStack() {
                     title: 'EvaluaTest',
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'}
+                  }}
+                />
+
+              <Stack.Screen
+                  name='Diagnostico'
+                  component={Diagnostico}
+                  options={{
+                    title: 'Resumen del Diagnóstico',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE' },
                   }}
                 />
 
