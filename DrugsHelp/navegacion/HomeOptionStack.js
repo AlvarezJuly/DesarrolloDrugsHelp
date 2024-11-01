@@ -4,10 +4,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 //importacion de las pantallas que estan dentro de homeOptions
 import HomeOptions from '../screens/HomeOptions';
-import Asistencia from '../screens/screensAsistencia/Asistencia';
 import EvaluaTest from '../screens/screensEvaluaTest/EvaluaTest';
 import Informate from '../screens/screensInformate/Informate';
 import RutaAyuda from '../screens/screensRutaAyuda/Ruta';
+import Asistencia from '../screens/screensAsistencia/Asistencia';
+import Centros_de_rehabilitacion from '../screens/screensAsistencia/Centros_de_rehabilitacion';
+import Especialista from '../screens/screensAsistencia/Especialista'; 
+import Progreso from '../screens/screensProgreso/Progreso';
+import Diagnostico from '../screens/screensEvaluaTest/Diagnostico';
 
 
 //declaracion de la stack
@@ -32,7 +36,17 @@ export function HomeOptionStack() {
                   options={{
                     title: 'EvaluaTest',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'}
+                    headerStyle: { backgroundColor: '#A7D8DE'}
+                  }}
+                />
+
+              <Stack.Screen
+                  name='Diagnostico'
+                  component={Diagnostico}
+                  options={{
+                    title: 'Resumen del Diagnóstico',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE' },
                   }}
                 />
 
@@ -42,27 +56,52 @@ export function HomeOptionStack() {
                   options={{
                     title: 'Asistencia',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
+                <Stack.Screen
+                  name="Centros"
+                  component={Centros_de_rehabilitacion}
+                  options={{headerShown:true,
+                    title:'Centros de ayuda',
+                    headerTintColor: 'white',
+                    headerStyle: { backgroundColor: '#A7D8DE'}
+                  }}/>
 
+                <Stack.Screen
+                  name="Especialistas"
+                  component={Especialista}
+                  options={{ title: 'Especialistas',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE'}}}/>
+                    
               <Stack.Screen
                   name='Informate'
                   component={Informate}
                   options={{
                     title: 'Informate',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
+
 
               <Stack.Screen
                   name='RutaAyuda'
                   component={RutaAyuda}
                   options={{
-                    title: 'Ruta',
+                    title: 'Asistencia',
                     headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#00aaff'},
+                    headerStyle: { backgroundColor: '#A7D8DE'},
+                  }}
+                />
+                  <Stack.Screen
+                  name='Progreso'
+                  component={Progreso}
+                  options={{
+                    title: 'Prgreso',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
             </Stack.Navigator>

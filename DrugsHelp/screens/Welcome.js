@@ -8,7 +8,7 @@ export default function Welcome(props) {
     <View style={styles.contenido}>
       <Text style={styles.textobienve}>Bienvenido</Text>
       <Image
-        source={require('../icons/imagotipoV.png')} 
+        source={require('../assets/icons/imagotipoV.png')} 
         style={styles.logo}
       />
       <Text style={styles.lema}>“Libérate hoy, transforma tu mañana.”</Text>
@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   boton: {
-    width: 162,
-    height: 65 ,
+    width: 160,
+    height: 60 ,
     backgroundColor: '#002E46',
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 30,
+    borderRadius: 15,
   },
   botonTexto: {
     alignContent: 'center',

@@ -9,6 +9,9 @@ import "react-native-gesture-handler";
 import { HomeOptionStack } from "./navegacion/HomeOptionStack";
 
 
+
+
+
 export default function App() {
   //Enrutamiento de la app, la nevegaión principal
   const Stack = createStackNavigator();
@@ -39,6 +42,7 @@ export default function App() {
               headerShown: false
             }}
           />
+          
 
           <Stack.Screen
             name="Signup"
@@ -50,8 +54,9 @@ export default function App() {
               headerStyle: { backgroundColor: '#00aaff' },
               headerTintColor: "white",
             }}
-          />
-
+        
+          />  
+          
       </Stack.Navigator>
     );
   }
@@ -63,4 +68,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
 
