@@ -1,26 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../Credenciales';
+import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
+import { db } from '../../services/CredencialesFirebase';
 
-const Diagnostico = ({ route }) => {
+const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;
   const [userData, setUserData] = useState(null);
   const [diagnosticData, setDiagnosticData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDiagnosticData = async () => {
+    const fetchLatestDiagnosticData = async () => {
       try {
+        // Obtener nombre del usuario
         const userDocRef = doc(db, 'user', userId);
         const userDoc = await getDoc(userDocRef);
-        
+
         let userName = "Usuario desconocido";
         if (userDoc.exists()) {
           userName = userDoc.data().name;
         }
 
-        const q = query(collection(db, 'diag_test'), where('userId', '==', userId));
+        // Consulta para obtener el último diagnóstico del usuario
+        const q = query(
+          collection(db, 'diag_test'),
+          where('userId', '==', userId),
+          orderBy('timestamp', 'desc'),
+          limit(1)
+        );
+
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
@@ -34,9 +42,6 @@ const Diagnostico = ({ route }) => {
 
           setUserData({ name: userName });
           setDiagnosticData({ age, sex, substance, frequency, reason });
-          
-          console.log('Nombre de usuario:', userName);
-          console.log('Datos del diagnóstico:', { age, sex, substance, frequency, reason });
         } else {
           console.error("No se encontró información de diagnóstico");
         }
@@ -47,13 +52,8 @@ const Diagnostico = ({ route }) => {
       }
     };
 
-    fetchDiagnosticData();
+    fetchLatestDiagnosticData();
   }, [userId]);
-
-  const generarGuiaAutocuidado = () => {
-    // Aquí puedes agregar la funcionalidad para generar la guía de autocuidado
-    console.log("Generando guía de autocuidado...");
-  };
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -105,8 +105,11 @@ const Diagnostico = ({ route }) => {
       </View>
 
       <View style={styles.botonContenedor}>
-        <TouchableOpacity style={styles.boton} onPress={generarGuiaAutocuidado}>
-          <Text style={styles.botonTexto}>Generar Guía de Autocuidado</Text>
+        <TouchableOpacity
+          style={styles.boton}
+          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })}
+        >
+          <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -187,6 +190,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
+    alignItems: 'center',
   },
   botonTexto: {
     color: '#fff',

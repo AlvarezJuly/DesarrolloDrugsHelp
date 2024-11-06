@@ -1,15 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import Welcome from "./screens/Welcome";
-import Login from "./screens/Login";
-import Signup from "./screens/Signup";
-//Como la HomeOptions tiene las opciones entones se creo la navegación interna y en esa 
-//se navegación se llama a la pantall y aqui lo que se tiene que llamar es el componente
+import Welcome from "./screens/inicio/Welcome";
+import Login from "./screens/auth/Login";
+import Signup from "./screens/auth/Signup";
+//Como la HomeOptions tiene las opciones entonces se creo la navegación interna y en esa 
+//se navegación se llama a la pantalla y aqui lo que se tiene que llamar es el componente
 import "react-native-gesture-handler";
 import { HomeOptionStack } from "./navegacion/HomeOptionStack";
-
-
-
 
 
 export default function App() {

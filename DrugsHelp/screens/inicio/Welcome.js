@@ -1,19 +1,18 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native'
 import React from 'react'	
 
-export default function Welcome(props) {
+export default function Welcome({navigation}) {
   return (
     <View style={styles.container}>
     <View style={styles.curva1}></View>
     <View style={styles.contenido}>
       <Text style={styles.textobienve}>Bienvenido</Text>
       <Image
-        source={require('../images/logo.png')} 
+        source={require('../../assets/icons/imagotipoV.png')} 
         style={styles.logo}
       />
-      <Text style={styles.nombreapp}>DrugsHelp</Text>
       <Text style={styles.lema}>“Libérate hoy, transforma tu mañana.”</Text>
-      <TouchableOpacity style={styles.boton} onPress={()=> props.navigation.navigate('Login')}>
+      <TouchableOpacity style={styles.boton} onPress={()=> navigation.navigate('Login')}>
         <Text style={styles.botonTexto}>Iniciar</Text>
       </TouchableOpacity>
     </View>
@@ -25,7 +24,7 @@ export default function Welcome(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#d3d3d3',
+    backgroundColor: '#EDEAE0',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -34,8 +33,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     width: '100%',
-    height: '30%',
-    backgroundColor: '#00aaff',
+    height: '25%',
+    backgroundColor: '#A7D8DE',
     borderBottomRightRadius: 200,
     zIndex: -1
   },
@@ -44,8 +43,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '30%',
-    backgroundColor: '#00aaff',
+    height: '25%',
+    backgroundColor: '#A7D8DE',
     borderTopLeftRadius: 200,
     zIndex: -1,
   },
@@ -55,34 +54,38 @@ const styles = StyleSheet.create({
   },
 
   textobienve: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
+    color: '#002E46',
     marginBottom: 20,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 200,
     marginBottom: 20,
   },
-  nombreapp: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
+
   lema: {
-    fontSize: 16,
+    fontSize: 14,
+    color: '#000',
+    fontFamily: 'Roboto',
     fontStyle: 'italic',
-    marginBottom: 40,
+    marginBottom: 25,
     textAlign: 'center',
   },
   boton: {
-    backgroundColor: '#a0c4ff',
+    width: 160,
+    height: 60 ,
+    backgroundColor: '#002E46',
     paddingVertical: 15,
     paddingHorizontal: 30,
-    borderRadius: 30,
+    borderRadius: 15,
   },
   botonTexto: {
+    alignContent: 'center',
+    textAlign: 'center',
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#EDEAE0'
   },
 });

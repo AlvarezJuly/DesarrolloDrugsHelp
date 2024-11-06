@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'; 
-import { View, ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { db } from '../../Credenciales';
+import { db } from '../../services/CredencialesFirebase';
 import QuestionCard from '../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -102,7 +102,13 @@ const TestScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.conText}>
-        <Text style={styles.titulo}>Test de Evaluativo, contesta con toda sinceridad y confianza</Text>
+          <View style={styles.contTitulo}>
+            <Image source={require('../../assets/icons/compromiso.png')} style={styles.imag}
+          /></View>
+          <View style={styles.contTitulo}>
+            <Text style={{fontSize:20, fontWeight:'bold', lineHeight:35}}>Test Evaluativo</Text>
+            <Text style={styles.titulo}>Estamos aquí para ayudarte completa este Test para evaluar tu condición, contesta con toda sinceridad y confianza</Text>
+          </View> 
       </View>
       
       {questions.length > 0 && (
@@ -125,13 +131,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#84B6F4',
   },
   conText: {
-    marginBottom: 20,
+    flexDirection: 'row',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#84B6F4',
+    borderRadius: 50,
+    marginVertical:30,
+    paddingHorizontal:60,
+    paddingVertical:10,
+    backgroundColor: '#A7D8DE',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
   titulo: {
-    fontSize: 16,
-    textAlign: 'center',
-    lineHeight: 20,
+    fontSize: 18,
+    textAlign: 'left',
+    lineHeight: 22,
+    fontWeight: '10',
+    color: '#000',
+  },
+  contTitulo:{
+    padding:10,
+    justifyContent: 'center',
+  },
+  imag:{
+    width: 100,
+    height: 90,
   },
   completionContainer: {
     flex: 1,

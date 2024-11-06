@@ -9,7 +9,7 @@ const ChatBotInformate = () => {
   const apiKey = 'AIzaSyBeDBHpgk4AB1XsnShIGnzSar5v0iPBYVY'; 
 
   const getAIResponse = async (userInput) => {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
     try {
       const prompt = `
         Eres JuJo, un chatbot especializado en ayudar a las personas a entender los efectos de las drogas en el cuerpo y la mente, y a proporcionar apoyo y recursos para dejar el consumo de drogas.
@@ -106,7 +106,7 @@ const ChatBotInformate = () => {
             placeholderTextColor="white"
           />
           <TouchableOpacity style={styles.btnSend} onPress={conversacion}>
-             <Ionicons name="send-sharp" size={30} color="#002E46" />
+            <Ionicons name="send-sharp" size={30} color="#002E46" />
           </TouchableOpacity>
         </View>
       </View>

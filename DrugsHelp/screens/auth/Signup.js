@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
-import { auth, db } from '../Credenciales';
+import { auth, db } from '../../services/CredencialesFirebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
+import { Octicons } from '@expo/vector-icons';
 
-export default function Signup(props) {
+export default function Signup({navigation}) {
   const [nombreComp, setNombreComp] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [hidePassword, setHidePassword] = useState(false); // Estado para alternar visibilidad
   const [loading, setLoading] = useState(false); // Para mostrar el indicador de carga
 
   const signup = async () => {
@@ -30,8 +32,12 @@ export default function Signup(props) {
       });
 
       // Mostrar alerta de éxito y navegar a la pantalla de inicio
-      Alert.alert('Éxito', 'Usuario registrado exitosamente');
-      props.navigation.navigate('Home');
+      Alert.alert('Éxito', 'Usuario registrado exitosamente', [
+        {
+          text: 'OK',
+          onPress: () => navigation.navigate('Home')
+        }
+      ]);
 
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
@@ -47,7 +53,14 @@ export default function Signup(props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.registroContenedor}>
+       <View style={styles.registroContenedor}>
+
+       <View style={styles.loginContainer}>
+          <Image
+            source={require('../../assets/icons/imagotipoV.png')} 
+            style={styles.logo}
+          />
+       </View>
 
         <Text style={styles.title}>Registrarse</Text>
         <TextInput
@@ -64,14 +77,19 @@ export default function Signup(props) {
           onChangeText={setEmail}
           value={email}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
-          placeholderTextColor="#999"
-          secureTextEntry
-          onChangeText={setPassword}
-          value={password}
-        />
+
+       <View style={styles.passwordContainer}>
+          <TextInput
+            secureTextEntry={hidePassword}
+            style={styles.imput}
+            placeholder="Contraseña"
+            onChangeText={(text) => setPassword(text)}
+            placeholderTextColor="#999"
+          />
+          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" /> 
+          </TouchableOpacity>
+        </View>
 
         {loading ? (
           <ActivityIndicator size="large" color="#002E46" />
@@ -83,11 +101,11 @@ export default function Signup(props) {
 
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../assets/icons/facebook.png')} style={styles.iconoOpciones} />
-            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:5}}>Faebook</Text>
+            <Image source={require('../../assets/icons/facebook.png')} style={styles.iconoOpciones} />
+            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:5}}>Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../assets/icons/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../../assets/icons/google.png')} style={styles.iconoOpciones} />
             <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
           </TouchableOpacity>
         </View>
@@ -106,7 +124,7 @@ const styles = StyleSheet.create({
   },
   registroContenedor: {
     width: '100%',
-    height: '60%',
+    height: '75%',
     backgroundColor: '#EDEAE0',
     borderRadius: 50,
     padding: 20,
@@ -115,9 +133,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    padding: 20,
+    marginBottom: 10,
+    padding: 10,
   },
+
+  loginContainer: {
+    width: '90%',
+    backgroundColor: '#EDEAE0',
+    borderRadius: 50,
+    padding: 10,
+    alignItems: 'center',
+    
+  },
+  logo: {
+    width: 75,
+    height: 75, 
+    marginHorizontal:40
+  },
+
   input: {
     width: '100%',
     backgroundColor: '#EDEAE0',
@@ -128,6 +161,28 @@ const styles = StyleSheet.create({
     borderColor: '#002E46',
     borderWidth: 3,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: '#EDEAE0',
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    borderRadius: 20,
+    borderWidth: 3,
+    borderColor: '#002E46',
+  },
+
+  imput: {
+    flex: 1,
+    backgroundColor: '#EDEAE0',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    color: '#002E46',
+    fontWeight: 'bold',
+  },
+
   registerButton: {
     backgroundColor: '#002E46',
     borderRadius: 15,
@@ -143,7 +198,7 @@ const styles = StyleSheet.create({
   },
   contendorOpciones: {
     flexDirection: 'row',
-    marginTop: 20,
+    marginTop: 10,
   },
   iconoOpciones: {
     width: 40,

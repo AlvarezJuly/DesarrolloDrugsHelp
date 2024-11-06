@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../Credenciales';
+import { auth } from '../../services/CredencialesFirebase'
 import { Octicons } from '@expo/vector-icons';
 
-export default function Login (props) {
+export default function Login ({navigation}) {
 
   // Variables de estado
   const [email, setEmail] = useState('');
@@ -14,8 +14,8 @@ export default function Login (props) {
   const logueo = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert('Iniciando sesión', 'Accediendo...');
-      props.navigation.navigate('Home');
+      Alert.alert('Iniciando sesión', 'Accediendo...'); 
+      navigation.navigate('Home');
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'El usuario o la contraseña son incorrectos');
@@ -27,7 +27,7 @@ export default function Login (props) {
       <View style={styles.loginContainer}>
         <View style={styles.logoYTexto}>  
           <Image
-            source={require('../assets/icons/imagotipoV.png')} 
+            source={require('../../assets/icons/imagotipoV.png')} 
             style={styles.logo}
           />
           <Text style={styles.loginTitulo}>Ingresa:</Text>
@@ -60,17 +60,17 @@ export default function Login (props) {
         <Text style={styles.preguntas}>¿Olvidaste tu contraseña?</Text>
         <View style={styles.contenedorNoCuenta}>
           <Text style={styles.preguntas}>¿No tienes cuenta?</Text>
-          <TouchableOpacity onPress={() => props.navigation.navigate('Signup')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={styles.registrarse}>Registrarse</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.contendorOpciones}>
           <TouchableOpacity>
-            <Image source={require('../assets/icons/facebook.png')} style={styles.iconoOpciones} />
+            <Image source={require('../../assets/icons/facebook.png')} style={styles.iconoOpciones} />
             <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:4}}>Facebook</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Image source={require('../assets/icons/google.png')} style={styles.iconoOpciones} />
+            <Image source={require('../../assets/icons/google.png')} style={styles.iconoOpciones} />
             <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
           </TouchableOpacity>
         </View>
@@ -122,11 +122,10 @@ const styles = StyleSheet.create({
   containerUsuario:{
     width: '100%',
     backgroundColor: '#EDEAE0',
-    borderRadius: 10,
+    borderRadius: 20,
     paddingHorizontal: 10,
     marginBottom: 15,
     height: 60,
-    borderRadius: 20,
     borderWidth: 3,
     borderColor: '#002E46',
   },

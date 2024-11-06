@@ -1,12 +1,8 @@
 import { View, Text ,TouchableOpacity, StyleSheet, Image} from 'react-native'
 import React from 'react'
-import { useNavigation } from '@react-navigation/native'; 
 
 
-
-export default function Asistencia({navegation}) {
-
-  const navigation = useNavigation();
+export default function Asistencia({navigation}) {
   
   return (<View style={styles.container}>
     <View style={styles.trasfondo}>

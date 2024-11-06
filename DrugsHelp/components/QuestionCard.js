@@ -70,11 +70,11 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#EDEAE0',
-    padding: 40,
-    borderRadius: 10,
+    padding: 25,
+    borderRadius: 20,
     borderWidth: 2,
     borderColor: '#EDEAE0',
-    marginBottom: 20,
+    marginBottom: 80,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   optionButton: {
     backgroundColor: '#A7D8DE',
     padding: 15,
-    borderRadius: 8,
+    borderRadius: 10,
     marginVertical: 5,
     alignItems: 'center',
   },

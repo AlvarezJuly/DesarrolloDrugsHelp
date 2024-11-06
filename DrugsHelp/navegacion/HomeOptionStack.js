@@ -3,15 +3,15 @@ import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 
 //importacion de las pantallas que estan dentro de homeOptions
-import HomeOptions from '../screens/HomeOptions';
+import HomeOptions from '../screens/inicio/HomeOptions';
 import EvaluaTest from '../screens/screensEvaluaTest/EvaluaTest';
 import Informate from '../screens/screensInformate/Informate';
-import RutaAyuda from '../screens/screensRutaAyuda/Ruta';
 import Asistencia from '../screens/screensAsistencia/Asistencia';
 import Centros_de_rehabilitacion from '../screens/screensAsistencia/Centros_de_rehabilitacion';
 import Especialista from '../screens/screensAsistencia/Especialista'; 
 import Progreso from '../screens/screensProgreso/Progreso';
 import Diagnostico from '../screens/screensEvaluaTest/Diagnostico';
+import RutaAutocuidado from '../screens/screensRutaAyuda/RutaAutocuidado';
 
 
 //declaracion de la stack
@@ -84,13 +84,11 @@ export function HomeOptionStack() {
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
-
-
               <Stack.Screen
                   name='RutaAyuda'
-                  component={RutaAyuda}
+                  component={RutaAutocuidado}
                   options={{
-                    title: 'Asistencia',
+                    title: 'Guía de Ayuda',
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}

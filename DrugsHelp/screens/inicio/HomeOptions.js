@@ -10,7 +10,7 @@ export default function HomeOptions({navigation}) {
       <View style={styles.header}> 
             <View style={styles.headerImagotipo}>
               <Image 
-                source={require('../assets/icons/imagotipoH.png')} 
+                source={require('../../assets/icons/imagotipoH.png')} 
                 style={styles.imagotipo}   
               />
             </View>
@@ -22,7 +22,7 @@ export default function HomeOptions({navigation}) {
                                    /** Declarar navegación */
                                   onPress={() => navigation.navigate('EvaluaTest')}>
                                     <Image 
-                                    source={require('../assets/icons/Test.png')} 
+                                    source={require('../../assets/icons/Test.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
@@ -35,7 +35,7 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Asistencia')}>
                                     <Image 
-                                    source={require('../assets/icons/asistencia.png')} 
+                                    source={require('../../assets/icons/asistencia.png')} 
                                     style={styles.icono} 
                                     />                                   
                           </TouchableOpacity>
@@ -48,7 +48,7 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Informate')}>
                                     <Image 
-                                    source={require('../assets/icons/Informate.png')} 
+                                    source={require('../../assets/icons/Informate.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
@@ -61,7 +61,7 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('RutaAyuda')}>
                                     <Image 
-                                    source={require('../assets/icons/autocuidado.png')} 
+                                    source={require('../../assets/icons/autocuidado.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
@@ -75,7 +75,7 @@ export default function HomeOptions({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Progreso')}>
                                     <Image 
-                                    source={require('../assets/icons/progress.png')} 
+                                    source={require('../../assets/icons/progress.png')} 
                                     style={[styles.icono, { height:90,width:130 }]} 
 
                                     />    
