@@ -1,62 +1,43 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Alert, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../services/ModelAI';
 
-export default function RutaAutocuidado({ route, navigation}) {
+export default function RutaAutocuidado({ route, navigation }) {
   const { diagnosticData } = route.params;
-  const [guideData, setGuideData] = useState(null);
+  const [guia, setGuia] = useState({
+    articulosCientificos: [],
+    tecnicasRelax: [],
+    rutinasEjercicio: [],
+    alimentacionSaludable: []
+  });
+
   const [loading, setLoading] = useState(true);
-  const apiKey = 'AIzaSyBeDBHpgk4AB1XsnShIGnzSar5v0iPBYVY';
 
   useEffect(() => {
-    const fetchAndGenerateGuide = async () => {
+    const obtenerGuia = async () => {
       try {
-        const prompt = `
-              Usuario de ${diagnosticData.age} años, de género ${diagnosticData.sex}, con hábito de consumo de ${diagnosticData.substance}.
-              Frecuencia del consumo: ${diagnosticData.frequency}. Motivo del consumo: ${diagnosticData.reason}.
-              Genera una guía de autocuidado personalizada que incluya recomendaciones específicas en las siguientes categorías:
-              - Videos informativos sobre los efectos del ${diagnosticData.substance}, preferiblemente de YouTube.
-              - Artículos científicos para un estilo de vida saludable, proporcionando enlaces a fuentes confiables.
-              - Técnicas de relajación y manejo de estrés, con descripciones detalladas y pasos.
-              - Rutinas de ejercicios para la recuperación, incluyendo ejemplos específicos y demostraciones en video si es posible.
-              - Guías de alimentación saludable, con ejemplos de menús y recetas.
-              Estructura las recomendaciones para un período de 15 días.
-        `;
+        setLoading(true);
+        const { age, sex, substance, frequency, reason } = diagnosticData;
 
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }]
-          }),
+        const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || [];
+        const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || [];
+        const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || [];
+        const alimentacion = await fetchAlimentacion({ age, sex, substance, frequency, reason }) || [];
+
+        setGuia({
+          articulosCientificos: articulos,
+          tecnicasRelax: tecnicas,
+          rutinasEjercicio: ejercicios,
+          alimentacionSaludable: alimentacion
         });
-
-        const data = await response.json();
-        console.log('API Response:', data);  // <-- Añadir este log para depurar
-
-        if (response.ok && data.candidates && data.candidates[0]) {
-          console.log('Content:', data.candidates[0].content);  // <-- Añadir este log para ver el contenido
-          setGuideData(data.candidates[0].content); // <-- Asegúrate de que esto apunta correctamente a tu data.
-        } else {
-          const errorMsg = data.error ? data.error.message : "No se pudo generar la guía en este momento.";
-          setGuideData(errorMsg);
-        }
       } catch (error) {
-        console.error("Error al generar la guía de autocuidado:", error);
-        setGuideData("Error al generar la guía.");
+        console.error("Error al obtener la guía de autocuidado:", error);
       } finally {
         setLoading(false);
       }
     };
-    
-    Alert.alert(
-      "Preparado para el proceso de recuperación",
-      "¿Deseas continuar?",
-      [
-        { text: "Cancelar", style: "cancel"},
-        { text: "OK", onPress: () => fetchAndGenerateGuide()},
-      ]
-    );
+
+    obtenerGuia();
   }, [diagnosticData]);
 
   if (loading) {
@@ -64,49 +45,89 @@ export default function RutaAutocuidado({ route, navigation}) {
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Guía de Autocuidado</Text>
-      {guideData ? (
-        <View style={styles.guideContainer}>
-          {guideData.parts.map((part, index) => (
-            <Text key={index} style={styles.guideText}>{part.text}</Text>
-          ))}
-        </View>
-      ) : (
-        <Text style={styles.errorText}>Error al cargar la guía de autocuidado.</Text>
-      )}
-    </ScrollView>
+    <View style={styles.container}>
+      <Text style={styles.title}>Ruta de Autocuidado</Text>
+      <ScrollView>
+        {/* Artículos Científicos */}
+        {guia.articulosCientificos.length > 0 && (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Actividades', { data: guia.articulosCientificos, tipo: 'articulo' })}
+          >
+            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Text style={styles.cardText}>Artículos Científicos</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Técnicas de Relajación */}
+        {guia.tecnicasRelax.length > 0 && (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Actividades', { data: guia.tecnicasRelax, tipo: 'tecnica' })}
+          >
+            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Text style={styles.cardText}>Técnicas de Relajación</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Rutinas de Ejercicio */}
+        {guia.rutinasEjercicio.length > 0 && (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Actividades', { data: guia.rutinasEjercicio, tipo: 'rutina' })}
+          >
+            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Text style={styles.cardText}>Rutinas de Ejercicio</Text>
+          </TouchableOpacity>
+        )}
+
+        {/* Guías de Alimentación Saludable */}
+        {guia.alimentacionSaludable.length > 0 && (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate('Actividades', { data: guia.alimentacionSaludable, tipo: 'alimentacion' })}
+          >
+            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Text style={styles.cardText}>Guías de Alimentación Saludable</Text>
+          </TouchableOpacity>
+        )}
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f4f4f4',
     padding: 20,
+    backgroundColor: '#84B6F4',
   },
   title: {
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
     textAlign: 'center',
-    color: '#002E46',
+    marginBottom: 20,
   },
-  guideContainer: {
-    backgroundColor: '#ffffff',
+  card: {
+    backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 15,
-    elevation: 4,
+    padding: 20,
+    marginBottom: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
   },
-  guideText: {
-    fontSize: 16,
-    color: '#495057',
-    lineHeight: 24,
+  icon: {
+    width: 50,
+    height: 50,
     marginBottom: 10,
   },
-  errorText: {
-    fontSize: 16,
-    color: 'red',
-    textAlign: 'center',
+  cardText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });

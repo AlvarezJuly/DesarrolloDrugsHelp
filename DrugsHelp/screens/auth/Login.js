@@ -15,7 +15,7 @@ export default function Login ({navigation}) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Iniciando sesión', 'Accediendo...'); 
-      navigation.navigate('Home');
+      navigation.navigate('HomeNave');
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'El usuario o la contraseña son incorrectos');

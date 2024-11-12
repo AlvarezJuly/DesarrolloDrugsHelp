@@ -6,7 +6,7 @@ const ChatBotInformate = () => {
   const [input, setInput] = useState('');
   const [conversation, setConversation] = useState([]);
   const chatboxRef = useRef(null);
-  const apiKey = 'AIzaSyBeDBHpgk4AB1XsnShIGnzSar5v0iPBYVY'; 
+  const apiKey = 'AIzaSyC4Nb3SIkhKgvBNNzT5ObnrPIKUGrzX2gg'; 
 
   const getAIResponse = async (userInput) => {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;

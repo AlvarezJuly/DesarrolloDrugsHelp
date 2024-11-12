@@ -107,7 +107,7 @@ const Diagnostico = ({ route, navigation }) => {
       <View style={styles.botonContenedor}>
         <TouchableOpacity
           style={styles.boton}
-          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })}
+          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })}  // Pasando todo el objeto
         >
           <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
         </TouchableOpacity>

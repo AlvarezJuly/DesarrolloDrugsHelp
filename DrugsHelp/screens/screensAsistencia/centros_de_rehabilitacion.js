@@ -1,67 +1,85 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import MapView, { Marker, Polyline } from 'react-native-maps';
+import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Card } from 'react-native-paper';
-
+import { MaterialIcons } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
+//API de Google aquí
+const GOOGLE_MAPS_APIKEY = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc';
 
-//const GOOGLE_MAPS_APIKEY = 'AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4';
-export default function Centros_de_rehabilitacion() {
-
+export default function Centros_de_ayuda() {
   const [location, setLocation] = useState(null);
-  const [routeCoordinates, setRouteCoordinates] = useState([]);
-  const [markers, setMarkers] = useState([]);
+  const [centrosCercanos, setCentrosCercanos] = useState([]);
   const mapRef = useRef(null);
 
-  // Datos de ejemplo de centros de rehabilitación
-  const rehabCenters = [
-    {
-      id: 1,
-      name: 'Alcoholicos Anonimos S.A',
-      description: 'Programa de tratamiento del alcoholismo',
-      location: { latitude: 12.1364, longitude: -86.2514 },
-      phone: '8724-9579',
-    },
-    {
-      id: 2,
-      name: 'Centro Médico Juigalpa',
-      description: 'Clínica ambulatoria',
-      location: { latitude: 12.1394, longitude: -86.2519 },
-      phone: '2512-1817',
-      rating: 3.9,
-      review: 'Buen servicio',
-    },
-  ];
-
-  // Obtener la ubicación actual del usuario
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        console.log('Permiso denegado');
+        console.log('Permiso de ubicación denegado');
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location.coords);
+      // Seguimiento de la ubicación en tiempo real del usuario
+      Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 5000,
+          distanceInterval: 10,
+        },
+        (newLocation) => {
+          const { latitude, longitude } = newLocation.coords;
+          setLocation({ latitude, longitude });
+          obtenerCentrosCercanos(latitude, longitude); // Actualizar centros cercanos cada vez que cambia la ubicación
+        }
+      );
     })();
   }, []);
 
-  // Manejar selección de lugares
-  const handlePlaceSelection = (data, details) => {
-    const { lat, lng } = details.geometry.location;
-    const newMarker = {
-      latitude: lat,
-      longitude: lng,
-      title: data.description,
-    };
+  // Función para centrar el mapa en la ubicación del usuario
+  const centrarEnUbicacionUsuario = () => {
+    if (location) {
+      mapRef.current.animateToRegion({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.05,
+        longitudeDelta: 0.05,
+      });
+    }
+  };
 
-    setMarkers([newMarker]);
+  // Función para obtener centros de ayuda cercanos utilizando Google Places Nearby Search
+  const obtenerCentrosCercanos = async (latitude, longitude) => {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=hospital|health&keyword=rehabilitación|hospital|alcohólicos|drogas&key=${GOOGLE_MAPS_APIKEY}`
+    );
+    const data = await response.json();
+    if (data.results) {
+      const centros = data.results.map((place) => ({
+        id: place.place_id,
+        name: place.name,
+        location: {
+          latitude: place.geometry.location.lat,
+          longitude: place.geometry.location.lng,
+        },
+        address: place.vicinity,
+      }));
+      setCentrosCercanos(centros);
+    }
+  };
+
+  // Manejar selección de lugar en la búsqueda manual
+  const manejarBusquedaManual = (data, details) => {
+    const { lat, lng } = details.geometry.location;
+    const nuevoCentro = {
+      id: details.place_id,
+      name: data.description,
+      location: { latitude: lat, longitude: lng },
+    };
+    setCentrosCercanos([nuevoCentro]); // Muestra solo el resultado de la búsqueda manual
     mapRef.current.animateToRegion({
       latitude: lat,
       longitude: lng,
@@ -70,151 +88,86 @@ export default function Centros_de_rehabilitacion() {
     });
   };
 
-  // Obtener indicaciones entre ubicaciones
-  const getDirections = async (startLoc, destinationLoc) => {
-    const resp = await fetch(
-      `https://maps.googleapis.com/maps/api/directions/json?origin=${startLoc.latitude},${startLoc.longitude}&destination=${destinationLoc.latitude},${destinationLoc.longitude}&key='AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4`
-    );
-    const respJson = await resp.json();
-    const points = Polyline.decode(respJson.routes[0].overview_polyline.points);
-    const coords = points.map(point => ({
-      latitude: point[0],
-      longitude: point[1],
-    }));
-    setRouteCoordinates(coords);
-  };
+  return (
+    <View style={styles.container}>
+      {/* Barra de búsqueda manual */}
+      <GooglePlacesAutocomplete
+        placeholder="Buscar centro de ayuda"
+        fetchDetails
+        onPress={manejarBusquedaManual}
+        query={{
+          key: GOOGLE_MAPS_APIKEY,
+          language: 'es',
+          types: 'establishment',
+          keyword: 'rehabilitación|hospital|ayuda|alcohólicos|drogas',
+        }}
+        styles={styles.googlePlacesAutocomplete}
+      />
 
-  // Manejar clic en el botón de indicaciones
-  const handleDirections = (centerLocation) => {
-    if (location) {
-      const startLoc = {
-        latitude: location.latitude,
-        longitude: location.longitude,
-      };
-      getDirections(startLoc, centerLocation);
-    }
-  };
+      {/* Mapa */}
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        initialRegion={{
+          latitude: location ? location.latitude : 12.1364,
+          longitude: location ? location.longitude : -86.2514,
+          latitudeDelta: 0.05,
+          longitudeDelta: 0.05,
+        }}
+      >
+        {location && (
+          <Marker
+            coordinate={location}
+            title="Mi ubicación"
+            description="Ubicación en tiempo real"
+            pinColor="blue" // Color azul para el usuario
+          />
+        )}
 
-      return (
-        <View style={styles.container}>
-  
-        {/* Barra de búsqueda */}
-        <GooglePlacesAutocomplete
-          placeholder="Buscar dirección"
-          fetchDetails
-          onPress={handlePlaceSelection}
-          query={{
-            key: 'AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4',
-            language: 'es',
-          }}
-          styles={styles.googlePlacesAutocomplete}
-          
-        />
-  
-        {/* Mapa */}
-        <MapView
-          ref={mapRef}
-          style={styles.map}
-          initialRegion={{
-            latitude: location ? location.latitude : 12.1364,
-            longitude: location ? location.longitude : -86.2514,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-          }}
-        >
-          {/* Marcadores de los centros de rehabilitación */}
-          {rehabCenters.map((center) => (
-            <Marker
-              key={center.id}
-              coordinate={center.location}
-              title={center.name}
-              description={center.description}
-            />
-          ))}
-  
-          {/* Dibujo de la ruta */}
-          {routeCoordinates.length > 0 && (
-            <Polyline
-              coordinates={routeCoordinates}
-              strokeColor="#000"
-              strokeWidth={3}
-            />
-          )}
-        </MapView>
-  
-        {/* Tarjetas informativas */}
-        <View style={styles.cardContainer}>
-          {rehabCenters.map((center) => (
-            <Card style={styles.card} key={center.id}>
-              <Text style={styles.cardTitle}>{center.name}</Text>
-              <Text>{center.description}</Text>
-              <Text>{center.phone}</Text>
-              <Text>{center.rating ? `Rating: ${center.rating}` : 'Sin calificaciones'}</Text>
-              {center.review && <Text>"{center.review}"</Text>}
-              <TouchableOpacity
-                style={styles.directionsButton}
-                onPress={() => handleDirections(center.location)}
-              >
-                <Text style={styles.directionsText}>Indicaciones</Text>
-              </TouchableOpacity>
-            </Card>
-  ))}
-        </View>
-      </View>
-      )}
+        {centrosCercanos.map((centro) => (
+          <Marker
+            key={centro.id}
+            coordinate={centro.location}
+            title={centro.name}
+            description={centro.address}
+            pinColor="red" // Color rojo para puntos recomendados
+          />
+        ))}
+      </MapView>
 
+      {/* Botón para centrar en la ubicación actual */}
+      <TouchableOpacity style={styles.locationButton} onPress={centrarEnUbicacionUsuario}>
+        <MaterialIcons name="my-location" size={24} color="white" />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
-      const styles = StyleSheet.create({
-        container: {
-          flex: 1,
-        },
-        map: {
-          width: width,
-          height: height * 0.54,
-          marginTop: 0,
-        },
-        cardContainer: {
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-        },
-        card: {
-          backgroundColor: 'white',
-          marginVertical: 5,
-          padding: 10,
-          borderRadius: 10,
-          marginHorizontal: 10,
-        },
-        cardTitle: {
-          fontSize: 18,
-          fontWeight: 'bold',
-        },
-        directionsButton: {
-          backgroundColor: '#4285F4',
-          padding: 8,
-          borderRadius: 5,
-          marginTop: 6,
-        },
-        directionsText: {
-          color: 'white',
-          textAlign: 'center',
-        },
-        googlePlacesAutocomplete: {
-          container: {
-            position: 'absolute',
-            top: 0,
-            width: '90%',
-            zIndex: 1,
-            alignSelf: 'center',
-          },
-          textInputContainer: {
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            borderRadius: 10,
-          },
-          textInput: {
-            height: 44,
-            color: '#5d5d5d',
-            fontSize: 16,
-          },
-        },
-      });
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  map: { width: width, height: height },
+  locationButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#4285F4',
+    padding: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  googlePlacesAutocomplete: {
+    container: {
+      position: 'absolute',
+      top: 10,
+      width: '90%',
+      zIndex: 1,
+      alignSelf: 'center',
+    },
+    textInputContainer: {
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      borderRadius: 10,
+    },
+    textInput: { height: 44, color: '#5d5d5d', fontSize: 16 },
+  },
+});

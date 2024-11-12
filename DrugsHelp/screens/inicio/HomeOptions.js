@@ -19,7 +19,7 @@ export default function HomeOptions({navigation}) {
           <View style={styles.contenedorBotones}>
                     <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
-                                   /** Declarar navegación */
+                                   /** Declarar navegaciones en todas las opciones **/
                                   onPress={() => navigation.navigate('EvaluaTest')}>
                                     <Image 
                                     source={require('../../assets/icons/Test.png')} 
@@ -31,6 +31,21 @@ export default function HomeOptions({navigation}) {
                                 <Text style={styles.textoDesciptivo}>"Completa el test periodicamente para evaluar tu condición"</Text>      
                           </View>
                       </View>
+
+                      <View style={styles.trasfondo}>
+                          <TouchableOpacity style={styles.contenedorIcono} 
+                                  onPress={() => navigation.navigate('RutaAyuda')}>
+                                    <Image 
+                                    source={require('../../assets/icons/autocuidado.png')} 
+                                    style={styles.icono}
+                                    />    
+                          </TouchableOpacity>
+                          <View style={styles.contenedorTexto}> 
+                          <Text style={styles.textoIconoBoton}>Autocuidado</Text>   
+                          <Text style={styles.textoDesciptivo}>"Tu guía de asistencia para tratar problemas de adicción"</Text>    
+                          </View>  
+                      </View> 
+
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Asistencia')}>
@@ -44,6 +59,7 @@ export default function HomeOptions({navigation}) {
                           <Text style={styles.textoDesciptivo}>"Encuentra ayuda especialisada"</Text>      
                           </View>
                       </View>
+
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Informate')}>
@@ -57,19 +73,6 @@ export default function HomeOptions({navigation}) {
                           <Text style={styles.textoDesciptivo}>"Aclara tus dudas acerca del tema drogas"</Text>   
                           </View>
                       </View>
-                      <View style={styles.trasfondo}>
-                          <TouchableOpacity style={styles.contenedorIcono} 
-                                  onPress={() => navigation.navigate('RutaAyuda')}>
-                                    <Image 
-                                    source={require('../../assets/icons/autocuidado.png')} 
-                                    style={styles.icono}
-                                    />    
-                          </TouchableOpacity>
-                          <View style={styles.contenedorTexto}> 
-                          <Text style={styles.textoIconoBoton}>Autocuidado</Text>   
-                          <Text style={styles.textoDesciptivo}>"Tu guía de asistencia para tratar problemas de adicción"</Text>    
-                          </View>  
-                      </View>  
 
                       <View style={styles.trasfondo}>
                           <TouchableOpacity style={styles.contenedorIcono} 

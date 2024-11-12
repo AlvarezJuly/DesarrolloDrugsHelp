@@ -35,7 +35,7 @@ export default function Signup({navigation}) {
       Alert.alert('Éxito', 'Usuario registrado exitosamente', [
         {
           text: 'OK',
-          onPress: () => navigation.navigate('Home')
+          onPress: () => navigation.navigate('HomeNave')
         }
       ]);
 

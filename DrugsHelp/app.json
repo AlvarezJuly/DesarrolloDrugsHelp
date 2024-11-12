@@ -7,8 +7,6 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
 
-
-      
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -25,13 +23,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "android": {
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyAMFLtOMkhcweqWwyEVQyh9jPXqJP4hYG4"
-        }
-      }
     },
     
   "plugins": [

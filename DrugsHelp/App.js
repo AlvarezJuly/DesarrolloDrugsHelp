@@ -6,7 +6,7 @@ import Signup from "./screens/auth/Signup";
 //Como la HomeOptions tiene las opciones entonces se creo la navegación interna y en esa 
 //se navegación se llama a la pantalla y aqui lo que se tiene que llamar es el componente
 import "react-native-gesture-handler";
-import { HomeOptionStack } from "./navegacion/HomeOptionStack";
+import { HomeOptionStack } from "./navegacion/HomeOptionStack"; //paso el componente que contiene la navegación interna 
 
 
 export default function App() {
@@ -23,14 +23,6 @@ export default function App() {
               headerShown:false
             }}
           />  
-
-        <Stack.Screen
-            name='Home'
-            component={HomeOptionStack}
-            options={{
-              headerShown: false
-            }}
-          />
 
           <Stack.Screen
             name="Login"
@@ -51,13 +43,19 @@ export default function App() {
               headerStyle: { backgroundColor: '#00aaff' },
               headerTintColor: "white",
             }}
-        
           />  
+
+          <Stack.Screen
+            name='HomeNave'
+            component={HomeOptionStack} //contiene la llamada a la subnavegación 
+            options={{
+              headerShown: false
+            }}
+          />
           
       </Stack.Navigator>
     );
   }
-
   return (
     //encapsulamiento de la navegación
     <NavigationContainer>

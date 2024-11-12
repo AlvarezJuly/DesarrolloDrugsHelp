@@ -12,6 +12,7 @@ import Especialista from '../screens/screensAsistencia/Especialista';
 import Progreso from '../screens/screensProgreso/Progreso';
 import Diagnostico from '../screens/screensEvaluaTest/Diagnostico';
 import RutaAutocuidado from '../screens/screensRutaAyuda/RutaAutocuidado';
+import ListaActividades from '../screens/screensRutaAyuda/ListaActividades';
 
 
 //declaracion de la stack
@@ -29,7 +30,7 @@ export function HomeOptionStack() {
                     headerShown: false
                   }}
                 />
-
+                
               <Stack.Screen
                   name='EvaluaTest'
                   component={EvaluaTest}
@@ -50,6 +51,26 @@ export function HomeOptionStack() {
                   }}
                 />
 
+              <Stack.Screen
+                  name='RutaAyuda'
+                  component={RutaAutocuidado}
+                  options={{
+                    title: 'Guía de Ayuda',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE'},
+                  }}
+                />
+
+              <Stack.Screen
+                  name='Actividades'
+                  component={ListaActividades}
+                  options={{
+                    title: 'Lista de tareas',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE' },
+                  }}
+                />      
+                
               <Stack.Screen
                   name='Asistencia'
                   component={Asistencia}
@@ -84,15 +105,7 @@ export function HomeOptionStack() {
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
                 />
-              <Stack.Screen
-                  name='RutaAyuda'
-                  component={RutaAutocuidado}
-                  options={{
-                    title: 'Guía de Ayuda',
-                    headerTintColor: "white",
-                    headerStyle: { backgroundColor: '#A7D8DE'},
-                  }}
-                />
+              
                   <Stack.Screen
                   name='Progreso'
                   component={Progreso}
