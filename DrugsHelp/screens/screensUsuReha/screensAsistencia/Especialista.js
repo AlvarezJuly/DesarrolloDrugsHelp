@@ -1,9 +1,9 @@
 // Contactos.js
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, FlatList, StyleSheet } from 'react-native';
-import { db } from '../../services/CredencialesFirebase'; 
+import { db } from '../../../services/CredencialesFirebase'; 
 import { collection, getDocs } from 'firebase/firestore';
-import CardEspecialista from '../../components/CardEspecialista';
+import CardEspecialista from '../../../components/CardEspecialista';
 
 const Especialista = () => {
   const [contactos, setContactos] = useState([]);

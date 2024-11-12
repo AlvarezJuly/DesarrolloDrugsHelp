@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../services/ModelAI';
+import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../../services/ModelAI';
 
 export default function RutaAutocuidado({ route, navigation }) {
   const { diagnosticData } = route.params;
@@ -17,11 +17,12 @@ export default function RutaAutocuidado({ route, navigation }) {
     const obtenerGuia = async () => {
       try {
         setLoading(true);
-        const { age, sex, substance, frequency, reason } = diagnosticData;
+        const { age, sex, substance, frequency, reason } = diagnosticData; //desestructuración de los parámetros del diagnostico 
 
-        const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || [];
-        const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || [];
-        const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || [];
+        //Llamadas a funciones asíncronas para obtener los datos
+        const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || []; //Se importan funciones (fetchArticulos, fetchTecnicasRelax, 
+        const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || []; //fetchEjercicios, fetchAlimentacion) desde el archivo ModelAI
+        const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || []; //para obtener datos de la IA según el diagnóstico del usuario.
         const alimentacion = await fetchAlimentacion({ age, sex, substance, frequency, reason }) || [];
 
         setGuia({
@@ -38,6 +39,9 @@ export default function RutaAutocuidado({ route, navigation }) {
     };
 
     obtenerGuia();
+    // función asíncrona definida
+    //useEffect se ejecuta cada vez que cambia el valor de diagnosticData, que es un parámetro de la pantalla que contiene el diagnóstico del usuario.
+   //La función obtenerGuia se ejecuta cuando el componente se monta o cuando diagnosticData cambia
   }, [diagnosticData]);
 
   if (loading) {
@@ -54,7 +58,7 @@ export default function RutaAutocuidado({ route, navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.articulosCientificos, tipo: 'articulo' })}
           >
-            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Image source={require('../../../assets/icons/tarea.png')} style={styles.icon} />
             <Text style={styles.cardText}>Artículos Científicos</Text>
           </TouchableOpacity>
         )}
@@ -65,7 +69,7 @@ export default function RutaAutocuidado({ route, navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.tecnicasRelax, tipo: 'tecnica' })}
           >
-            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Image source={require('../../../assets/icons/tarea.png')} style={styles.icon} />
             <Text style={styles.cardText}>Técnicas de Relajación</Text>
           </TouchableOpacity>
         )}
@@ -76,7 +80,7 @@ export default function RutaAutocuidado({ route, navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.rutinasEjercicio, tipo: 'rutina' })}
           >
-            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Image source={require('../../../assets/icons/tarea.png')} style={styles.icon} />
             <Text style={styles.cardText}>Rutinas de Ejercicio</Text>
           </TouchableOpacity>
         )}
@@ -87,7 +91,7 @@ export default function RutaAutocuidado({ route, navigation }) {
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.alimentacionSaludable, tipo: 'alimentacion' })}
           >
-            <Image source={require('../../assets/icons/tarea.png')} style={styles.icon} />
+            <Image source={require('../../../assets/icons/tarea.png')} style={styles.icon} />
             <Text style={styles.cardText}>Guías de Alimentación Saludable</Text>
           </TouchableOpacity>
         )}

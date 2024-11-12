@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../services/CredencialesFirebase'
+import { auth, db } from '../../services/CredencialesFirebase'; // Asegúrate de importar Firestore
+import { doc, getDoc } from 'firebase/firestore'; // Para obtener el rol del usuario
 import { Octicons } from '@expo/vector-icons';
 
 export default function Login ({navigation}) {
@@ -15,7 +16,28 @@ export default function Login ({navigation}) {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Iniciando sesión', 'Accediendo...'); 
-      navigation.navigate('HomeNave');
+
+      // Después de iniciar sesión, verificamos el rol del usuario
+      const user = auth.currentUser; // Obtener usuario autenticado
+      const userDocRef = doc(db, 'user', user.uid); // Referencia al documento del usuario en Firestore
+      const userDoc = await getDoc(userDocRef); // Obtener los datos del usuario
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const userRole = userData.role; // Obtén el rol del usuario
+
+        // Redirigir según el rol del usuario
+        if (userRole === 'rehabilitacion') {
+          navigation.navigate('RehabiNav'); // Usuario en rehabilitación
+        } else if (userRole === 'admon') {
+          navigation.navigate('AdminNav'); // Admin
+        } else if (userRole === 'especialista') {
+          navigation.navigate('EspeciaNav'); // Especialista
+        }
+      } else {
+        Alert.alert('Error', 'No se pudo encontrar el rol del usuario');
+      }
+
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'El usuario o la contraseña son incorrectos');
@@ -92,7 +114,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     padding: 20,
     alignItems: 'center',
-    
   },
   logo: {
     width: 75,
@@ -109,7 +130,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-
   imput: {
     flex: 1,
     backgroundColor: '#EDEAE0',
@@ -166,7 +186,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-
   contendorOpciones: {
     flexDirection: 'row',
     marginTop: 20,
@@ -176,5 +195,4 @@ const styles = StyleSheet.create({
     height: 40,
     marginHorizontal: 10,
   },
-
 });

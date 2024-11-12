@@ -18,7 +18,7 @@ export default function Signup({navigation}) {
       return;
     }
 
-    setLoading(true); // Mostrar spinner mientras el registro está en proceso
+    setLoading(true); // Mostrar carga mientras el registro está en proceso
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -28,7 +28,8 @@ export default function Signup({navigation}) {
       await setDoc(doc(db, 'user', user.uid), {
         name: nombreComp,
         email: user.email,
-        createdAt: new Date(), // Puedes guardar también la fecha de registro
+        createdAt: new Date(), 
+        role: 'rehabilitacion'
       });
 
       // Mostrar alerta de éxito y navegar a la pantalla de inicio

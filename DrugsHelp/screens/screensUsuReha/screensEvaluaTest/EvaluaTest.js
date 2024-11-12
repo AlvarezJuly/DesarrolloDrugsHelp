@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { db } from '../../services/CredencialesFirebase';
-import QuestionCard from '../../components/QuestionCard';
+import { db } from '../../../services/CredencialesFirebase';
+import QuestionCard from '../../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
 
 const TestScreen = ({ navigation }) => {
@@ -103,7 +103,7 @@ const TestScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.conText}>
           <View style={styles.contTitulo}>
-            <Image source={require('../../assets/icons/compromiso.png')} style={styles.imag}
+            <Image source={require('../../../assets/icons/compromiso.png')} style={styles.imag}
           /></View>
           <View style={styles.contTitulo}>
             <Text style={{fontSize:20, fontWeight:'bold', lineHeight:35}}>Test Evaluativo</Text>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../services/CredencialesFirebase';
+import { db } from '../../../services/CredencialesFirebase';
 
 const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;

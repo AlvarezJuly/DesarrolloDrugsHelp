@@ -5,7 +5,6 @@ const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/ge
 const fetchDataFromIA = async (prompt) => {
   try {
     console.log("Prompt enviado a la IA:", prompt);
-
     const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -15,9 +14,8 @@ const fetchDataFromIA = async (prompt) => {
     });
 
     const data = await response.json();
-    console.log("Respuesta de la IA:", data);  // Verificar respuesta de la IA
-
-    // Verificar que la respuesta contiene los datos esperados
+    console.log("Respuesta de la IA:", data);  // Verificación de la respuesta de la IA
+    // Verificacion que la respuesta contiene los datos esperados
     if (data.candidates && data.candidates.length > 0 && data.candidates[0].content) {
       const responseText = data.candidates[0].content.parts[0].text;  // Acceder al contenido del modelo
       console.log("Texto de la respuesta de la IA:", responseText);  // Ver contenido procesado
@@ -32,16 +30,7 @@ const fetchDataFromIA = async (prompt) => {
   }
 };
 
-// Funciones específicas para generar cada componente de la guía
-/* export const fetchVideos = async (userData) => {
-  const prompt = `Recomienda 5 videos informativos sobre los efectos de consumir ${userData.substance}, específicamente para una persona de ${userData.age} años, género ${userData.sex}, que consume ${userData.frequency} por ${userData.reason}. Devuelve un arreglo de objetos con las siguientes propiedades:
-- titulo: El título del video
-- url: El enlace para ver el video
-- miniatura: Una imagen miniatura del video
-- descripcion: Una pequeña descripción del video.`;
-  return await fetchDataFromIA(prompt);
-}; */
-
+// Declaración y exportación de funciones específicas para generar cada parte de la guía
 export const fetchArticulos = async (userData) => {
   const prompt = `Recomienda 5 artículos informativos en el idioma Español (es) sobre la rehabilitación de la adicción a ${userData.substance} para una persona de ${userData.age} años y género ${userData.sex}, verifica que la fuente se confiable y este activa. Devuelve un arreglo formato json con los siguientes detalles para cada artículo:
 - titulo: El título del artículo.
@@ -77,3 +66,13 @@ export const fetchAlimentacion = async (userData) => {
 `;
   return await fetchDataFromIA(prompt);
 };
+
+
+/* export const fetchVideos = async (userData) => {
+  const prompt = `Recomienda 5 videos informativos sobre los efectos de consumir ${userData.substance}, específicamente para una persona de ${userData.age} años, género ${userData.sex}, que consume ${userData.frequency} por ${userData.reason}. Devuelve un arreglo de objetos con las siguientes propiedades:
+- titulo: El título del video
+- url: El enlace para ver el video
+- miniatura: Una imagen miniatura del video
+- descripcion: Una pequeña descripción del video.`;
+  return await fetchDataFromIA(prompt);
+}; */

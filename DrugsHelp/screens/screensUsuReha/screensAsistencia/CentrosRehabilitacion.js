@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get('window');
 //API de Google aquí
 const GOOGLE_MAPS_APIKEY = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc';
 
-export default function Centros_de_ayuda() {
+export default function CentrosRehabilitacion() {
   const [location, setLocation] = useState(null);
   const [centrosCercanos, setCentrosCercanos] = useState([]);
   const mapRef = useRef(null);

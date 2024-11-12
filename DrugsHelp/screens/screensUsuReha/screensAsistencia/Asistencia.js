@@ -9,7 +9,7 @@ export default function Asistencia({navigation}) {
                       <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Especialistas')}>
                                     <Image 
-                                    source={require('../../assets/icons/Especialistas.png')} 
+                                    source={require('../../../assets/icons/Especialistas.png')} 
                                     style={styles.icono}
                                     />    
                           </TouchableOpacity>
@@ -24,7 +24,7 @@ export default function Asistencia({navigation}) {
                           <TouchableOpacity style={styles.contenedorIcono} 
                                   onPress={() => navigation.navigate('Centros')}>
                                     <Image 
-                                    source={ require('../../assets/icons/Centros.png') } 
+                                    source={ require('../../../assets/icons/Centros.png') } 
                                     style={styles.icono} 
                                     />                                       
                           </TouchableOpacity>
