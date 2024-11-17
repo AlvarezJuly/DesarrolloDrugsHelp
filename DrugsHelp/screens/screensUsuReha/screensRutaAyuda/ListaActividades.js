@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking } from 'react-native';
+import { Video } from 'expo-av';
+import * as ScreenOrientation from 'expo-screen-orientation';
 
 export default function ListaActividades({ route }) {
   const { data, tipo } = route.params;
@@ -41,16 +43,16 @@ export default function ListaActividades({ route }) {
       </View>
     );
   }
-//para mostrar segun sea el caso
+
+  //para mostrar según sea el caso
   const renderItem = ({ item }) => {
     switch (tipo) {
       case 'articulo':
-        const articleUrl = item.url && item.url.startsWith('https://www') ? item.url : 'https://example.com'; // Verificamos que la URL sea válida
         return (
           <View style={styles.activityCard}>
             <Text style={styles.activityTitle}>{item.titulo || "Artículo sin título"}</Text>
             <Text style={styles.activityDescription}>{item.descripcion || "Sin descripción disponible"}</Text>
-            <TouchableOpacity onPress={() => Linking.openURL(articleUrl)}>
+            <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
               <Text style={styles.linkText}>Leer artículo completo</Text>
             </TouchableOpacity>
           </View>
@@ -86,6 +88,26 @@ export default function ListaActividades({ route }) {
             )}
           </View>
         );
+      case 'video':
+        return (
+          <View style={styles.activityCard}>
+            <Text style={styles.activityTitle}>{item.titulo || 'Video sin título'}</Text>
+            <Video
+              source={{ uri: item.videoUrl }}
+              style={styles.video}
+              useNativeControls
+              resizeMode="contain"
+              shouldPlay={true}
+              onFullscreenUpdate={async ({ fullscreenUpdate }) => {
+                if (fullscreenUpdate === 0) { // FULLSCREEN_WILL_PRESENT
+                  await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+                } else if (fullscreenUpdate === 3) { // FULLSCREEN_DID_DISMISS
+                  await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+                }
+              }}
+            />
+          </View>
+        );
       default:
         return null;
     }
@@ -110,7 +132,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
@@ -127,7 +149,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   activityTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
@@ -166,5 +188,9 @@ const styles = StyleSheet.create({
     color: '#495057',
     marginLeft: 10,
     marginTop: 2,
+  },
+  video: {
+    width: '100%',
+    height: 200,
   },
 });

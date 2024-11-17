@@ -1,42 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons' // Importación del icono de Ionicons
+import { Ionicons } from '@expo/vector-icons';
+import { fetchChatBotResponse } from '../services/ModelAI'; // Importar la función desde el modelo IA
 
 const ChatBotInformate = () => {
   const [input, setInput] = useState('');
   const [conversation, setConversation] = useState([]);
   const chatboxRef = useRef(null);
-  const apiKey = 'AIzaSyC4Nb3SIkhKgvBNNzT5ObnrPIKUGrzX2gg'; 
 
-  const getAIResponse = async (userInput) => {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
-    try {
-      const prompt = `
-        Eres JuJo, un chatbot especializado en ayudar a las personas a entender los efectos de las drogas en el cuerpo y la mente, y a proporcionar apoyo y recursos para dejar el consumo de drogas.
-        El usuario ha dicho: "${userInput}".
-        Responde presentandote y  muestra de manera detallada y coherente la respuesta de la consulta del usuario, ofreciendo apoyo y soluciones para dejar el consumo de drogas.
-        Recuerda que si te preguntan acerca de otra cosa que no tenga que ver con el tema, recuerdales el para que estas
-      `;
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-        }),
-      });
-
-      const data = await response.json();
-      const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Lo siento, hubo un problema al obtener la respuesta.';
-      return aiText;
-    } catch (error) {
-      console.error('Error fetching AI response:', error);
-      return 'Lo siento, hubo un problema al obtener la respuesta.';
-    }
-  };
-
+  // Función para manejar la conversación entre el usuario y JuJo
   const conversacion = async () => {
     try {
       const Usuario = {
@@ -45,21 +17,27 @@ const ChatBotInformate = () => {
         type: 'user',
       };
 
-      const botResponse = await getAIResponse(input);
+      // Agregar el mensaje del usuario al estado de la conversación
+      setConversation((prevConversation) => [...prevConversation, Usuario]);
+
+      // Obtener la respuesta de la IA utilizando la función de modeloIA
+      const botResponse = await fetchChatBotResponse(input);
 
       const bot = {
         user: 'JuJo_Informa',
-        message: botResponse,
+        message: botResponse || 'Lo siento, no pude obtener una respuesta. Intenta nuevamente.',
         type: 'bot',
       };
 
-      setConversation((prevConversation) => [...prevConversation, Usuario, bot]);
-      setInput(''); // Limpiar el input
+      // Agregar la respuesta del bot al estado de la conversación
+      setConversation((prevConversation) => [...prevConversation, bot]);
+      setInput(''); // Limpiar el input después de enviar el mensaje
     } catch (error) {
-      console.log(error);
+      console.log('Error en la conversación:', error);
     }
   };
 
+  // Hook para desplazar la conversación automáticamente al final cuando se agregue un nuevo mensaje
   useEffect(() => {
     if (chatboxRef.current) {
       setTimeout(() => {
@@ -113,6 +91,7 @@ const ChatBotInformate = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

@@ -1,23 +1,16 @@
-// Contactos.js
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, FlatList, StyleSheet } from 'react-native';
-import { db } from '../../../services/CredencialesFirebase'; 
-import { collection, getDocs } from 'firebase/firestore';
 import CardEspecialista from '../../../components/CardEspecialista';
+import { obtenerContactos } from '../../../services/AsistenciaFunciones';
 
 const Especialista = () => {
   const [contactos, setContactos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchContactos = async () => {
+    const fetchData = async () => {
       try {
-        const contactosCollection = collection(db,'contactos');
-        const contactosSnapshot = await getDocs(contactosCollection);
-        const contactosList = contactosSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        const contactosList = await obtenerContactos();
         setContactos(contactosList);
       } catch (error) {
         console.error("Error al obtener contactos: ", error);
@@ -26,7 +19,7 @@ const Especialista = () => {
       }
     };
 
-    fetchContactos();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -37,12 +30,12 @@ const Especialista = () => {
     <View style={styles.container}>
       <Text style={styles.encabezado}>Lista de Especialistas</Text>
       <ScrollView>
-      <FlatList
-        data={contactos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <CardEspecialista contacto={item} />}
-        contentContainerStyle={styles.list}
-      />
+        <FlatList
+          data={contactos}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <CardEspecialista contacto={item} />}
+          contentContainerStyle={styles.list}
+        />
       </ScrollView>
     </View>
   );
@@ -55,11 +48,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 16,
   },
-  encabezado:{
+  encabezado: {
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   loadingText: {
     textAlign: 'center',

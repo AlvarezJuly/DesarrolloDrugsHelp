@@ -1,24 +1,24 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator(); 
 // Importaciones de pantallas
 import Panel from '../screens/screensAdmon/Panel';
 import EstadisticasApp from '../screens/screensAdmon/EstadisticasApp';
 import GestionApp from '../screens/screensAdmon/GestionApp';
 import GestionNotifi from '../screens/screensAdmon/GestionNotifi';
 
-const AdminStack = createStackNavigator(); //declarcion de como se llama el componente navegacion segun los roles para no confundir 
-
-export function AdminNav() {
+function AdminNav() {
   return (
-    <AdminStack.Navigator>
-      <AdminStack.Screen
+    <Stack.Navigator initialRouteName='PanelAdministrativo'>
+      <Stack.Screen
         name='PanelAministrativo'
         component={Panel}
         options={{
           headerShown: false
         }}
       />
-      <AdminStack.Screen
+      <Stack.Screen
         name='GestionBaseDatos'
         component={GestionApp}
         options={{
@@ -27,7 +27,7 @@ export function AdminNav() {
           headerStyle: { backgroundColor: '#A7D8DE' }
         }}
       />
-      <AdminStack.Screen
+      <Stack.Screen
         name='Estadisticas'
         component={EstadisticasApp}
         options={{
@@ -36,7 +36,7 @@ export function AdminNav() {
           headerStyle: { backgroundColor: '#A7D8DE' }
         }}
       />
-      <AdminStack.Screen
+      <Stack.Screen
         name='GestionNotificaciones'
         component={GestionNotifi}
         options={{
@@ -45,6 +45,7 @@ export function AdminNav() {
           headerStyle: { backgroundColor: '#A7D8DE' }
         }}
       />
-    </AdminStack.Navigator>
+    </Stack.Navigator>
   );
 }
+export default AdminNav;

@@ -1,20 +1,21 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 //importacion de las pantallas
 import GestionReha from '../screens/screensEspecia/GestionReha'
+import 'react-native-gesture-handler';
 
-const EspeciaStack = createStackNavigator(); //declaracion diferente para casa navegación
-
-export function EspeciaNav() {
+function EspeciaNav() {
   return (
-    <EspeciaStack.Navigator>
-      <EspeciaStack.Screen
+    <Stack.Navigator initialRouteName='GestionU'>
+      <Stack.Screen
             name='GestionU'
             component={GestionReha}
             options={{
             headerShown: false
             }}
       />
-    </EspeciaStack.Navigator>
+    </Stack.Navigator>
   );
 }
+export default EspeciaNav;

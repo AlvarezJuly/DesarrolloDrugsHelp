@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'; 
+// TestScreen.js - Vista y Controlador
+import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { db } from '../../../services/CredencialesFirebase';
+import { obtenerPreguntasTest, guardarRespuestasTest } from '../../../services/EvaluaTestFunciones'; // funciones del Modelo
 import QuestionCard from '../../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
+import { getAuth } from 'firebase/auth';
 
 const TestScreen = ({ navigation }) => {
   const [questions, setQuestions] = useState([]);
@@ -18,20 +18,7 @@ const TestScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'test'));
-        let listaPreguntas = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if (data.Preguntas && Array.isArray(data.Preguntas)) {
-            data.Preguntas.forEach((pregunta) => {
-              listaPreguntas.push({
-                preguntaId: pregunta.preguntaId,
-                question: pregunta.pregTex,
-                options: pregunta.Opciones || [],
-              });
-            });
-          }
-        });
+        const listaPreguntas = await obtenerPreguntasTest();
         setQuestions(listaPreguntas);
       } catch (error) {
         console.error("Error al cargar las preguntas:", error);
@@ -62,14 +49,8 @@ const TestScreen = ({ navigation }) => {
       return;
     }
 
-    const userId = user.uid;
-
     try {
-      await addDoc(collection(db, 'diag_test'), {
-        userId: userId,
-        answers: answers,
-        timestamp: new Date()
-      });
+      await guardarRespuestasTest(user.uid, answers);
       console.log("Respuestas guardadas correctamente");
     } catch (error) {
       console.error("Error al guardar el test completado:", error);
@@ -82,7 +63,7 @@ const TestScreen = ({ navigation }) => {
   }
 
   const currentQuestion = questions[preguntaActualIndex];
-  const isAgeQuestion = currentQuestion.question.toLowerCase().includes("edad");
+  const isAgeQuestion = currentQuestion?.question.toLowerCase().includes("edad");
 
   if (testCompleted) {
     return (
@@ -98,19 +79,21 @@ const TestScreen = ({ navigation }) => {
       </View>
     );
   }
-
+//Comieza la vista
   return (
     <View style={styles.container}>
       <View style={styles.conText}>
-          <View style={styles.contTitulo}>
-            <Image source={require('../../../assets/icons/compromiso.png')} style={styles.imag}
-          /></View>
-          <View style={styles.contTitulo}>
-            <Text style={{fontSize:20, fontWeight:'bold', lineHeight:35}}>Test Evaluativo</Text>
-            <Text style={styles.titulo}>Estamos aquí para ayudarte completa este Test para evaluar tu condición, contesta con toda sinceridad y confianza</Text>
-          </View> 
+        <View style={styles.contTitulo}>
+          <Image source={require('../../../assets/icons/compromiso.png')} style={styles.imag} />
+        </View>
+        <View style={styles.contTitulo}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', lineHeight: 35 }}>Test Evaluativo</Text>
+          <Text style={styles.titulo}>
+            Estamos aquí para ayudarte. Completa este Test para evaluar tu condición, contesta con toda sinceridad y confianza.
+          </Text>
+        </View>
       </View>
-      
+
       {questions.length > 0 && (
         <QuestionCard
           question={currentQuestion.question}
@@ -122,6 +105,7 @@ const TestScreen = ({ navigation }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -188,5 +172,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
 
 export default TestScreen;

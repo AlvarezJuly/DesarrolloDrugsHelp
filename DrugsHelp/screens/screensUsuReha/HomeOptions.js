@@ -7,14 +7,14 @@ export default function HomeOptions({navigation}) {
   return (
     /*Menú de opciones*/
     <View style={styles.container}>
-      <View style={styles.header}> 
+    {/*  <View style={styles.header}> 
             <View style={styles.headerImagotipo}>
               <Image 
                 source={require('../../assets/icons/imagotipoH.png')} 
                 style={styles.imagotipo}   
               />
             </View>
-        </View>
+        </View> */}
       <ScrollView>
           <View style={styles.contenedorBotones}>
                     <View style={styles.trasfondo}>
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   }, 
 
   contenedorBotones: {
-    marginTop: 100, // Para que los botones no queden detrás del header
+    marginTop: 10, // Para que los botones no queden detrás del header
     marginBottom: 70, // Para que los botones no queden detrás del footer
     paddingHorizontal: 10,
     paddingVertical :30,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
 
-  header: {
+ /*  header: {
     position: 'absolute',
     top: 0,
     left: 0,
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 50,
     zIndex: 1, 
-  },
-
+  }, */
+/* 
   headerImagotipo:{
     justifyContent: 'center',
     marginHorizontal: 10,
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, 
     width: 250,
     height: 70, 
-  },
+  }, */
 
   imagotipo: {
     height: 70,

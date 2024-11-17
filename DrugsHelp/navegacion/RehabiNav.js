@@ -1,6 +1,10 @@
 import React from 'react'
-//navegation interna de homeOptios, entrar en las opciones que se muestran dentro...
+
 import { createStackNavigator } from '@react-navigation/stack';
+import {Image} from 'react-native';
+
+//declaracion de la stack
+const Stack = createStackNavigator();
 
 //importacion de las pantallas que estan dentro de homeOptions de vistas del usuario en rehabilitación
 import HomeOptions from '../screens/screensUsuReha/HomeOptions';
@@ -14,26 +18,36 @@ import Diagnostico from '../screens/screensUsuReha/screensEvaluaTest/Diagnostico
 import RutaAutocuidado from '../screens/screensUsuReha/screensRutaAyuda/RutaAutocuidado';
 import ListaActividades from '../screens/screensUsuReha/screensRutaAyuda/ListaActividades';
 
+import DropdownMenu from './MenuDraw';
+//Pantallas del menú draw
+import AyudaScreen from '../screens/screenMenuDra/AyudaScreen'
+import DonacionesScreen from '../screens/screenMenuDra/DonacionesScreen'
+import Configuraciones from '../screens/screenMenuDra/Configuraciones'
 
-//declaracion de la stack
-const RehabiNavStack = createStackNavigator();
-
-//stack para navegar internamente, screens dentro del HomeOptions, el home de los usuarios en rehabilitación
-
-export function RehabiNav() {
-  
+function RehabiNav() { 
     return (
           //esta es la primera pantalla del home de rehabilitación de la navegacion llamada RehabiNav
-            <RehabiNavStack.Navigator> 
-              <RehabiNavStack.Screen
-                  name='Home'
+            <Stack.Navigator initialRouteName="HomeOptions"> 
+              {/*Pantallas del menú stack*/}
+              <Stack.Screen
+                  name='HomeOptions'
                   component={HomeOptions}
                   options={{
-                    headerShown: false
+                    headerShown: true,
+                    headerStyle: { backgroundColor: '#A7D8DE'},
+                    headerTitle: () => (
+                      <Image
+                      source={require('../assets/icons/imagotipoH.png')} 
+                      style={{ marginLeft: 20, height: 95, width: 140, }} 
+                      resizeMode="contain" 
+                    />
+                    ),
+                    headerRight: () => <DropdownMenu />, 
                   }}
+
               />
                 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='EvaluaTest'
                   component={EvaluaTest}
                   options={{
@@ -43,7 +57,7 @@ export function RehabiNav() {
                   }}
               />
 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='Diagnostico'
                   component={Diagnostico}
                   options={{
@@ -53,7 +67,7 @@ export function RehabiNav() {
                   }}
               />
 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='RutaAyuda'
                   component={RutaAutocuidado}
                   options={{
@@ -63,7 +77,7 @@ export function RehabiNav() {
                   }}
               />
 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='Actividades'
                   component={ListaActividades}
                   options={{
@@ -73,7 +87,7 @@ export function RehabiNav() {
                   }}
               />      
                 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='Asistencia'
                   component={Asistencia}
                   options={{
@@ -82,7 +96,7 @@ export function RehabiNav() {
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
               />
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name="Centros"
                   component={CentrosRehabilitacion}
                   options={{headerShown:true,
@@ -92,7 +106,7 @@ export function RehabiNav() {
                   }}
                 />
 
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name="Especialistas"
                   component={Especialista}
                   options={{ title: 'Especialistas',
@@ -100,7 +114,7 @@ export function RehabiNav() {
                     headerStyle: { backgroundColor: '#A7D8DE'}}}
               />
                     
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='Informate'
                   component={Informate}
                   options={{
@@ -110,15 +124,41 @@ export function RehabiNav() {
                   }}
               />
               
-              <RehabiNavStack.Screen
+              <Stack.Screen
                   name='Progreso'
                   component={Progreso}
                   options={{
-                    title: 'Prgreso',
+                    title: 'Progreso',
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}
               />
-          </RehabiNavStack.Navigator>
+
+              {/*Pantallas del menú de draw*/}
+              <Stack.Screen
+                  name='Ayuda'
+                  component={AyudaScreen}
+                  options={{
+                    headerShown: false
+                  }}
+              />
+            <Stack.Screen
+                  name='Donaciones'
+                  component={DonacionesScreen}
+                  options={{
+                    headerShown: false
+                  }}
+              />
+              
+              <Stack.Screen
+                  name='Configuraciones'
+                  component={Configuraciones}
+                  options={{
+                    headerShown: false
+                  }}
+              />
+          </Stack.Navigator>
     );
   }
+
+export default RehabiNav;

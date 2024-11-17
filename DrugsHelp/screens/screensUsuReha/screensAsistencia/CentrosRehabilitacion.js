@@ -1,173 +1,131 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+// MapScreen.js
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, Image, ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { MaterialIcons } from '@expo/vector-icons';
+import { fetchNearbyPlaces, fetchPlacesByQuery, useLocation } from '../../../services/MapaApi';  // Importamos las funciones de la API
 
-const { width, height } = Dimensions.get('window');
+const apikey = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc';  
 
-//API de Google aquí
-const GOOGLE_MAPS_APIKEY = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc';
-
-export default function CentrosRehabilitacion() {
-  const [location, setLocation] = useState(null);
-  const [centrosCercanos, setCentrosCercanos] = useState([]);
-  const mapRef = useRef(null);
+const CentrosRehabilitacion = () => {
+  const { location, region, error, setRegion } = useLocation();  // Usamos el hook de ubicación
+  const [markers, setMarkers] = useState([]);
+  const [query, setQuery] = useState('');
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.log('Permiso de ubicación denegado');
-        return;
-      }
-
-      // Seguimiento de la ubicación en tiempo real del usuario
-      Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: 5000,
-          distanceInterval: 10,
-        },
-        (newLocation) => {
-          const { latitude, longitude } = newLocation.coords;
-          setLocation({ latitude, longitude });
-          obtenerCentrosCercanos(latitude, longitude); // Actualizar centros cercanos cada vez que cambia la ubicación
-        }
-      );
-    })();
-  }, []);
-
-  // Función para centrar el mapa en la ubicación del usuario
-  const centrarEnUbicacionUsuario = () => {
     if (location) {
-      mapRef.current.animateToRegion({
+      // Llamamos a la API para obtener lugares cercanos una vez que tengamos la ubicación
+      fetchNearbyPlaces(location.latitude, location.longitude, apikey)
+        .then((places) => setMarkers(places))
+        .catch((err) => console.error(err));
+    }
+  }, [location]);
+
+  const handleSearch = async () => {
+    try {
+      const places = await fetchPlacesByQuery(query, apikey);
+      setMarkers(places);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const goToCurrentLocation = () => {
+    if (location) {
+      setRegion({
         latitude: location.latitude,
         longitude: location.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
       });
     }
   };
 
-  // Función para obtener centros de ayuda cercanos utilizando Google Places Nearby Search
-  const obtenerCentrosCercanos = async (latitude, longitude) => {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=hospital|health&keyword=rehabilitación|hospital|alcohólicos|drogas&key=${GOOGLE_MAPS_APIKEY}`
-    );
-    const data = await response.json();
-    if (data.results) {
-      const centros = data.results.map((place) => ({
-        id: place.place_id,
-        name: place.name,
-        location: {
-          latitude: place.geometry.location.lat,
-          longitude: place.geometry.location.lng,
-        },
-        address: place.vicinity,
-      }));
-      setCentrosCercanos(centros);
-    }
-  };
+  if (error) {
+    return <Text>{error}</Text>;
+  }
 
-  // Manejar selección de lugar en la búsqueda manual
-  const manejarBusquedaManual = (data, details) => {
-    const { lat, lng } = details.geometry.location;
-    const nuevoCentro = {
-      id: details.place_id,
-      name: data.description,
-      location: { latitude: lat, longitude: lng },
-    };
-    setCentrosCercanos([nuevoCentro]); // Muestra solo el resultado de la búsqueda manual
-    mapRef.current.animateToRegion({
-      latitude: lat,
-      longitude: lng,
-      latitudeDelta: 0.05,
-      longitudeDelta: 0.05,
-    });
-  };
+  if (!region) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <View style={styles.container}>
-      {/* Barra de búsqueda manual */}
-      <GooglePlacesAutocomplete
-        placeholder="Buscar centro de ayuda"
-        fetchDetails
-        onPress={manejarBusquedaManual}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'es',
-          types: 'establishment',
-          keyword: 'rehabilitación|hospital|ayuda|alcohólicos|drogas',
-        }}
-        styles={styles.googlePlacesAutocomplete}
-      />
-
-      {/* Mapa */}
       <MapView
-        ref={mapRef}
         style={styles.map}
-        initialRegion={{
-          latitude: location ? location.latitude : 12.1364,
-          longitude: location ? location.longitude : -86.2514,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
+        region={region}
+        onRegionChangeComplete={(r) => setRegion(r)}
+        showsUserLocation
+        showsMyLocationButton
       >
-        {location && (
+        {markers.map((marker) => (
           <Marker
-            coordinate={location}
-            title="Mi ubicación"
-            description="Ubicación en tiempo real"
-            pinColor="blue" // Color azul para el usuario
-          />
-        )}
-
-        {centrosCercanos.map((centro) => (
-          <Marker
-            key={centro.id}
-            coordinate={centro.location}
-            title={centro.name}
-            description={centro.address}
-            pinColor="red" // Color rojo para puntos recomendados
+            key={marker.id}
+            coordinate={{
+              latitude: marker.latitude,
+              longitude: marker.longitude,
+            }}
+            title={marker.name}
           />
         ))}
       </MapView>
-
-      {/* Botón para centrar en la ubicación actual */}
-      <TouchableOpacity style={styles.locationButton} onPress={centrarEnUbicacionUsuario}>
-        <MaterialIcons name="my-location" size={24} color="white" />
+      <View style={styles.searchContainer}>
+        <TextInput
+          placeholder="Buscar centros de rehabilitación"
+          value={query}
+          onChangeText={setQuery}
+          style={styles.input}
+        />
+        <Button title="Buscar" onPress={handleSearch} />
+      </View>
+      <TouchableOpacity style={styles.locationButton} onPress={goToCurrentLocation}>
+        <Image style={{ height: 20, width: 20, marginBottom: 5 }} source={require('../../../assets/icons/miubic.png')} />
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  map: { width: width, height: height },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  map: {
+    flex: 1,
+  },
+  searchContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 10,
+    right: 10,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  input: {
+    height: 25,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 5,
+    paddingLeft: 8,
+    borderRadius: 5,
+  },
   locationButton: {
     position: 'absolute',
     bottom: 20,
-    right: 20,
-    backgroundColor: '#4285F4',
+    left: 10,
+    backgroundColor: '#007BFF',
     padding: 10,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 5,
   },
-  googlePlacesAutocomplete: {
-    container: {
-      position: 'absolute',
-      top: 10,
-      width: '90%',
-      zIndex: 1,
-      alignSelf: 'center',
-    },
-    textInputContainer: {
-      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-      borderRadius: 10,
-    },
-    textInput: { height: 44, color: '#5d5d5d', fontSize: 16 },
+  locationButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
+
+export default CentrosRehabilitacion;

@@ -12,7 +12,6 @@ const fetchDataFromIA = async (prompt) => {
         contents: [{ parts: [{ text: prompt }] }]
       })
     });
-
     const data = await response.json();
     console.log("Respuesta de la IA:", data);  // Verificación de la respuesta de la IA
     // Verificacion que la respuesta contiene los datos esperados
@@ -30,7 +29,7 @@ const fetchDataFromIA = async (prompt) => {
   }
 };
 
-// Declaración y exportación de funciones específicas para generar cada parte de la guía
+// Declaración y exportación de funciones específicas enviar el prompt para generar la guía 
 export const fetchArticulos = async (userData) => {
   const prompt = `Recomienda 5 artículos informativos en el idioma Español (es) sobre la rehabilitación de la adicción a ${userData.substance} para una persona de ${userData.age} años y género ${userData.sex}, verifica que la fuente se confiable y este activa. Devuelve un arreglo formato json con los siguientes detalles para cada artículo:
 - titulo: El título del artículo.
@@ -67,12 +66,13 @@ export const fetchAlimentacion = async (userData) => {
   return await fetchDataFromIA(prompt);
 };
 
-
-/* export const fetchVideos = async (userData) => {
-  const prompt = `Recomienda 5 videos informativos sobre los efectos de consumir ${userData.substance}, específicamente para una persona de ${userData.age} años, género ${userData.sex}, que consume ${userData.frequency} por ${userData.reason}. Devuelve un arreglo de objetos con las siguientes propiedades:
-- titulo: El título del video
-- url: El enlace para ver el video
-- miniatura: Una imagen miniatura del video
-- descripcion: Una pequeña descripción del video.`;
+// Función para obtener la respuesta del chatbot JuJo
+export const fetchChatBotResponse = async (userInput) => {
+  const prompt = `
+    Eres JuJo, un chatbot especializado en ayudar a las personas a entender los efectos de las drogas en el cuerpo y la mente, y a proporcionar apoyo y recursos para dejar el consumo de drogas.
+    El usuario ha dicho: "${userInput}".
+    Responde presentándote y muestra de manera detallada y coherente la respuesta de la consulta del usuario, ofreciendo apoyo y soluciones para dejar el consumo de drogas.
+    Recuerda que si te preguntan acerca de otra cosa que no tenga que ver con el tema, recuérdales el para qué estás aquí.
+  `;
   return await fetchDataFromIA(prompt);
-}; */
+};

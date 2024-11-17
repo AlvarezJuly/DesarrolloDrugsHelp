@@ -1,7 +1,7 @@
+// Diagnostico.js - Vista y Controlador
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { collection, query, where, orderBy, limit, getDocs, doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../services/CredencialesFirebase';
+import { obtenerUltimoDiagnostico } from '../../../services/EvaluaTestFunciones'; // Modelo
 
 const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;
@@ -12,39 +12,15 @@ const Diagnostico = ({ route, navigation }) => {
   useEffect(() => {
     const fetchLatestDiagnosticData = async () => {
       try {
-        // Obtener nombre del usuario
-        const userDocRef = doc(db, 'user', userId);
-        const userDoc = await getDoc(userDocRef);
-
-        let userName = "Usuario desconocido";
-        if (userDoc.exists()) {
-          userName = userDoc.data().name;
-        }
-
-        // Consulta para obtener el último diagnóstico del usuario
-        const q = query(
-          collection(db, 'diag_test'),
-          where('userId', '==', userId),
-          orderBy('timestamp', 'desc'),
-          limit(1)
-        );
-
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const docData = querySnapshot.docs[0].data();
-
-          const age = docData.answers.find(ans => ans.question.includes("Edad"))?.answer || "No especificada";
-          const sex = docData.answers.find(ans => ans.question.includes("Sexo"))?.answer || "No especificada";
-          const substance = docData.answers.find(ans => ans.question.includes("sustancia"))?.answer || "No especificada";
-          const frequency = docData.answers.find(ans => ans.question.includes("Frecuencia"))?.answer || "No especificada";
-          const reason = docData.answers.find(ans => ans.question.includes("Motivos"))?.answer || "No especificado";
-
-          setUserData({ name: userName });
-          setDiagnosticData({ age, sex, substance, frequency, reason });
-        } else {
-          console.error("No se encontró información de diagnóstico");
-        }
+        const diagnosticInfo = await obtenerUltimoDiagnostico(userId);
+        setUserData({ name: diagnosticInfo.userName });
+        setDiagnosticData({
+          age: diagnosticInfo.age,
+          sex: diagnosticInfo.sex,
+          substance: diagnosticInfo.substance,
+          frequency: diagnosticInfo.frequency,
+          reason: diagnosticInfo.reason
+        });
       } catch (error) {
         console.error('Error al obtener los datos del diagnóstico:', error);
       } finally {
@@ -107,7 +83,7 @@ const Diagnostico = ({ route, navigation }) => {
       <View style={styles.botonContenedor}>
         <TouchableOpacity
           style={styles.boton}
-          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })}  // Pasando todo el objeto
+          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })} // Pasando todo el objeto
         >
           <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
         </TouchableOpacity>

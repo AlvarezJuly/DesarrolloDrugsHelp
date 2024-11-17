@@ -1,67 +1,31 @@
-import React, { useState } from 'react'; 
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Image, ActivityIndicator } from 'react-native';
-import { auth, db } from '../../services/CredencialesFirebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { registroUsuario } from '../../services/AuthFunciones'; // Importar la función para registrar
 import { Octicons } from '@expo/vector-icons';
 
-export default function Signup({navigation}) {
+//Declaracion de variables para actualizar los valores
+export default function Signup({ navigation }) {
   const [nombreComp, setNombreComp] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [hidePassword, setHidePassword] = useState(false); // Estado para alternar visibilidad
-  const [loading, setLoading] = useState(false); // Para mostrar el indicador de carga
+  const [hidePassword, setHidePassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const signup = async () => {
-    if (!nombreComp || !email || !password) {
-      Alert.alert('Error', 'Todos los campos son obligatorios');
-      return;
-    }
-
-    setLoading(true); // Mostrar carga mientras el registro está en proceso
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      // Guardar los datos del usuario en Firestore
-      await setDoc(doc(db, 'user', user.uid), {
-        name: nombreComp,
-        email: user.email,
-        createdAt: new Date(), 
-        role: 'rehabilitacion'
-      });
-
-      // Mostrar alerta de éxito y navegar a la pantalla de inicio
-      Alert.alert('Éxito', 'Usuario registrado exitosamente', [
-        {
-          text: 'OK',
-          onPress: () => navigation.navigate('HomeNave')
-        }
-      ]);
-
-    } catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
-        Alert.alert('Error', 'El correo electrónico ya está registrado');
-      } else {
-        console.error(error);
-        Alert.alert('Error', 'Algo salió mal: ' + error.message);
-      }
-    } finally {
-      setLoading(false); // Ocultar spinner después del proceso
-    }
+  const handleSignup = async () => {
+    setLoading(true);
+    await registroUsuario(nombreComp, email, password, navigation);
+    setLoading(false);
   };
 
   return (
     <View style={styles.container}>
-       <View style={styles.registroContenedor}>
-
-       <View style={styles.loginContainer}>
+      <View style={styles.registroContenedor}>
+        <View style={styles.loginContainer}>
           <Image
-            source={require('../../assets/icons/imagotipoV.png')} 
+            source={require('../../assets/icons/imagotipoV.png')}
             style={styles.logo}
           />
-       </View>
+        </View>
 
         <Text style={styles.title}>Registrarse</Text>
         <TextInput
@@ -78,8 +42,7 @@ export default function Signup({navigation}) {
           onChangeText={setEmail}
           value={email}
         />
-
-       <View style={styles.passwordContainer}>
+        <View style={styles.passwordContainer}>
           <TextInput
             secureTextEntry={hidePassword}
             style={styles.imput}
@@ -88,28 +51,17 @@ export default function Signup({navigation}) {
             placeholderTextColor="#999"
           />
           <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-            <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" /> 
+            <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" />
           </TouchableOpacity>
         </View>
 
         {loading ? (
           <ActivityIndicator size="large" color="#002E46" />
         ) : (
-          <TouchableOpacity style={styles.registerButton} onPress={signup}>
+          <TouchableOpacity style={styles.registerButton} onPress={handleSignup}>
             <Text style={styles.registerButtonText}>Crear Cuenta</Text>
           </TouchableOpacity>
         )}
-
-        <View style={styles.contendorOpciones}>
-          <TouchableOpacity>
-            <Image source={require('../../assets/icons/facebook.png')} style={styles.iconoOpciones} />
-            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:5}}>Facebook</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={require('../../assets/icons/google.png')} style={styles.iconoOpciones} />
-            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );

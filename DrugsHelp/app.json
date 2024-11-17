@@ -24,22 +24,33 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    
-  "plugins": [
-    [
-      "expo-location",
-      {
-        "locationAlwaysAndWhenInUsePermission": {
-          "ios": {
-            "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
-          },
-          "android": {
-            "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
-          }
+
+
+    "expo": {
+    "android": {
+      "config": {
+        "googleMaps": {
+            "apiKey": "AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc"
         }
       }
-    ]]
-    
+  }
+},
+
+  "plugins": [
+  [
+    "expo-location",
+    {
+      "locationAlwaysAndWhenInUsePermission": {
+        "ios": {
+          "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
+        },
+        "android": {
+          "reason": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
+        }
+      }
+    }
+  ]]
+  
   }
 }  
   

@@ -1,11 +1,11 @@
-// Import the functions you need from the SDKs you need
+// Este archivo es para Inicialización de firebase
 import { initializeApp } from "firebase/app";
 import { initializeAuth } from "firebase/auth";
 import { getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Your web app's Firebase configuration
+//La configuración de mi proyecto de firebase
 const firebaseConfig = {
   apiKey: "AIzaSyAMWEH8giMBJO4vDqhMpYjDUTJZKWHSbSo",
   authDomain: "drugshelp-a6819.firebaseapp.com",
@@ -15,7 +15,7 @@ const firebaseConfig = {
   appId: "1:761856109758:web:ca1092e01c39d5690082ef"
 };
 
-// Initialize Firebase ...inicializaciones....
+//Principales servicios
 const appFirebase = initializeApp(firebaseConfig);
 const db = getFirestore(appFirebase);
 const auth = initializeAuth(appFirebase, {

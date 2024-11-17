@@ -1,67 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth, db } from '../../services/CredencialesFirebase'; // Asegúrate de importar Firestore
-import { doc, getDoc } from 'firebase/firestore'; // Para obtener el rol del usuario
+import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { loginUsuario } from '../../services/AuthFunciones'; //funcion a utilizar
 import { Octicons } from '@expo/vector-icons';
 
-export default function Login ({navigation}) {
+export default function Login({ navigation }) {
 
-  // Variables de estado
+  //Declaracion de variables para actualizar los valores
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [hidePassword, setHidePassword] = useState(true); // Se inicializa en 'true' para ocultar la contraseña por defecto.. "ojito"
-
-  const logueo = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      Alert.alert('Iniciando sesión', 'Accediendo...'); 
-
-      // Después de iniciar sesión, verificamos el rol del usuario
-      const user = auth.currentUser; // Obtener usuario autenticado
-      const userDocRef = doc(db, 'user', user.uid); // Referencia al documento del usuario en Firestore
-      const userDoc = await getDoc(userDocRef); // Obtener los datos del usuario
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const userRole = userData.role; // Obtén el rol del usuario
-
-        // Redirigir según el rol del usuario
-        if (userRole === 'rehabilitacion') {
-          navigation.navigate('RehabiNav'); // Usuario en rehabilitación
-        } else if (userRole === 'admon') {
-          navigation.navigate('AdminNav'); // Admin
-        } else if (userRole === 'especialista') {
-          navigation.navigate('EspeciaNav'); // Especialista
-        }
-      } else {
-        Alert.alert('Error', 'No se pudo encontrar el rol del usuario');
-      }
-
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', 'El usuario o la contraseña son incorrectos');
-    }
-  }
+  const [hidePassword, setHidePassword] = useState(true);
 
   return (
     <View style={styles.container}>
       <View style={styles.loginContainer}>
-        <View style={styles.logoYTexto}>  
+        <View style={styles.logoYTexto}>
           <Image
-            source={require('../../assets/icons/imagotipoV.png')} 
+            source={require('../../assets/icons/imagotipoV.png')}
             style={styles.logo}
           />
           <Text style={styles.loginTitulo}>Ingresa:</Text>
         </View>
-      
+
         <View style={styles.containerUsuario}>
-        <TextInput
-          style={styles.imput}
-          placeholder="Usuario"
-          onChangeText={(text) => setEmail(text)}
-          placeholderTextColor="#999"
-        />
+          <TextInput
+            style={styles.imput}
+            placeholder="Usuario"
+            onChangeText={(text) => setEmail(text)}
+            placeholderTextColor="#999"
+          />
         </View>
         <View style={styles.passwordContainer}>
           <TextInput
@@ -71,29 +37,19 @@ export default function Login ({navigation}) {
             onChangeText={(text) => setPassword(text)}
             placeholderTextColor="#999"
           />
-          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
-            <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" /> 
-          </TouchableOpacity>
+            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+              <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" />
+            </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.loginBoton} onPress={logueo}>
-          <Text style={styles.loginBotonTexto}>Iniciar Sesión</Text>
-        </TouchableOpacity>
-        <Text style={styles.preguntas}>¿Olvidaste tu contraseña?</Text>
-        <View style={styles.contenedorNoCuenta}>
-          <Text style={styles.preguntas}>¿No tienes cuenta?</Text>
+          <TouchableOpacity style={styles.loginBoton} onPress={() => loginUsuario(email, password, navigation)}>{/**Se envian los datos a la funcion */}
+            <Text style={styles.loginBotonTexto}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+            <Text style={styles.preguntas}>¿Olvidaste tu contraseña?</Text>
+          <View style={styles.contenedorNoCuenta}>
+            <Text style={styles.preguntas}>¿No tienes cuenta?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={styles.registrarse}>Registrarse</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.contendorOpciones}>
-          <TouchableOpacity>
-            <Image source={require('../../assets/icons/facebook.png')} style={styles.iconoOpciones} />
-            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:4}}>Facebook</Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={require('../../assets/icons/google.png')} style={styles.iconoOpciones} />
-            <Text style={{color:'#84B6F4', justifyContent: 'center', marginHorizontal:10}}>Google</Text>
           </TouchableOpacity>
         </View>
       </View>
