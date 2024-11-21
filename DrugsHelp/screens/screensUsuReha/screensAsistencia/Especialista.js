@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Text, FlatList, StyleSheet } from 'react-native';
 import CardEspecialista from '../../../components/CardEspecialista';
-import { obtenerContactos } from '../../../services/AsistenciaFunciones';
+import { obtenerContactos } from '../../../services/MoReha/AsistenciaFunciones';
 
 const Especialista = () => {
   const [contactos, setContactos] = useState([]);

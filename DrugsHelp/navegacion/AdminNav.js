@@ -1,51 +1,76 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-
-const Stack = createStackNavigator(); 
-// Importaciones de pantallas
-import Panel from '../screens/screensAdmon/Panel';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EstadisticasApp from '../screens/screensAdmon/EstadisticasApp';
 import GestionApp from '../screens/screensAdmon/GestionApp';
 import GestionNotifi from '../screens/screensAdmon/GestionNotifi';
+import Configuracion from '../screens/screensAdmon/Configuracion';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'; // Para íconos en las tabs
+import AntDesign from '@expo/vector-icons/AntDesign';
+
+
+const Tab = createBottomTabNavigator();
 
 function AdminNav() {
   return (
-    <Stack.Navigator initialRouteName='PanelAdministrativo'>
-      <Stack.Screen
-        name='PanelAministrativo'
-        component={Panel}
+    <Tab.Navigator
+      initialRouteName="GestionBaseDatos"
         options={{
-          headerShown: false
+          tabBarLabel: 'Panel',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="database" size={24} color="black" />
+          ),
+          headerShown: true, 
         }}
-      />
-      <Stack.Screen
-        name='GestionBaseDatos'
+    >
+      
+      <Tab.Screen
+        name="GestionBaseDatos"
         component={GestionApp}
         options={{
-          title: 'Atrás',
-          headerTintColor: "white",
-          headerStyle: { backgroundColor: '#A7D8DE' }
+          tabBarLabel:'Panel Administrativo',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="database" size={24} color="black" />
+          ),
+          title: 'Gestión de Datos',
         }}
       />
-      <Stack.Screen
-        name='Estadisticas'
+      <Tab.Screen
+        name="Estadisticas"
         component={EstadisticasApp}
         options={{
-          title: 'Atrás',
-          headerTintColor: "white",
-          headerStyle: { backgroundColor: '#A7D8DE' }
+          tabBarLabel: 'Estadísticas',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="barschart" size={24} color="black" />
+          ),
+          title: 'Estadísticas de la App',
         }}
       />
-      <Stack.Screen
-        name='GestionNotificaciones'
+      <Tab.Screen
+        name="GestionNotificaciones"
         component={GestionNotifi}
         options={{
-          title: 'Atrás',
-          headerTintColor: "white",
-          headerStyle: { backgroundColor: '#A7D8DE' }
+          tabBarLabel: 'Notificaciones',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="edit-notifications" size={24} color="black" />
+          ),
+          title: 'Gestión de Notificaciones',
         }}
       />
-    </Stack.Navigator>
+
+    <Tab.Screen
+        name="Configuraciones"
+        component={Configuracion}
+        options={{
+          tabBarLabel: 'Notificaciones',
+          tabBarIcon: ({ color, size }) => (
+            <AntDesign name="setting" size={24} color="black" />
+          ),
+          title: 'Configuraciones',
+        }}
+      />
+    </Tab.Navigator>
+      
   );
 }
+
 export default AdminNav;

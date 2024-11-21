@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import {cerrarSesion} from '../services/AuthFunciones'
+import {logoutUsuario} from '../services/AuthFunciones'
 
 
 const DropdownMenu = () => {
@@ -19,7 +19,7 @@ const DropdownMenu = () => {
   // Función para cerrar sesión y redirigir a la pantalla de Welcome
   const handleLogout = async () => {
     setModalVisible(false);
-    await cerrarSesion(navigation); // Pasar `navigation` para redirigir al stack de autenticación
+    await logoutUsuario(navigation); // Pasar `navigation` para redirigir al stack de autenticación
   };
 
   return (

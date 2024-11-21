@@ -1,8 +1,12 @@
+  // uso de Localizacion 
+  import { useState, useEffect } from 'react';
+  import * as Location from 'expo-location';
+
 // googleApi.js
 export const fetchNearbyPlaces = async (latitude, longitude, apiKey) => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=hospital&keyword=rehabilitation&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=Hospital&keyword=alcoholicos|camilo|hubeda&key=${apiKey}`
       );
       const data = await response.json();
       return data.results.map((place) => ({
@@ -20,25 +24,35 @@ export const fetchNearbyPlaces = async (latitude, longitude, apiKey) => {
   export const fetchPlacesByQuery = async (query, apiKey) => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}+rehabilitation+center+hospital&key=${apiKey}`
+        `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}+health&key=${apiKey}`
       );
+  
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.status}`);
+      }
+  
       const data = await response.json();
-      return data.results.map((place) => ({
-        id: place.place_id,
-        name: place.name,
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      }));
+  
+      if (data.results) {
+        return data.results.map((place) => ({
+          id: place.place_id,
+          name: place.name,
+          latitude: place.geometry.location.lat,
+          longitude: place.geometry.location.lng,
+        }));
+      } else {
+        console.error("Sin resultados para la búsqueda.");
+        return [];
+      }
     } catch (error) {
       console.error("Error fetching places by query:", error);
       return [];
     }
   };
   
+  
 
-  // uso de Localizacion 
-import { useState, useEffect } from 'react';
-import * as Location from 'expo-location';
+
 
 const useLocation = () => {
   const [location, setLocation] = useState(null);

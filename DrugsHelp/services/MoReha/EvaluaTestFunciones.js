@@ -1,5 +1,5 @@
 // EvaluaTestFunciones.js - Modelo para la interacción de la funcionalidad del test de evaluación y el diagnóstico.
-import { auth, db } from './CredencialesFirebase';
+import { auth, db } from '../../services/CredencialesFirebase'
 import { collection, getDocs, addDoc, query, where, orderBy, limit, getDoc, doc } from 'firebase/firestore';
 
 // Función para obtener preguntas del test

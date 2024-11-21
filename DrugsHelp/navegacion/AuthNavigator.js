@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
+
 import Welcome from '../screens/auth/Welcome';
 import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';

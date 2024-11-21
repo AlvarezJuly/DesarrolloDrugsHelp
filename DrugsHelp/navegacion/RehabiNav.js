@@ -2,9 +2,7 @@ import React from 'react'
 
 import { createStackNavigator } from '@react-navigation/stack';
 import {Image} from 'react-native';
-
-//declaracion de la stack
-const Stack = createStackNavigator();
+import 'react-native-gesture-handler';
 
 //importacion de las pantallas que estan dentro de homeOptions de vistas del usuario en rehabilitación
 import HomeOptions from '../screens/screensUsuReha/HomeOptions';
@@ -24,6 +22,7 @@ import AyudaScreen from '../screens/screenMenuDra/AyudaScreen'
 import DonacionesScreen from '../screens/screenMenuDra/DonacionesScreen'
 import Configuraciones from '../screens/screenMenuDra/Configuraciones'
 
+const Stack = createStackNavigator();
 function RehabiNav() { 
     return (
           //esta es la primera pantalla del home de rehabilitación de la navegacion llamada RehabiNav

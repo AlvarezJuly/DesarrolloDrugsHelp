@@ -1,7 +1,7 @@
 // TestScreen.js - Vista y Controlador
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { obtenerPreguntasTest, guardarRespuestasTest } from '../../../services/EvaluaTestFunciones'; // funciones del Modelo
+import { obtenerPreguntasTest, guardarRespuestasTest } from '../../../services/MoReha/EvaluaTestFunciones'; // funciones del Modelo
 import QuestionCard from '../../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { getAuth } from 'firebase/auth';

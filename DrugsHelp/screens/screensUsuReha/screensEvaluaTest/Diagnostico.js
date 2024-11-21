@@ -1,7 +1,7 @@
 // Diagnostico.js - Vista y Controlador
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { obtenerUltimoDiagnostico } from '../../../services/EvaluaTestFunciones'; // Modelo
+import { obtenerUltimoDiagnostico } from '../../../services/MoReha/EvaluaTestFunciones'; // Modelo
 
 const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;

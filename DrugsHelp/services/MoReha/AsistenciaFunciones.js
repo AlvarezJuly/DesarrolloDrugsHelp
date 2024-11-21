@@ -1,6 +1,6 @@
 // AsistenciaFunciones.js
 import { collection, getDocs } from 'firebase/firestore';
-import { db } from './CredencialesFirebase';
+import { db } from '../../services/CredencialesFirebase';
 
 // Función para obtener los contactos desde Firebase
 export const obtenerContactos = async () => {

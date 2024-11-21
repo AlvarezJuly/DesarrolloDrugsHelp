@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView} from 'react-native';
 import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../../services/ModelAI';
-import { obtenerVideoRelacionado } from '../../../services/RutaFunciones';
+import { obtenerVideoRelacionado } from '../../../services/MoReha/RutaFunciones';
 
 export default function RutaAutocuidado({ route, navigation }) {
   const { diagnosticData } = route.params;
@@ -17,19 +17,17 @@ export default function RutaAutocuidado({ route, navigation }) {
 
   useEffect(() => {
     const obtenerGuia = async () => {
+      //try/cath para el manejo de errores
       try {
         setLoading(true);
         const { age, sex, substance, frequency, reason } = diagnosticData;
-
         // Llamadas a funciones asíncronas para obtener los datos de la IA
         const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || [];
         const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || [];
         const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || [];
         const alimentacion = await fetchAlimentacion({ age, sex, substance, frequency, reason }) || [];
-
-        // Buscar video relacionado con la sustancia en Firebase
         const videoRelacionado = await obtenerVideoRelacionado(substance);
-
+        //Actualización de datos recibidos 
         setGuia({
           articulosCientificos: articulos,
           tecnicasRelax: tecnicas,
@@ -43,9 +41,8 @@ export default function RutaAutocuidado({ route, navigation }) {
         setLoading(false);
       }
     };
-
-    obtenerGuia();
-  }, [diagnosticData]);
+    obtenerGuia();// Ejecuta la lógica del controlador cuando se monta el componente.
+  }, [diagnosticData]);// Vuelve a ejecutar si cambian los datos del diagnóstico.
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -65,7 +62,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Artículos Científicos</Text>
           </TouchableOpacity>
         )}
-
       {/* Video Relacionado */}
         {guia.videoRelacionado && (
           <TouchableOpacity
@@ -76,8 +72,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Videos</Text>
           </TouchableOpacity>
         )}
-
-
         {/* Técnicas de Relajación */}
         {guia.tecnicasRelax.length > 0 && (
           <TouchableOpacity
@@ -88,7 +82,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Técnicas de Relajación</Text>
           </TouchableOpacity>
         )}
-
         {/* Rutinas de Ejercicio */}
         {guia.rutinasEjercicio.length > 0 && (
           <TouchableOpacity
@@ -99,7 +92,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Rutinas de Ejercicio</Text>
           </TouchableOpacity>
         )}
-
         {/* Guías de Alimentación Saludable */}
         {guia.alimentacionSaludable.length > 0 && (
           <TouchableOpacity
