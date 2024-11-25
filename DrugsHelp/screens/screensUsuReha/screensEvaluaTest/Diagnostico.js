@@ -81,12 +81,16 @@ const Diagnostico = ({ route, navigation }) => {
       </View>
 
       <View style={styles.botonContenedor}>
-        <TouchableOpacity
-          style={styles.boton}
-          onPress={() => navigation.navigate('RutaAyuda', { diagnosticData })} // Pasando todo el objeto
-        >
-          <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+  style={styles.boton}
+  onPress={() => {
+    console.log("Navigando a RutaAyuda con diagnosticData:", diagnosticData);
+    console.log("Navigando a RutaAyuda con userId:", userId);
+    navigation.navigate('RutaAyuda', { diagnosticData: { ...diagnosticData, userId }});
+  }}
+>
+  <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
+</TouchableOpacity>
       </View>
     </View>
   );

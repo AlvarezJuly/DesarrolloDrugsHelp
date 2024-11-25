@@ -32,7 +32,7 @@ export default function MainNavigator() {
     <NavigationContainer>
       {user ? (
         user.role === 'rehabilitacion' ? (
-            <RehabiNav />
+            <RehabiNav userId={user.userId} />
           ) : user.role === 'admon' ? (
             <AdminNav />
           ) : user.role === 'especialista' ? (

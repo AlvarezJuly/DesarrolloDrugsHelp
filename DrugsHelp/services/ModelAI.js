@@ -66,13 +66,34 @@ export const fetchAlimentacion = async (userData) => {
   return await fetchDataFromIA(prompt);
 };
 
+
+// Función para obtener la interactuar con el chatbot JuJo y manetener el hilo de la conversación
+
+// Inicializar un historial vacío si aún no existe
+let conversationHistory = [];
+
 // Función para obtener la respuesta del chatbot JuJo
 export const fetchChatBotResponse = async (userInput) => {
+  // Agregar la nueva consulta del usuario al historial
+  conversationHistory.push(`Usuario: ${userInput}`);
+
   const prompt = `
-    Eres JuJo, un chatbot especializado en ayudar a las personas a entender los efectos de las drogas en el cuerpo y la mente, y a proporcionar apoyo y recursos para dejar el consumo de drogas.
-    El usuario ha dicho: "${userInput}".
-    Responde presentándote y muestra de manera detallada y coherente la respuesta de la consulta del usuario, ofreciendo apoyo y soluciones para dejar el consumo de drogas.
-    Recuerda que si te preguntan acerca de otra cosa que no tenga que ver con el tema, recuérdales el para qué estás aquí.
-  `;
-  return await fetchDataFromIA(prompt);
+Eres JuJo, un chatbot especializado en responder cualquier duda sobre los efectos de las drogas. Tu objetivo es informar sobre los efectos del consumo de drogas en el cuerpo y la mente, los riesgos asociados, y proporcionar apoyo motivacional para aquellos que desean superar la adicción.
+
+No proporciones guías de autocuidado directamente; en su lugar, sugiere usar las funcionalidades de la app en la que te encuentras DrugsHelp, donde los usuarios encontrarán recursos completos como una guía personalizada, contactos de especialistas, y un mapa con centros de ayuda cercanos. Motívalos a usar la app como herramienta para dejar el consumo de drogas. Recuerda que tú estas en esta app así que habla de forma personal y no digas que existen otras secciones además de las que ya te he mencionado.
+
+Sólo en la primera respuesta comienza presentándote, ya después ofrece respuestas claras y breves. Si el usuario menciona términos desconocidos, explícalos de manera sencilla. Enfócate en brindar información y soluciones basadas en las funcionalidades de DrugsHelp. Si te preguntan sobre temas que no están relacionados con las drogas o la rehabilitación, recuerda amablemente tu propósito aquí y redirígelos al uso de la app.
+
+${conversationHistory.join('\n')}
+
+JuJo:`;
+
+  // Obtener la respuesta del chatbot utilizando el prompt
+  const response = await fetchDataFromIA(prompt);
+
+  // Agregar la respuesta del chatbot al historial
+  conversationHistory.push(`JuJo: ${response}`);
+
+  return response;
 };
+

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../../services/ModelAI';
-import { obtenerVideoRelacionado } from '../../../services/MoReha/RutaFunciones';
+import { obtenerGuia, guardarGuiaEnFirebase, obtenerVideoRelacionado } from '../../../services/MoReha/RutaFunciones';
 
 export default function RutaAutocuidado({ route, navigation }) {
-  const { diagnosticData } = route.params;
+  const diagnosticData = route.params?.diagnosticData;
+  const userId = route.params?.userId || diagnosticData?.userId;
+  const [loading, setLoading] = useState(true);
   const [guia, setGuia] = useState({
     articulosCientificos: [],
     tecnicasRelax: [],
@@ -13,36 +15,81 @@ export default function RutaAutocuidado({ route, navigation }) {
     videoRelacionado: null
   });
 
-  const [loading, setLoading] = useState(true);
-
+  // Función para verificar si ya existe una guía guardada o generar una nueva
   useEffect(() => {
-    const obtenerGuia = async () => {
-      //try/cath para el manejo de errores
+    const verificarGuia = async () => {
       try {
         setLoading(true);
-        const { age, sex, substance, frequency, reason } = diagnosticData;
-        // Llamadas a funciones asíncronas para obtener los datos de la IA
-        const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || [];
-        const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || [];
-        const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || [];
-        const alimentacion = await fetchAlimentacion({ age, sex, substance, frequency, reason }) || [];
-        const videoRelacionado = await obtenerVideoRelacionado(substance);
-        //Actualización de datos recibidos 
-        setGuia({
-          articulosCientificos: articulos,
-          tecnicasRelax: tecnicas,
-          rutinasEjercicio: ejercicios,
-          alimentacionSaludable: alimentacion,
-          videoRelacionado: videoRelacionado
-        });
+
+        if (!userId) {
+          console.error("Error: userId es undefined. No se puede continuar sin un userId.");
+          return;
+        }
+
+        // Intentar obtener una guía existente
+        const guiaExistente = await obtenerGuia(userId);
+
+        if (guiaExistente) {
+          console.log("Guía existente cargada desde Firebase.");
+          setGuia(guiaExistente); // Cargar guía en el estado
+        } else if (diagnosticData) {
+          console.log("No se encontró una guía guardada. Generando una nueva guía.");
+          await generarNuevaGuia();
+        } else {
+          Alert.alert(
+            "Guía de Autocuidado",
+            "Primero debes completar el test para generar tu guía de autocuidado. ¿Quieres realizar el test ahora?",
+            [
+              { text: "Cancelar", style: "cancel", onPress: () => navigation.navigate('HomeOptions') },
+              { text: "OK", onPress: () => navigation.navigate('EvaluaTest') }
+            ],
+            { cancelable: false }
+          );
+        }
       } catch (error) {
-        console.error("Error al obtener la guía de autocuidado:", error);
+        console.error("Error al verificar la guía:", error);
       } finally {
         setLoading(false);
       }
     };
-    obtenerGuia();// Ejecuta la lógica del controlador cuando se monta el componente.
-  }, [diagnosticData]);// Vuelve a ejecutar si cambian los datos del diagnóstico.
+
+    verificarGuia();
+  }, [userId, diagnosticData]);
+
+  // Función para generar una nueva guía con los datos del diagnóstico
+  const generarNuevaGuia = async () => {
+    try {
+      if (!diagnosticData) {
+        console.error("No hay datos de diagnóstico disponibles para generar una guía.");
+        return;
+      }
+
+      const { age, sex, substance, frequency, reason } = diagnosticData;
+
+      const articulos = await fetchArticulos({ age, sex, substance, frequency, reason }) || [];
+      const tecnicas = await fetchTecnicasRelax({ age, sex, substance, frequency, reason }) || [];
+      const ejercicios = await fetchEjercicios({ age, sex, substance, frequency, reason }) || [];
+      const alimentacion = await fetchAlimentacion({ age, sex, substance, frequency, reason }) || [];
+      const videoRelacionado = await obtenerVideoRelacionado(substance);
+
+      const nuevaGuia = {
+        articulosCientificos: articulos,
+        tecnicasRelax: tecnicas,
+        rutinasEjercicio: ejercicios,
+        alimentacionSaludable: alimentacion,
+        videoRelacionado: videoRelacionado
+      };
+
+      setGuia(nuevaGuia);
+
+      console.log("Guardando la nueva guía en Firebase...");
+      await guardarGuiaEnFirebase(userId, nuevaGuia);
+
+      console.log("Nueva guía generada y guardada correctamente.");
+    } catch (error) {
+      console.error("Error al generar la nueva guía de autocuidado:", error);
+    }
+  };
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -52,7 +99,6 @@ export default function RutaAutocuidado({ route, navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Guía de Autocuidado</Text>
       <ScrollView>
-        {/* Artículos Científicos */}
         {guia.articulosCientificos.length > 0 && (
           <TouchableOpacity
             style={styles.card}
@@ -62,7 +108,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Artículos Científicos</Text>
           </TouchableOpacity>
         )}
-      {/* Video Relacionado */}
         {guia.videoRelacionado && (
           <TouchableOpacity
             style={styles.card}
@@ -72,7 +117,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Videos</Text>
           </TouchableOpacity>
         )}
-        {/* Técnicas de Relajación */}
         {guia.tecnicasRelax.length > 0 && (
           <TouchableOpacity
             style={styles.card}
@@ -82,7 +126,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Técnicas de Relajación</Text>
           </TouchableOpacity>
         )}
-        {/* Rutinas de Ejercicio */}
         {guia.rutinasEjercicio.length > 0 && (
           <TouchableOpacity
             style={styles.card}
@@ -92,7 +135,6 @@ export default function RutaAutocuidado({ route, navigation }) {
             <Text style={styles.cardText}>Rutinas de Ejercicio</Text>
           </TouchableOpacity>
         )}
-        {/* Guías de Alimentación Saludable */}
         {guia.alimentacionSaludable.length > 0 && (
           <TouchableOpacity
             style={styles.card}

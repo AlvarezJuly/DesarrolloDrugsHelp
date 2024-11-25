@@ -46,6 +46,7 @@ export const loginUsuario = async (email, password, navigation) => {
     // Iniciar sesión en Firebase Authentication
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+    console.log("User UID obtenido después del inicio de sesión:", user.uid);
 
     // Actualizar el token para obtener los custom claims más recientes
     //const idTokenResult = await user.getIdTokenResult(true);
@@ -59,7 +60,7 @@ export const loginUsuario = async (email, password, navigation) => {
       if (userDoc.exists()) {
         const userData = userDoc.data();
         console.log("Rol sincronizado desde Firestore:", userData.role);
-        navigateByRole(userData.role, navigation);
+        navigateByRole(userData.role, navigation, user.uid);
       } else {
         alert("No se encontró información del usuario.");
       }
@@ -97,18 +98,16 @@ export const verificarSesion = (setUser) => {
     if (user) {
       try {
         console.log("Usuario autenticado:", user.email);
-        // Actualizar el token para obtener los custom claims más recientes
         const idTokenResult = await user.getIdTokenResult(true);
         const role = idTokenResult.claims.role;
 
         if (role) {
           console.log("Rol desde custom claims:", role);
-          setUser({ ...user, role });
+          setUser({ ...user, role, userId: user.uid }); // Asegúrate de incluir el userId
         } else {
-          // Si no hay un rol en los custom claims, intenta obtenerlo desde Firestore
           const userDoc = await getDoc(doc(db, "user", user.uid));
           if (userDoc.exists()) {
-            setUser({ ...user, role: userDoc.data().role });
+            setUser({ ...user, role: userDoc.data().role, userId: user.uid }); // Asegúrate de incluir el userId
             console.log("Rol sincronizado desde Firestore:", userDoc.data().role);
           } else {
             console.error("No se encontró información del usuario en Firestore.");
@@ -126,16 +125,17 @@ export const verificarSesion = (setUser) => {
   });
 };
 
+
 /**
  * Función para redirigir al usuario según su rol.
  * @param {string} role - Rol del usuario.
  * @param {Object} navigation - Objeto de navegación para redirigir.
  */
-const navigateByRole = (role, navigation) => {
-  console.log("Navegando según el rol:", role);
+const navigateByRole = (role, navigation, userId) => {
+  console.log("Navegando según el rol:", role, "con userId:", userId);
   switch (role) {
     case "rehabilitacion":
-      navigation.replace("RehabiNav");
+      navigation.replace("RehabiNav", { userId });
       break;
     case "admon":
       navigation.replace("AdminNav");

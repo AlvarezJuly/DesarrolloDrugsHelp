@@ -23,7 +23,8 @@ import DonacionesScreen from '../screens/screenMenuDra/DonacionesScreen'
 import Configuraciones from '../screens/screenMenuDra/Configuraciones'
 
 const Stack = createStackNavigator();
-function RehabiNav() { 
+function RehabiNav({ userId }) { 
+  console.log("UserId recibido en RehabiNav:", userId);
     return (
           //esta es la primera pantalla del home de rehabilitación de la navegacion llamada RehabiNav
             <Stack.Navigator initialRouteName="HomeOptions"> 
@@ -31,6 +32,7 @@ function RehabiNav() {
               <Stack.Screen
                   name='HomeOptions'
                   component={HomeOptions}
+                  initialParams={{ userId }}
                   options={{
                     headerShown: true,
                     headerStyle: { backgroundColor: '#A7D8DE'},
@@ -69,6 +71,7 @@ function RehabiNav() {
               <Stack.Screen
                   name='RutaAyuda'
                   component={RutaAutocuidado}
+                  initialParams={{ userId }}
                   options={{
                     title: 'Guía de Ayuda',
                     headerTintColor: "white",
