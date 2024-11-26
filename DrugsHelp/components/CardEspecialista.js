@@ -1,46 +1,64 @@
-// components/ContactoCard.js
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
-const CardEspecialista = ({ contacto }) => {
-  return (
-    <View style={styles.card}>
-      <Text style={styles.name}>{contacto.nombreCom}</Text>
-      <Text style={styles.city}>Ciudad: {contacto.ciudad}</Text>
-      <Text style={styles.email}>Correo: {contacto.correo}</Text>
-      <Text style={styles.phone}>Número: {contacto.numero}</Text>
-    </View>
-  );
+const CardEspecialista = ({ especialista, onPress }) => {
+    return (
+        <TouchableOpacity style={styles.card} onPress={onPress}>
+            {/* Imagen del especialista */}
+            <Image
+                source={{ uri: especialista.foto }}
+                style={styles.image}
+            />
+
+            {/* Contenedor de la información */}
+            <View style={styles.infoContainer}>
+                <Text style={styles.name}>{especialista.nombreCom || "Nombre no disponible"}</Text>
+                <Text style={styles.specialty}>{especialista.especialidad || "Especialidad no disponible"}</Text>
+                <Text style={styles.city}>{especialista.ciudad || "Ciudad no especificada"}</Text>
+            </View>
+        </TouchableOpacity>
+    );
 };
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    marginVertical: 8,
-    borderRadius: 10,
-    backgroundColor: '#f0f4f7',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  city: {
-    fontSize: 14,
-    color: '#666',
-  },
-  email: {
-    fontSize: 14,
-    color: '#666',
-  },
-  phone: {
-    fontSize: 14,
-    color: '#666',
-  },
+    card: {
+        flexDirection: "row", // Alinea los elementos (imagen e información) en filas
+        backgroundColor: "#EDEAE0",
+        marginVertical: 8,
+        padding: 15,
+        borderRadius: 10,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+        elevation: 3,
+        alignItems: "center", // Centra verticalmente el contenido
+        borderWidth: 1,
+        borderColor: "#E0E0E0",
+    },
+    image: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        marginRight: 15, // Espaciado entre la imagen y el texto
+    },
+    infoContainer: {
+        flex: 1, // Permite que el contenedor de texto ocupe todo el espacio restante
+        justifyContent: "center", // Centra el texto verticalmente
+    },
+    name: {
+        fontSize: 16,
+        fontWeight: "bold",
+        marginBottom: 5,
+    },
+    specialty: {
+        fontSize: 14,
+        color: "#007AFF",
+        marginBottom: 3,
+    },
+    city: {
+        fontSize: 12,
+        color: "#888",
+    },
 });
 
 export default CardEspecialista;

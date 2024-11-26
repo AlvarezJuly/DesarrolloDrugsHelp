@@ -15,6 +15,8 @@ import Progreso from '../screens/screensUsuReha/screensProgreso/Progreso';
 import Diagnostico from '../screens/screensUsuReha/screensEvaluaTest/Diagnostico';
 import RutaAutocuidado from '../screens/screensUsuReha/screensRutaAyuda/RutaAutocuidado';
 import ListaActividades from '../screens/screensUsuReha/screensRutaAyuda/ListaActividades';
+import DetalleEspecialista from '../screens/screensUsuReha/screensAsistencia/DetalleEspecialista';
+import Notas from '../screens/screensUsuReha/screensProgreso/Notas';
 
 import DropdownMenu from './MenuDraw';
 //Pantallas del menú draw
@@ -115,6 +117,12 @@ function RehabiNav({ userId }) {
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'}}}
               />
+              <Stack.Screen name="DetalleEspecialista" component={DetalleEspecialista} 
+                options={{
+                title: 'Detalle',
+                headerTintColor: "white",
+                headerStyle: { backgroundColor: '#A7D8DE'}
+              }}/>
                     
               <Stack.Screen
                   name='Informate'
@@ -131,6 +139,15 @@ function RehabiNav({ userId }) {
                   component={Progreso}
                   options={{
                     title: 'Progreso',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE'},
+                  }}
+              />
+              <Stack.Screen
+                  name='Notas'
+                  component={Notas}
+                  options={{
+                    title: 'Notas',
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}

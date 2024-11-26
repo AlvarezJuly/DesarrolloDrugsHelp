@@ -50,10 +50,6 @@ export const fetchNearbyPlaces = async (latitude, longitude, apiKey) => {
     }
   };
   
-  
-
-
-
 const useLocation = () => {
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState(null);
