@@ -40,8 +40,8 @@ export default function RutaAutocuidado({ route, navigation }) {
             "Guía de Autocuidado",
             "Primero debes completar el test para generar tu guía de autocuidado. ¿Quieres realizar el test ahora?",
             [
-              { text: "Cancelar", style: "cancel", onPress: () => navigation.navigate('HomeOptions') },
-              { text: "OK", onPress: () => navigation.navigate('EvaluaTest') }
+              { text: "Cancelar", style: "cancel", onPress: () => navigation.goBack() },
+              { text: "OK", onPress: () => navigation.replace('EvaluaTest') }
             ],
             { cancelable: false }
           );

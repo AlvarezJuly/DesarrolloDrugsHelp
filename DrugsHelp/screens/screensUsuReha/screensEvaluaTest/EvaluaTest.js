@@ -1,7 +1,6 @@
-// TestScreen.js - Vista y Controlador
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import { obtenerPreguntasTest, guardarRespuestasTest } from '../../../services/MoReha/EvaluaTestFunciones'; // funciones del Modelo
+import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import { obtenerPreguntasTest, guardarRespuestasTest, puedeRealizarTest, obtenerUltimaGuia } from '../../../services/MoReha/EvaluaTestFunciones';
 import QuestionCard from '../../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { getAuth } from 'firebase/auth';
@@ -11,23 +10,58 @@ const TestScreen = ({ navigation }) => {
   const [preguntaActualIndex, setPreguntaActualIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [testCompleted, setTestCompleted] = useState(false); // Estado para saber si el test está completo
+  const [testCompleted, setTestCompleted] = useState(false);
   const auth = getAuth();
   const user = auth.currentUser;
 
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const inicializarTest = async () => {
       try {
+        setLoading(true);
+
+        // Verificar si el usuario ya tiene una guía
+        const ultimaGuia = await obtenerUltimaGuia(user.uid);
+        if (ultimaGuia) {
+          Alert.alert(
+            "Test no disponible",
+            "Ya has completado tu test este mes. Podrás realizar uno nuevo en 30 días.",
+            [
+              {
+                text: "Ir a mi guía",
+                onPress: () => navigation.replace("RutaAyuda", { userId: user.uid }),
+              },
+              { text: "Cerrar", style: "cancel" ,
+                onPress: () => navigation.goBack(),
+              },
+            ]
+          );
+          setLoading(false);
+          return;
+        }
+
+        /* // Verificar si el test está disponible
+        const diasRestantes = await puedeRealizarTest(user.uid);
+        if (diasRestantes > 0) {
+          Alert.alert(
+            "Test no disponible",
+            `El próximo test estará disponible en ${diasRestantes} días.`,
+            [{ text: "OK", onPress: () => navigation.navigate("HomeOptions") }]
+          );
+          setLoading(false);
+          return;
+        } */
+
+        // Cargar preguntas del test
         const listaPreguntas = await obtenerPreguntasTest();
         setQuestions(listaPreguntas);
       } catch (error) {
-        console.error("Error al cargar las preguntas:", error);
+        console.error("Error al inicializar el test:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchQuestions();
+    inicializarTest();
   }, []);
 
   const handleNext = (answer) => {
@@ -72,22 +106,22 @@ const TestScreen = ({ navigation }) => {
         <Text style={styles.completionText}>¡Test Completado!</Text>
         <TouchableOpacity
           style={styles.viewDiagnosisButton}
-          onPress={() => navigation.navigate('Diagnostico', { userId: user.uid })}
+          onPress={() => navigation.navigate("Diagnostico", { userId: user.uid })}
         >
           <Text style={styles.viewDiagnosisButtonText}>Ver Diagnóstico</Text>
         </TouchableOpacity>
       </View>
     );
   }
-//Comieza la vista
+  
   return (
     <View style={styles.container}>
       <View style={styles.conText}>
         <View style={styles.contTitulo}>
-          <Image source={require('../../../assets/icons/compromiso.png')} style={styles.imag} />
+          <Image source={require("../../../assets/icons/compromiso.png")} style={styles.imag} />
         </View>
         <View style={styles.contTitulo}>
-          <Text style={{ fontSize: 20, fontWeight: 'bold', lineHeight: 35 }}>Test Evaluativo</Text>
+          <Text style={{ fontSize: 20, fontWeight: "bold", lineHeight: 35 }}>Test Evaluativo</Text>
           <Text style={styles.titulo}>
             Estamos aquí para ayudarte. Completa este Test para evaluar tu condición, contesta con toda sinceridad y confianza.
           </Text>
@@ -120,9 +154,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#84B6F4',
     borderRadius: 50,
-    marginVertical:30,
-    paddingHorizontal:60,
-    paddingVertical:10,
+    marginVertical: 30,
+    paddingHorizontal: 60,
+    paddingVertical: 10,
     backgroundColor: '#A7D8DE',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -137,11 +171,11 @@ const styles = StyleSheet.create({
     fontWeight: '10',
     color: '#000',
   },
-  contTitulo:{
-    padding:10,
+  contTitulo: {
+    padding: 10,
     justifyContent: 'center',
   },
-  imag:{
+  imag: {
     width: 100,
     height: 90,
   },
@@ -172,6 +206,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
 
 export default TestScreen;
