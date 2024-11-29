@@ -1,12 +1,14 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['module:metro-react-native-babel-preset'],
+    presets: [
+      'babel-preset-expo', // Preset recomendado por Expo
+    ],
     plugins: [
-      ['@babel/plugin-transform-class-properties', { loose: true }],
-      ['@babel/plugin-transform-private-methods', { loose: true }],
-      ['@babel/plugin-transform-private-property-in-object', { loose: true }],
-      'react-native-reanimated/plugin', 
+      ['@babel/plugin-transform-class-properties', { loose: true }], // Transformación de propiedades de clase
+      ['@babel/plugin-transform-private-methods', { loose: true }], // Métodos privados
+      ['@babel/plugin-transform-private-property-in-object', { loose: true }], // Propiedades privadas en objetos
+      'react-native-reanimated/plugin', // Siempre debe ir al final
     ],
   };
 };

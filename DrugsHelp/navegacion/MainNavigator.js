@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
 import { ActivityIndicator, View } from 'react-native';
 import RehabiNav from './RehabiNav'; // Navegación para usuarios en rehabilitación
 import AdminNav from './AdminNav'; // Navegación para administradores

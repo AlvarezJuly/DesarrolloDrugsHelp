@@ -1,6 +1,7 @@
-import { View, Text,StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text,StyleSheet, Image,ScrollView, TouchableOpacity } from 'react-native'
+
+//import {  } from 'react-native-gesture-handler';
 
 
 export default function HomeOptions({navigation}) {

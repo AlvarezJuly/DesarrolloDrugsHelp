@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking } from 'react-native';
 import { Video } from 'expo-av';
-import * as ScreenOrientation from 'expo-screen-orientation';
+
 
 export default function ListaActividades({ route }) {
   const { data, tipo } = route.params;
@@ -15,14 +15,14 @@ export default function ListaActividades({ route }) {
         const jsonEnd = data.lastIndexOf(']') + 1;
         const jsonString = data.substring(jsonStart, jsonEnd);
         const parsedData = JSON.parse(jsonString);
-        setValidData(parsedData);
+        setValidData(parsedData); 
       } catch (e) {
         console.log("No se pudo parsear el JSON. Mostrando texto directamente.");
         setValidData([{ titulo: data }]);
         setErrorMessage("Error al procesar los datos. Mostrando contenido como texto.");
       }
     } else if (Array.isArray(data)) {
-      setValidData(data);
+      setValidData(data.map(item => ({ ...item, completada: false })));  // Añadir campo completada
     } else {
       setErrorMessage("Los datos no tienen el formato esperado.");
     }
@@ -44,23 +44,50 @@ export default function ListaActividades({ route }) {
     );
   }
 
-  //para mostrar según sea el caso
+    // Función para manejar cuando se marca una tarea como completada
+    const marcarComoCompletada = (id) => {
+      setValidData(prevState => 
+        prevState.map(item => 
+          item.id === id ? { ...item, completada: true } : item
+        )
+      );
+    };
+  
+
   const renderItem = ({ item }) => {
+    const marcarComoCompletado = async () => {
+      // Actualizamos la tarea como completada en el estado local
+      setValidData((prevData) => {
+        return prevData.map((actividad) =>
+          actividad.id === item.id ? { ...actividad, completada: true } : actividad
+        );
+      });
+      // Ahora debemos actualizar el progreso del usuario
+      // Llamamos a la función de RutaAutocuidado para actualizar el progreso (suponiendo que la función se pasa como prop)
+      if (typeof route.params.actualizarProgreso === 'function') {
+        await route.params.actualizarProgreso(10); // Ajusta el incremento del progreso según lo que necesites (ej. 10% por tarea completada)
+      }
+    };
+
     switch (tipo) {
       case 'articulo':
         return (
-          <View style={styles.activityCard}>
+          <View style={[styles.activityCard, styles.enlargedCard]}>
             <Text style={styles.activityTitle}>{item.titulo || "Artículo sin título"}</Text>
             <Text style={styles.activityDescription}>{item.descripcion || "Sin descripción disponible"}</Text>
             <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
               <Text style={styles.linkText}>Leer artículo completo</Text>
             </TouchableOpacity>
+           {/* Botón para marcar como completado */}
+             <TouchableOpacity style={styles.completeButton} onPress={marcarComoCompletado}>
+            <Text style={styles.completeButtonText}>Marcar como completado</Text>
+          </TouchableOpacity>
           </View>
         );
       case 'tecnica':
       case 'rutina':
         return (
-          <View style={styles.activityCard}>
+          <View style={[styles.activityCard, styles.enlargedCard]}>
             <Text style={styles.activityTitle}>{item.titulo}</Text>
             <Text style={styles.activityDescription}>{item.descripcion}</Text>
             {item.pasos && item.pasos.length > 0 && (
@@ -71,54 +98,62 @@ export default function ListaActividades({ route }) {
                 ))}
               </>
             )}
+            <TouchableOpacity style={styles.completeButton}>
+              <Text style={styles.completeButtonText}>Marcar como completado</Text>
+            </TouchableOpacity>
           </View>
         );
       case 'alimentacion':
         return (
-          <View style={styles.activityCard}>
+          <View style={[styles.activityCard, styles.enlargedCard]}>
             <Text style={styles.activityTitle}>{item.titulo}</Text>
             <Text style={styles.activityDescription}>{item.descripcion}</Text>
             {item.alimentos && item.alimentos.length > 0 && (
               <>
                 <Text style={styles.foodListTitle}>Alimentos recomendados:</Text>
                 {item.alimentos.map((alimento, index) => (
-                  <Text key={index} style={styles.foodText}>- {alimento}</Text>
+                  <Text key={index} style={styles.foodItemText}>- {alimento}</Text>
                 ))}
               </>
             )}
+            <TouchableOpacity style={styles.completeButton}>
+              <Text style={styles.completeButtonText}>Marcar como completado</Text>
+            </TouchableOpacity>
           </View>
         );
-      case 'video':
-        return (
-          <View style={styles.activityCard}>
-            <Text style={styles.activityTitle}>{item.titulo || 'Video sin título'}</Text>
-            <Video
-              source={{ uri: item.videoUrl }}
-              style={styles.video}
-              useNativeControls
-              resizeMode="contain"
-              shouldPlay={true}
-              onFullscreenUpdate={async ({ fullscreenUpdate }) => {
-                if (fullscreenUpdate === 0) { // FULLSCREEN_WILL_PRESENT
-                  await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-                } else if (fullscreenUpdate === 3) { // FULLSCREEN_DID_DISMISS
-                  await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
-                }
-              }}
-            />
-          </View>
-        );
-      default:
-        return null;
-    }
-  };
+        case 'video':
+          return (
+            <View style={styles.activityCard}>
+              <Text style={styles.activityTitle}>{item.titulo || 'Video sin título'}</Text>
+              <Video
+                source={{ uri: item.videoUrl }}
+                style={styles.video}
+                useNativeControls
+                resizeMode="contain"
+                shouldPlay={true}
+                onFullscreenUpdate={async ({ fullscreenUpdate }) => {
+                  if (fullscreenUpdate === 0) { // FULLSCREEN_WILL_PRESENT
+                    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+                  } else if (fullscreenUpdate === 3) { // FULLSCREEN_DID_DISMISS
+                    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.completeButton}>
+                <Text style={styles.completeButtonText}>Marcar como completado</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        default:
+          return null;
+      }
+    };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Lista de Actividades</Text>
       <FlatList
         data={validData}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => item.id || index.toString()}
         renderItem={renderItem}
       />
     </View>
@@ -128,69 +163,75 @@ export default function ListaActividades({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#84B6F4',
-    padding: 20,
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
+    padding: 16,
+    backgroundColor: '#fff',
   },
   activityCard: {
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
+    padding: 16,
+    marginBottom: 16,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  enlargedCard: {
+    padding: 24,
   },
   activityTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   activityDescription: {
     fontSize: 16,
-    color: '#495057',
-    marginBottom: 10,
-  },
-  linkText: {
-    fontSize: 16,
-    color: '#007BFF',
-    marginTop: 10,
-    textDecorationLine: 'underline',
+    marginBottom: 8,
+    color: '#333',
   },
   stepsTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 10,
+    marginBottom: 4,
   },
   stepText: {
     fontSize: 14,
-    color: '#495057',
-    marginLeft: 10,
-    marginTop: 2,
+    marginBottom: 2,
   },
   foodListTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
-    marginTop: 10,
+    marginTop: 8,
+    marginBottom: 4,
   },
-  foodText: {
+  foodItemText: {
     fontSize: 14,
-    color: '#495057',
-    marginLeft: 10,
-    marginTop: 2,
+    marginBottom: 2,
   },
   video: {
     width: '100%',
     height: 200,
+    marginBottom: 8,
+  },
+  completeButton: {
+    backgroundColor: 'orange',
+    padding: 10,
+    marginTop: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  completedButton: {
+    backgroundColor: 'green', // Cambia el color si está completado
+  },
+  completeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  errorText: {
+    color: '#f00',
+    marginTop: 8,
+  },
+  linkText: {
+    color: '#007bff',
+    textDecorationLine: 'underline',
+    marginTop: 8,
   },
 });

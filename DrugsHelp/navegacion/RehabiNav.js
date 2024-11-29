@@ -1,8 +1,8 @@
 import React from 'react'
-
-import { createStackNavigator } from '@react-navigation/stack';
 import {Image} from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
+
 
 //importacion de las pantallas que estan dentro de homeOptions de vistas del usuario en rehabilitación
 import HomeOptions from '../screens/screensUsuReha/HomeOptions';

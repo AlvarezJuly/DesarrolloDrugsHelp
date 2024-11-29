@@ -24,7 +24,7 @@ const TestScreen = ({ navigation }) => {
         if (ultimaGuia) {
           Alert.alert(
             "Test no disponible",
-            "Ya has completado tu test este mes. Podrás realizar uno nuevo en 30 días.",
+            "Ya has completado tu test este mes. Podrás realizar uno nuevo cada 30 días.",
             [
               {
                 text: "Ir a mi guía",

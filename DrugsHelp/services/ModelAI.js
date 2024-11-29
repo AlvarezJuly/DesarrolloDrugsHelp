@@ -31,10 +31,13 @@ const fetchDataFromIA = async (prompt) => {
 
 // Declaración y exportación de funciones específicas enviar el prompt para generar la guía 
 export const fetchArticulos = async (userData) => {
-  const prompt = `Recomienda 5 artículos informativos en el idioma Español (es) sobre la rehabilitación de la adicción a ${userData.substance} para una persona de ${userData.age} años y género ${userData.sex}, verifica que la fuente se confiable y este activa. Devuelve un arreglo formato json con los siguientes detalles para cada artículo:
+  const prompt = `
+  Por favor recomienda 5 informes o artíulos de la web idioma Español (es) sobre temas que tengan que ver con la rehabilitación de la adicción a ${userData.substance} para una persona de ${userData.age} años y género ${userData.sex}, verifica que la fuente se confiable y el sitio o página web aún activao además que las publicaciones sean a partir del año 2020 en adelante. Procura que la información venga de estos sitios Sitios confiables
+  Organizaciones internacionales:World Health Organization, United Nations Office on Drugs and Crime (UNODC), Organizaciones nacionales, Asociaciones profesionales:Asociación Americana de Psicología (APA), Sociedad Española de Adicciones, Bases de datos académicas:Google Scholar, PubMed, en un caso que no puedas obtener las url o sean inválidas entonces no me las recomiendes y busca otros para con información válida y completa. Busca y presenta con los siguientes detalles para cada artículo:
 - titulo: El título del artículo.
-- url: El enlace directo al artículo que sea válido y de la región américa.
+- url: El enlace directo al artículo que sea válido.
 - descripcion: Una breve descripción o resumen del artículo.
+- Genera 3 preguntas en base al artículo, para validar la lectura que el usuario realizó todo en format json.
 `;
   return await fetchDataFromIA(prompt);
 };
@@ -66,8 +69,7 @@ export const fetchAlimentacion = async (userData) => {
   return await fetchDataFromIA(prompt);
 };
 
-
-// Función para obtener la interactuar con el chatbot JuJo y manetener el hilo de la conversación
+// Función para interactuar con el chatbot JuJo y manetener el hilo de la conversación
 
 // Inicializar un historial vacío si aún no existe
 let conversationHistory = [];
@@ -81,7 +83,6 @@ export const fetchChatBotResponse = async (userInput) => {
 Eres JuJo, un chatbot especializado en responder cualquier duda sobre los efectos de las drogas. Tu objetivo es informar sobre los efectos del consumo de drogas en el cuerpo y la mente, los riesgos asociados, y proporcionar apoyo motivacional para aquellos que desean superar la adicción.
 
 No proporciones guías de autocuidado directamente; en su lugar, sugiere usar las funcionalidades de la app en la que te encuentras DrugsHelp, donde los usuarios encontrarán recursos completos como una guía personalizada, contactos de especialistas, y un mapa con centros de ayuda cercanos. Motívalos a usar la app como herramienta para dejar el consumo de drogas. Recuerda que tú estas en esta app así que habla de forma personal y no digas que existen otras secciones además de las que ya te he mencionado.
-
 Sólo en la primera respuesta comienza presentándote, ya después ofrece respuestas claras y breves. Si el usuario menciona términos desconocidos, explícalos de manera sencilla. Enfócate en brindar información y soluciones basadas en las funcionalidades de DrugsHelp. Si te preguntan sobre temas que no están relacionados con las drogas o la rehabilitación, recuerda amablemente tu propósito aquí y redirígelos al uso de la app.
 
 ${conversationHistory.join('\n')}

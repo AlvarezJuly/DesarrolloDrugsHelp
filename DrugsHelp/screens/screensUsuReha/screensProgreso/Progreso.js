@@ -26,12 +26,15 @@ export default function Progreso({ navigation }) {
     };
 
     loadProgress();
-  }, []);
+  },[]);
 
   const incrementAbstinenceDays = async () => {
     const newDays = abstinenceDays + 1;
     setAbstinenceDays(newDays);
     await updateProgress(completedWeeks, currentWeekProgress, newDays); // Actualiza Firebase con el nuevo número de días de abstinencia
+  };
+  const resetAbstinenceDays = () => {
+    setAbstinenceDays(0);
   };
 
   // Navegar a la pantalla de notas
@@ -41,13 +44,13 @@ export default function Progreso({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Progreso Semanal */}
+      {/* Progreso Semanal 
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Progreso de la Semana</Text>
         <ProgressBar progress={currentWeekProgress / 100} color="#5AC8FA" style={styles.progressBar} />
         <Text style={styles.percentageText}>{currentWeekProgress}% completado</Text>
       </View>
-
+*/}
       {/* Semanas Completadas */}
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Semanas Completadas</Text>
@@ -57,16 +60,24 @@ export default function Progreso({ navigation }) {
       {/* Días de Abstinencia */}
       <View style={styles.card}>
         <Text style={styles.cardTitle}>Días de Abstinencia</Text>
-        <Text style={styles.content}>{abstinenceDays} días</Text>
-        <TouchableOpacity style={styles.button} onPress={incrementAbstinenceDays}>
-          <Text style={styles.buttonText}>Incrementar Día</Text>
+        <View style={styles.cuadroNum}>
+        <Text style={styles.num}>{abstinenceDays} días</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.incrementButton} onPress={incrementAbstinenceDays}>
+          <Text style={styles.buttonText}>Incrementar</Text>
         </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.resetButton} onPress={resetAbstinenceDays}>
+          <Text style={styles.buttonText}>Reiniciar</Text>
+        </TouchableOpacity>
+      </View>
       </View>
 
       {/* Botón para ir a las notas */}
       <View style={styles.card}>
         <TouchableOpacity style={styles.button} onPress={handleGoToNotes}>
-          <Text style={styles.buttonText}>Agregar Notas</Text>
+          <Text style={styles.buttonText}>Agrega tus notas</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -76,12 +87,12 @@ export default function Progreso({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#98D8D8',
+    backgroundColor: '#84B6F4',
     padding: 20,
   },
   card: {
     backgroundColor: '#fff',
-    padding: 15,
+    padding: 20,
     marginBottom: 20,
     borderRadius: 10,
     shadowColor: "#000",
@@ -99,6 +110,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
   },
+  cuadroNum:{
+    fontSize: 16,
+    color: '#333',
+    borderRadius: 10,
+    borderColor: '#000',
+    borderWidth: 5,
+    margin:10,
+    marginHorizontal: 100,
+    padding:30,
+  },
   progressBar: {
     height: 10,
     borderRadius: 5,
@@ -112,11 +133,36 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#5AC8FA',
     padding: 10,
+    borderRadius: 10,
+    marginVertical: 20,
+    alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  incrementButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
   },
+  resetButton: {
+    backgroundColor: '#f44336',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  num:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   buttonText: {
     color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

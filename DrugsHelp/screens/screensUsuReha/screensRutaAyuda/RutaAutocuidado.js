@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { fetchArticulos, fetchTecnicasRelax, fetchEjercicios, fetchAlimentacion } from '../../../services/ModelAI';
 import { obtenerGuia, guardarGuiaEnFirebase, obtenerVideoRelacionado } from '../../../services/MoReha/RutaFunciones';
+import { ProgressBar } from 'react-native-paper';
+import { obtenerProgresoSemanal, actualizarProgreso } from '../../../services/MoReha/ProgresFunciones';
 
 export default function RutaAutocuidado({ route, navigation }) {
   const diagnosticData = route.params?.diagnosticData;
@@ -14,6 +16,9 @@ export default function RutaAutocuidado({ route, navigation }) {
     alimentacionSaludable: [],
     videoRelacionado: null
   });
+  
+  const [progress, setProgress] = useState(0); // Progreso general
+  const [weeklyProgress, setWeeklyProgress] = useState(0); // Progreso semanall
 
   // Función para verificar si ya existe una guía guardada o generar una nueva
   useEffect(() => {
@@ -91,12 +96,31 @@ export default function RutaAutocuidado({ route, navigation }) {
     }
   };
 
+// Función para actualizar el progreso después de completar una actividad
+const actualizarProgresoTarea = async (nuevoProgreso) => {
+  try {
+    // Actualizar el progreso en Firebase
+    await actualizarProgreso(userId, nuevoProgreso);
+
+    // Actualizar el estado local de progreso semanal
+    setWeeklyProgress(nuevoProgreso);
+
+    console.log("Progreso actualizado con éxito.");
+  } catch (error) {
+    console.error("Error al actualizar el progreso:", error);
+  }
+};
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Progreso Semanal</Text>
+        <ProgressBar progress={weeklyProgress / 100} color="#4caf50" style={styles.progressBar} />
+        <Text style={styles.progressText}>{weeklyProgress}% completado</Text>
+
       <Text style={styles.title}>Guía de Autocuidado</Text>
       <ScrollView>
         {guia.articulosCientificos.length > 0 && (
@@ -160,6 +184,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+  },
+
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  progressBar: {
+    height: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  progressText: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  divisionContainer: {
+    marginTop: 20,
+    marginBottom: 40,
   },
   card: {
     backgroundColor: '#fff',

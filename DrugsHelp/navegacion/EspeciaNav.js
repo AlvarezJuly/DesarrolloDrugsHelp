@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import 'react-native-gesture-handler';
 import GestionReha from '../screens/screensEspecia/GestionReha';
 import ConfiguracionesE from '../screens/screensEspecia/ConfiguracionesE';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';

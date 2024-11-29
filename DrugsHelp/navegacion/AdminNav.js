@@ -1,5 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import 'react-native-gesture-handler';
 import EstadisticasApp from '../screens/screensAdmon/EstadisticasApp';
 import GestionApp from '../screens/screensAdmon/GestionApp';
 import GestionNotifi from '../screens/screensAdmon/GestionNotifi';
