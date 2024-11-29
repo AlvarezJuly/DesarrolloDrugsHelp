@@ -47,7 +47,7 @@ export default function GestionApp() {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Gestiónde Datos</Text>
+      <Text style={styles.title}>Administración de datos</Text>
 
       {/* Colección de Usuarios */}
       <Card style={styles.card}>
