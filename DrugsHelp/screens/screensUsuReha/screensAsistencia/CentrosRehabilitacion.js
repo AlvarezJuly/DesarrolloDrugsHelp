@@ -97,6 +97,7 @@ const CentrosRehabilitacion = () => {
               longitude: marker.longitude,
             }}
             title={marker.name}
+            testID={`marker-${marker.id}`} 
           />
         ))}
       </MapView>
@@ -107,14 +108,14 @@ const CentrosRehabilitacion = () => {
           onChangeText={setQuery}
           style={styles.input}
         />
-        <Button title="Buscar" onPress={handleSearch} />
+        <Button title="Buscar" onPress={handleSearch} testID="search-button" />
       </View>
       <TouchableOpacity style={styles.locationButton} onPress={goToCurrentLocation}>
         <FontAwesome6 name="location-crosshairs" size={24} color="blue" />
       </TouchableOpacity>
 
       {/* Tarjetas de descripción */}
-      <FlatList
+      <FlatList   
   data={visibleMarkers}
   keyExtractor={(item) => item.id}
   renderItem={({ item }) => (
@@ -125,6 +126,7 @@ const CentrosRehabilitacion = () => {
       </Text>
     </View>
   )}
+  testID="centrosList" 
   style={styles.cardList}
   horizontal // Hacer que sea deslizable horizontalmente
   showsHorizontalScrollIndicator={false} // Ocultar el indicador de scroll
