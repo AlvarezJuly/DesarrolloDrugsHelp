@@ -1,4 +1,4 @@
-// Este archivo es para Inicialización de firebase
+// Este archivo es para Inicialización de firebase      "CredencialesFirebase.js"
 import { initializeApp } from "firebase/app";
 import { initializeAuth } from "firebase/auth";
 import { getReactNativePersistence } from 'firebase/auth';

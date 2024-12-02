@@ -43,7 +43,7 @@ export default function RutaAutocuidado({ route, navigation }) {
         } else {
           Alert.alert(
             "Guía de Autocuidado",
-            "Primero debes completar el test para generar tu guía de autocuidado. ¿Quieres realizar el test ahora?",
+            "Primero debes completar el test para generar tu guía de autocuidado. ¿Quiéres realizar el test ahora?",
             [
               { text: "Cancelar", style: "cancel", onPress: () => navigation.goBack() },
               { text: "OK", onPress: () => navigation.replace('EvaluaTest') }
@@ -112,7 +112,7 @@ const actualizarProgresoTarea = async (nuevoProgreso) => {
 };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <ActivityIndicator  size="large" color="#0000ff" testID="loading-indicator" />;
   }
 
   return (
@@ -125,6 +125,7 @@ const actualizarProgresoTarea = async (nuevoProgreso) => {
       <ScrollView>
         {guia.articulosCientificos.length > 0 && (
           <TouchableOpacity
+            testID="category-button"
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.articulosCientificos, tipo: 'articulo' })}
           >
@@ -152,6 +153,7 @@ const actualizarProgresoTarea = async (nuevoProgreso) => {
         )}
         {guia.rutinasEjercicio.length > 0 && (
           <TouchableOpacity
+           testID="category-button1"
             style={styles.card}
             onPress={() => navigation.navigate('Actividades', { data: guia.rutinasEjercicio, tipo: 'rutina' })}
           >

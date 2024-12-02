@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, ActivityIndicator, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import useLocation, { fetchNearbyPlaces, fetchPlacesByQuery } from '../../../services/MapaApi'; // Importa las funciones necesarias
+import  { useLocation, fetchNearbyPlaces, fetchPlacesByQuery } from '../../../services/MapaApi'; // Importa las funciones necesarias
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 const apikey = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc'; 

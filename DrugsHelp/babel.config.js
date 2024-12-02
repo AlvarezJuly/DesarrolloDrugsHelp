@@ -9,6 +9,7 @@ module.exports = function (api) {
       ['@babel/plugin-transform-private-methods', { loose: true }], // Métodos privados
       ['@babel/plugin-transform-private-property-in-object', { loose: true }], // Propiedades privadas en objetos
       'react-native-reanimated/plugin', // Siempre debe ir al final
+
     ],
   };
 };

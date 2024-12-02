@@ -33,9 +33,11 @@ export default function Progreso({ navigation }) {
     setAbstinenceDays(newDays);
     await updateProgress(completedWeeks, currentWeekProgress, newDays); // Actualiza Firebase con el nuevo número de días de abstinencia
   };
-  const resetAbstinenceDays = () => {
-    setAbstinenceDays(0);
+  const resetAbstinenceDays = async () => {
+    setAbstinenceDays(0);  // Reinicia el contador de días de abstinencia a 0 en el estado
+    await updateProgress(completedWeeks, currentWeekProgress, 0);  // Llama a updateProgress para que Firebase se actualice con 0 días
   };
+  
 
   // Navegar a la pantalla de notas
   const handleGoToNotes = () => {

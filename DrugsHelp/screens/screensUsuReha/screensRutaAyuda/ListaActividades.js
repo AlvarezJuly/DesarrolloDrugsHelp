@@ -79,7 +79,7 @@ export default function ListaActividades({ route }) {
               <Text style={styles.linkText}>Leer artículo completo</Text>
             </TouchableOpacity>
            {/* Botón para marcar como completado */}
-             <TouchableOpacity style={styles.completeButton} onPress={marcarComoCompletado}>
+              <TouchableOpacity style={styles.completeButton} onPress={marcarComoCompletado}>
             <Text style={styles.completeButtonText}>Marcar como completado</Text>
           </TouchableOpacity>
           </View>

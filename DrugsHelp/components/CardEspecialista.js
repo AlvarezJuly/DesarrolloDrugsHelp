@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 const CardEspecialista = ({ especialista, onPress }) => {
     return (
-        <TouchableOpacity style={styles.card} onPress={onPress}>
+        <TouchableOpacity style={styles.card} onPress={onPress}  testID="card-especialista" >
             {/* Imagen del especialista */}
             <Image
+                testID="image-especialista"
                 source={{ uri: especialista.foto }}
                 style={styles.image}
             />

@@ -39,13 +39,13 @@ const ChatBotInformate = () => {
 
   // Hook para desplazar la conversación automáticamente al final cuando se agregue un nuevo mensaje
   useEffect(() => {
-    if (chatboxRef.current) {
+    if (chatboxRef.current && typeof chatboxRef.current.scrollToEnd === 'function') {
       setTimeout(() => {
         chatboxRef.current.scrollToEnd({ animated: true });
       }, 100);
     }
   }, [conversation]);
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.efecto}>
@@ -83,9 +83,10 @@ const ChatBotInformate = () => {
             onChangeText={setInput}
             placeholderTextColor="white"
           />
-          <TouchableOpacity style={styles.btnSend} onPress={conversacion}>
-            <Ionicons name="send-sharp" size={30} color="#002E46" />
+          <TouchableOpacity style={styles.btnSend} onPress={conversacion} testID="send-button">
+              <Ionicons name="send-sharp" size={30} color="#002E46" />
           </TouchableOpacity>
+
         </View>
       </View>
     </View>

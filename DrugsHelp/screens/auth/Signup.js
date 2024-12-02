@@ -8,13 +8,13 @@ export default function Signup({ navigation }) {
   const [nombreComp, setNombreComp] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [hidePassword, setHidePassword] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    setLoading(true);
-    await registroUsuario(nombreComp, email, password, navigation);
-    setLoading(false);
+    setLoading(true);  // Indica que se está procesando la solicitud
+    await registroUsuario(nombreComp, email, password, navigation);  // Llama a la función de registro
+    setLoading(false);  // Desactiva el indicador de carga después de completar el proceso
   };
 
   return (
@@ -44,13 +44,14 @@ export default function Signup({ navigation }) {
         />
         <View style={styles.passwordContainer}>
           <TextInput
+            testID="password-input"
             secureTextEntry={hidePassword}
             style={styles.imput}
             placeholder="Contraseña"
             onChangeText={(text) => setPassword(text)}
             placeholderTextColor="#999"
           />
-          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+          <TouchableOpacity onPress={() => setHidePassword(!hidePassword)} testID="eye-icon" >
             <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -58,7 +59,7 @@ export default function Signup({ navigation }) {
         {loading ? (
           <ActivityIndicator size="large" color="#002E46" />
         ) : (
-          <TouchableOpacity style={styles.registerButton} onPress={handleSignup}>
+          <TouchableOpacity style={styles.registerButton} onPress={handleSignup} testID="register-button">
             <Text style={styles.registerButtonText}>Crear Cuenta</Text>
           </TouchableOpacity>
         )}

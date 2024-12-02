@@ -28,6 +28,7 @@ const DetalleEspecialista = ({ route }) => {
             <ScrollView contentContainerStyle={styles.contentContainer}>
                 {/* Foto del especialista */}
                 <Image
+                    testID="image"
                     source={{ uri: especialista.foto }}
                     style={styles.image}
                 />
@@ -46,7 +47,7 @@ const DetalleEspecialista = ({ route }) => {
             {/* Botones */}
             <View style={styles.buttonsContainer}>
                 {/* Botón de chat */}
-                <TouchableOpacity style={styles.chatButton} onPress={handleChatRequest}>
+                <TouchableOpacity style={styles.chatButton} onPress={handleChatRequest} testID= "chatButton">
                     <Text style={styles.chatButtonText}>Solicitud Chat</Text>
                 </TouchableOpacity>
             </View>

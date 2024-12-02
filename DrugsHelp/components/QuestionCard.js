@@ -30,6 +30,7 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
       {isAgeQuestion ? (
         <>
           <TextInput
+            testID="age-input"
             style={styles.ageInput}
             placeholder="Ingresa tu edad"
             keyboardType="numeric"

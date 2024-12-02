@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { addNote, getNotes } from '../../../services/MoReha/ProgresFunciones'; // Asegúrate de que esta ruta esté correcta
+import { addNote, getNotes, deleteNote } from '../../../services/MoReha/ProgresFunciones'; // Asegúrate de que esta ruta esté correcta
 
 export default function Notas({ route }) {
   const { notes } = route.params;
@@ -14,11 +14,16 @@ export default function Notas({ route }) {
       await addNote(title, description);  // Agrega la nota a Firestore
       setTitle('');  // Limpia el campo de título
       setDescription('');  // Limpia el campo de descripción
-
       // Refresca la lista de notas
       const updatedNotes = await getNotes();
       setAllNotes(updatedNotes);
     }
+  };
+
+  const handleDeleteNote = async (noteId) => {// Aquí puedes implementar la lógica de eliminación de la nota
+    await deleteNote(noteId); // Llama a la función mockeada o la real para eliminar en Firestore
+    const updatedNotes = allNotes.filter((note) => note.id !== noteId);
+    setAllNotes(updatedNotes); // Actualiza el estado local
   };
 
   return (
@@ -49,9 +54,9 @@ export default function Notas({ route }) {
             <Text style={styles.noteTitle}>{note.title}</Text>
             <Text style={styles.noteDescription}>{note.description}</Text>
             <Text style={styles.noteTimestamp}>{new Date(note.timestamp.seconds * 1000).toLocaleString()}</Text>  
-            <TouchableOpacity onPress={() => handleDeleteNote(note.id)}>
-            <Ionicons name="trash-outline" size={24} color="red" />
-            <Text>Eliminar</Text>
+            <TouchableOpacity onPress={() => handleDeleteNote(note.id)} testID={`delete-button-${note.id}`}>
+              <Ionicons name="trash-outline" size={24} color="red" />
+              <Text>Eliminar</Text>
             </TouchableOpacity>
         </View>
         ))}

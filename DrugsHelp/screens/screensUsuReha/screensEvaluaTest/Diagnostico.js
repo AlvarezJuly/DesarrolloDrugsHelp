@@ -32,7 +32,7 @@ const Diagnostico = ({ route, navigation }) => {
   }, [userId]);
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <ActivityIndicator size="large" color="#0000ff" testID="loading-indicator"/>;
   }
 
   if (!userData || !diagnosticData) {
@@ -90,7 +90,7 @@ const Diagnostico = ({ route, navigation }) => {
   }}
 >
   <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>
-</TouchableOpacity>
+    </TouchableOpacity>
       </View>
     </View>
   );

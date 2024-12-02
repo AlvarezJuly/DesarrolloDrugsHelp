@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet, Text, Image, TouchableOpacity, Alert } from 'react-native';
-import { obtenerPreguntasTest, guardarRespuestasTest, puedeRealizarTest, obtenerUltimaGuia } from '../../../services/MoReha/EvaluaTestFunciones';
+import { obtenerPreguntasTest, guardarRespuestasTest, obtenerUltimaGuia } from '../../../services/MoReha/EvaluaTestFunciones';
 import QuestionCard from '../../../components/QuestionCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { getAuth } from 'firebase/auth';
@@ -15,44 +15,28 @@ const TestScreen = ({ navigation }) => {
   const user = auth.currentUser;
 
   useEffect(() => {
+    console.log('Iniciando test...');
     const inicializarTest = async () => {
       try {
         setLoading(true);
 
-        // Verificar si el usuario ya tiene una guía
         const ultimaGuia = await obtenerUltimaGuia(user.uid);
         if (ultimaGuia) {
           Alert.alert(
             "Test no disponible",
             "Ya has completado tu test este mes. Podrás realizar uno nuevo cada 30 días.",
             [
-              {
-                text: "Ir a mi guía",
-                onPress: () => navigation.replace("RutaAyuda", { userId: user.uid }),
-              },
-              { text: "Cerrar", style: "cancel" ,
-                onPress: () => navigation.goBack(),
-              },
+              { text: "Ir a mi guía", onPress: () => navigation.replace("RutaAyuda", { userId: user.uid }) },
+              { text: "Cerrar", style: "cancel", onPress: () => navigation.goBack() },
             ]
           );
           setLoading(false);
           return;
         }
-
-        /* // Verificar si el test está disponible
-        const diasRestantes = await puedeRealizarTest(user.uid);
-        if (diasRestantes > 0) {
-          Alert.alert(
-            "Test no disponible",
-            `El próximo test estará disponible en ${diasRestantes} días.`,
-            [{ text: "OK", onPress: () => navigation.navigate("HomeOptions") }]
-          );
-          setLoading(false);
-          return;
-        } */
-
-        // Cargar preguntas del test
+        console.log('obtenerUltimaGuia:', obtenerUltimaGuia);
+        console.log("Llamando a obtenerPreguntasTest...");
         const listaPreguntas = await obtenerPreguntasTest();
+        console.log("Preguntas obtenidas:", listaPreguntas);
         setQuestions(listaPreguntas);
       } catch (error) {
         console.error("Error al inicializar el test:", error);
@@ -93,7 +77,7 @@ const TestScreen = ({ navigation }) => {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
+    return <ActivityIndicator testID="activity-indicator"  size="large" color="#0000ff" />;
   }
 
   const currentQuestion = questions[preguntaActualIndex];
@@ -113,7 +97,7 @@ const TestScreen = ({ navigation }) => {
       </View>
     );
   }
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.conText}>
@@ -139,7 +123,6 @@ const TestScreen = ({ navigation }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

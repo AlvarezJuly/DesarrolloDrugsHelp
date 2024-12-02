@@ -50,7 +50,8 @@ export const fetchNearbyPlaces = async (latitude, longitude, apiKey) => {
     }
   };
   
-const useLocation = () => {
+  export const  useLocation = () =>
+  {
   const [location, setLocation] = useState(null);
   const [region, setRegion] = useState(null);
   const [error, setError] = useState(null);
@@ -83,4 +84,4 @@ const useLocation = () => {
   return { location, region, error, setRegion };
 };
 
-export default useLocation;
+

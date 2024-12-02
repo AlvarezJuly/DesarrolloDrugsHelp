@@ -37,7 +37,7 @@ export default function Login({ navigation }) {
             onChangeText={(text) => setPassword(text)}
             placeholderTextColor="#999"
           />
-            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)}>
+            <TouchableOpacity onPress={() => setHidePassword(!hidePassword)} testID="eye-icon">
               <Octicons name={hidePassword ? "eye-closed" : "eye"} size={24} color="black" />
             </TouchableOpacity>
         </View>
