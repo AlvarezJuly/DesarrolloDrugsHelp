@@ -29,26 +29,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+
   curva1: {
     position: 'absolute',
     top: 0,
-    width: '100%',
-    height: '25%',
+    width: '110%',
+    height: '27%', // Ajustar altura para una curva más pronunciada
     backgroundColor: '#A7D8DE',
-    borderBottomRightRadius: 200,
-    zIndex: -1
+    borderBottomRightRadius: 350, // Radio más grande para suavizar la curva
+    overflow: 'hidden', // Evitar desbordamientos
   },
 
   curva2: {
     position: 'absolute',
     bottom: 0,
-    width: '100%',
-    height: '25%',
+    width: '110%',
+    height: '25%', // Similar a la curva superior
     backgroundColor: '#A7D8DE',
-    borderTopLeftRadius: 200,
-    zIndex: -1,
+    borderTopLeftRadius: 300, // Suavidad consistente
+    overflow: 'hidden',
   },
-
   contenido: {
     alignItems: 'center',
   },

@@ -44,7 +44,7 @@ const DropdownMenu = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.menuItem} onPress={() => handleNavigation('Donaciones')}>
-            <FontAwesome5 name="donate" size={24} color="black" />
+            <FontAwesome5 name="donate" size={24} color="#0A3E5D" style={styles.icon}/>
               <Text style={styles.menuText}>Donaciones</Text>
             </TouchableOpacity>
 
