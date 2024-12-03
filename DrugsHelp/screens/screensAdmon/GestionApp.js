@@ -34,7 +34,9 @@ export default function GestionApp() {
 
   return (
     <ScrollView style={styles.container}>
+
       <Text style={styles.title}>Gestión de Datos</Text>
+
 
       {/* Usuarios */}
       <Text style={styles.sectionTitle}>Usuarios</Text>

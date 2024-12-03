@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 function AdminNav() {
   return (
     <Tab.Navigator
-      initialRouteName="GestionBaseDatos"
+      initialRouteName="Panel Administrativo"
         options={{
           tabBarLabel: 'Panel',
           tabBarIcon: ({ color, size }) => (
@@ -25,14 +25,14 @@ function AdminNav() {
     >
       
       <Tab.Screen
-        name="GestionBaseDatos"
+        name="Panel Administrativo"
         component={GestionApp}
         options={{
           tabBarLabel:'Panel Administrativo',
           tabBarIcon: ({ color, size }) => (
             <AntDesign name="database" size={24} color="black" />
           ),
-          title: 'Gestión de Datos',
+          title: 'Panel Administrativo',
         }}
       />
       <Tab.Screen
