@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from '@expo/vector-icons/Entypo';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import {logoutUsuario} from '../services/AuthFunciones'
 
@@ -25,9 +26,9 @@ const DropdownMenu = () => {
   return (
     <View>
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.menuButton}>
-        <Icon name="menu" size={30} color="#000" />
+        <Entypo name="menu" size={24} color="black" />
       </TouchableOpacity>
-
+      
       <Modal
         transparent={true}
         visible={modalVisible}

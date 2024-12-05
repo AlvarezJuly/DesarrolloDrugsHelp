@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Button, StyleSheet, TouchableOpacity, Text, ActivityIndicator, FlatList } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import useLocation, { fetchNearbyPlaces, fetchPlacesByQuery } from '../../../services/MapaApi'; // Importa las funciones necesarias
+import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import MapView, { Marker }  from 'react-native-maps'
+import { useLocation, fetchNearbyPlaces, fetchPlacesByQuery } from '../../../services/MapaApi';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-const apikey = 'AIzaSyD8n4R0uIU9sbk12Bwx8U7UCQGcGZbg1Bc'; 
+const apikey = 'AIzaSyBXIO937bDWaz68qZfW9Jcqf_pFhNK2DgU'; // Reemplaza con tu API Key de Google Maps
 
 const CentrosRehabilitacion = () => {
-  const { location, region, error, setRegion } = useLocation(); // Hook de ubicación
+  const { location, region, error, setRegion } = useLocation(); // Hook personalizado
   const [markers, setMarkers] = useState([]);
-  const [visibleMarkers, setVisibleMarkers] = useState([]); // Marcadores visibles en el mapa
+  const [visibleMarkers, setVisibleMarkers] = useState([]);
   const [query, setQuery] = useState('');
 
+  // Carga de lugares cercanos basada en la ubicación inicial
   useEffect(() => {
+    let isMounted = true; // Controla si el componente sigue montado
     if (location) {
       fetchNearbyPlaces(location.latitude, location.longitude, apikey)
-        .then((places) => setMarkers(places))
+        .then((places) => {
+          if (isMounted) setMarkers(places);
+        })
         .catch((err) => console.error(err));
     }
+    return () => {
+      isMounted = false; // Evita actualizar el estado en componentes desmontados
+    };
   }, [location]);
 
   const handleSearch = async () => {
     if (!query.trim()) {
+      // Si la búsqueda está vacía, carga los lugares cercanos
       if (location) {
         try {
           const places = await fetchNearbyPlaces(location.latitude, location.longitude, apikey);
@@ -35,13 +43,7 @@ const CentrosRehabilitacion = () => {
 
     try {
       const places = await fetchPlacesByQuery(query, apikey);
-
-      if (places.length > 0) {
-        setMarkers(places);
-      } else {
-        console.warn("No se encontraron lugares relacionados con la búsqueda.");
-        setMarkers([]);
-      }
+      setMarkers(places.length > 0 ? places : []);
     } catch (error) {
       console.error("Error al buscar lugares:", error);
     }
@@ -58,7 +60,6 @@ const CentrosRehabilitacion = () => {
     }
   };
 
-  // Filtra los marcadores visibles en la región actual del mapa
   const updateVisibleMarkers = (region) => {
     const visible = markers.filter((marker) =>
       marker.latitude >= region.latitude - region.latitudeDelta / 2 &&
@@ -84,12 +85,12 @@ const CentrosRehabilitacion = () => {
         region={region}
         onRegionChangeComplete={(r) => {
           setRegion(r);
-          updateVisibleMarkers(r); // Actualiza los marcadores visibles
+          updateVisibleMarkers(r);
         }}
         showsUserLocation
         showsMyLocationButton
       >
-        {markers.map((marker) => (
+        {visibleMarkers.map((marker) => (
           <Marker
             key={marker.id}
             coordinate={{
@@ -97,97 +98,54 @@ const CentrosRehabilitacion = () => {
               longitude: marker.longitude,
             }}
             title={marker.name}
+            description={marker.address}
           />
         ))}
       </MapView>
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder="Buscar centros de ayuda"
+          style={styles.searchInput}
+          placeholder="Buscar centros de rehabilitación..."
           value={query}
           onChangeText={setQuery}
-          style={styles.input}
         />
         <Button title="Buscar" onPress={handleSearch} />
+        <TouchableOpacity onPress={goToCurrentLocation} style={styles.locationButton}>
+          <FontAwesome6 name="location-arrow" size={24} color="#000" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.locationButton} onPress={goToCurrentLocation}>
-        <FontAwesome6 name="location-crosshairs" size={24} color="blue" />
-      </TouchableOpacity>
-
-      {/* Tarjetas de descripción */}
-      <FlatList
-  data={visibleMarkers}
-  keyExtractor={(item) => item.id}
-  renderItem={({ item }) => (
-    <View style={styles.card}>
-      <Text style={styles.cardTitle}>{item.name}</Text>
-      <Text style={styles.cardSubtitle}>
-        Lat: {item.latitude.toFixed(4)}, Lng: {item.longitude.toFixed(4)}
-      </Text>
-    </View>
-  )}
-  style={styles.cardList}
-  horizontal // Hacer que sea deslizable horizontalmente
-  showsHorizontalScrollIndicator={false} // Ocultar el indicador de scroll
-/>
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
+  container: { flex: 1 },
   map: { flex: 1 },
   searchContainer: {
     position: 'absolute',
-    top: 20,
+    top: 10,
     left: 10,
     right: 10,
     backgroundColor: 'white',
+    borderRadius: 8,
     padding: 10,
-    borderRadius: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  input: {
-    height: 25,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    marginBottom: 5,
-    paddingLeft: 8,
-    borderRadius: 5,
+  searchInput: {
+    flex: 1,
+    marginRight: 10,
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+    padding: 5,
   },
   locationButton: {
-    position: 'absolute',
-    bottom: 140,
-    left: 20,
-    backgroundColor: '#007BFF',
+    marginLeft: 10,
+    backgroundColor: '#fff',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 50,
+    elevation: 3,
   },
-  cardList: {
-    position: 'absolute',
-    bottom: 10, // Más espacio desde el borde inferior
-    left: 0,
-    right: 0,
-    paddingVertical: 10,
-  },
-  card: {
-    backgroundColor: 'rgba(255, 255, 255, 0.9)', // Fondo semi-transparente
-    padding: 15,
-    borderRadius: 8,
-    marginHorizontal: 10, // Espacio entre las tarjetas
-    width: 250, // Anchura uniforme para todas las tarjetas
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 2,
-  }, 
-  cardTitle: { fontSize: 16, fontWeight: 'bold' },
-  cardSubtitle: { fontSize: 12, color: '#555' },
 });
 
 export default CentrosRehabilitacion;

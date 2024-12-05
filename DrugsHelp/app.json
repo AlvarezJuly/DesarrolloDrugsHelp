@@ -1,40 +1,36 @@
 {
   "expo": {
-  "name": "DrugsHelp",
-  "slug": "DrugsHelp",
-  "version": "1.0.0",
-  "orientation": "portrait",
-  "icon": "./assets/icon.png",
-  "userInterfaceStyle": "light",
-  "splash": {
-    "image": "./assets/splash.png",
-    "resizeMode": "contain",
-    "backgroundColor": "#ffffff"
-  },
-  "ios": {
-    "supportsTablet": true
-  },
-  "android": {
-    "adaptiveIcon": {
-      "foregroundImage": "./assets/adaptive-icon.png",
+    "name": "DrugsHelp",
+    "slug": "DrugsHelp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "config": {
-      "googleMaps": {
-        "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
       }
-    }
-  },
-  "web": {
-    "favicon": "./assets/favicon.png"
-  },
-  "plugins": [
-    [
-      "expo-location",
-      {
-        "locationAlwaysAndWhenInUsePermission": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
-      }
+    },
+    "android": {
+      "newArchEnabled": true
+    },
+    "extra": {
+      "googleMapsApiKey": "AIzaSyBXIO937bDWaz68qZfW9Jcqf_pFhNK2DgU"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Esta aplicación usa la ubicación para mostrar centros de rehabilitación cercanos."
+        }
+      ],
+      "expo-localization"
     ]
-  ]
-}
+  }
 }

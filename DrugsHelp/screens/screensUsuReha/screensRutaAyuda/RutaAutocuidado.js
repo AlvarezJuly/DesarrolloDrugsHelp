@@ -229,3 +229,62 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
+
+
+/* return (
+  <View style={styles.container}>
+    <Text style={styles.header}>Progreso Semanal</Text>
+      <ProgressBar progress={weeklyProgress / 100} color="#4caf50" style={styles.progressBar} />
+      <Text style={styles.progressText}>{weeklyProgress}% completado</Text>
+
+    <Text style={styles.title}>Guía de Autocuidado</Text>
+    <ScrollView>
+      {guia.articulosCientificos.length > 0 && (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Actividades', { data: guia.articulosCientificos, tipo: 'articulo' })}
+        >
+          <Image source={require('../../../assets/icons/articulos.png')} style={styles.icon} />
+          <Text style={styles.cardText}>Artículos Científicos</Text>
+        </TouchableOpacity>
+      )}
+      {guia.videoRelacionado && (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Actividades', { data: [guia.videoRelacionado], tipo: 'video' })}
+        >
+          <Image source={require('../../../assets/icons/videoF.png')} style={styles.icon} />
+          <Text style={styles.cardText}>Videos</Text>
+        </TouchableOpacity>
+      )}
+      {guia.tecnicasRelax.length > 0 && (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Actividades', { data: guia.tecnicasRelax, tipo: 'tecnica' })}
+        >
+          <Image source={require('../../../assets/icons/relax.png')} style={styles.icon} />
+          <Text style={styles.cardText}>Técnicas de Relajación</Text>
+        </TouchableOpacity>
+      )}
+      {guia.rutinasEjercicio.length > 0 && (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Actividades', { data: guia.rutinasEjercicio, tipo: 'rutina' })}
+        >
+          <Image source={require('../../../assets/icons/ejercicio.png')} style={styles.icon} />
+          <Text style={styles.cardText}>Rutinas de Ejercicio</Text>
+        </TouchableOpacity>
+      )}
+      {guia.alimentacionSaludable.length > 0 && (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Actividades', { data: guia.alimentacionSaludable, tipo: 'alimentacion' })}
+        >
+          <Image source={require('../../../assets/icons/alimentacion.png')} style={styles.icon} />
+          <Text style={styles.cardText}>Guías de Alimentación Saludable</Text>
+        </TouchableOpacity>
+      )}
+    </ScrollView>
+  </View>
+);
+} */

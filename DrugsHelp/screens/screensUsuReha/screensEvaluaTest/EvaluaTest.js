@@ -39,17 +39,6 @@ const TestScreen = ({ navigation }) => {
           return;
         }
 
-        /* // Verificar si el test está disponible
-        const diasRestantes = await puedeRealizarTest(user.uid);
-        if (diasRestantes > 0) {
-          Alert.alert(
-            "Test no disponible",
-            `El próximo test estará disponible en ${diasRestantes} días.`,
-            [{ text: "OK", onPress: () => navigation.navigate("HomeOptions") }]
-          );
-          setLoading(false);
-          return;
-        } */
 
         // Cargar preguntas del test
         const listaPreguntas = await obtenerPreguntasTest();

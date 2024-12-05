@@ -11,13 +11,18 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
   };
 
   const handleAgeInput = (text) => {
-    const age = parseInt(text, 10);
-    if (!isNaN(age) && age >= 16 && age <= 99) {
-      setAgeInput(text);
-      setError('');
-    } else {
-      setAgeInput(text);
+    // Actualiza el estado sin validar inmediatamente
+    setAgeInput(text);
+    setError(''); // Resetea el error mientras el usuario escribe
+  };
+
+  const validateAgeAndProceed = () => {
+    const age = parseInt(ageInput, 10);
+    if (isNaN(age) || age < 16 || age > 99) {
       setError('La edad debe estar entre 16 y 99 años');
+    } else {
+      setError('');
+      onNext(ageInput);
     }
   };
 
@@ -26,7 +31,7 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
       <View style={styles.containerQuestion}>
         <Text style={styles.questionText}>{question}</Text>
       </View>
-      
+
       {isAgeQuestion ? (
         <>
           <TextInput
@@ -56,9 +61,11 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
       {/* Botón Siguiente */}
       <View style={styles.botonSiguienteContenedor}>
         <TouchableOpacity
-          onPress={() => onNext(isAgeQuestion ? ageInput : selectedAnswer)}
+          onPress={() =>
+            isAgeQuestion ? validateAgeAndProceed() : onNext(selectedAnswer)
+          }
           style={styles.botonSiguiente}
-          disabled={isAgeQuestion && (!ageInput || error) || (!isAgeQuestion && !selectedAnswer)}
+          disabled={isAgeQuestion && !ageInput || (!isAgeQuestion && !selectedAnswer)}
         >
           <Text style={styles.botonTexto}>Siguiente</Text>
         </TouchableOpacity>

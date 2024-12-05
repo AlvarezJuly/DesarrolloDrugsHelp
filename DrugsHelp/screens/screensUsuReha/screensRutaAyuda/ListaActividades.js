@@ -4,7 +4,7 @@ import { Video } from 'expo-av';
 
 
 export default function ListaActividades({ route }) {
-  const { data, tipo } = route.params;
+  const { data, tipo, actualizarProgreso, inicializarProgreso } = route.params;
   const [validData, setValidData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -22,7 +22,8 @@ export default function ListaActividades({ route }) {
         setErrorMessage("Error al procesar los datos. Mostrando contenido como texto.");
       }
     } else if (Array.isArray(data)) {
-      setValidData(data.map(item => ({ ...item, completada: false })));  // Añadir campo completada
+      setValidData(data.map(item => ({ ...item, completada: item.completada || false }))); // Agregar estado inicial
+
     } else {
       setErrorMessage("Los datos no tienen el formato esperado.");
     }
@@ -44,7 +45,33 @@ export default function ListaActividades({ route }) {
     );
   }
 
-    // Función para manejar cuando se marca una tarea como completada
+
+  // Marcar actividad como completada (solo una tarea a la vez)
+  const completarActividad = async (id) => {
+    let progresoInicializado = false;
+
+    // Actualizar solo la tarea seleccionada como completada
+    const updatedData = validData.map(item =>
+      item.id === id ? { ...item, completada: true } : item
+    );
+    setValidData(updatedData); // Actualizamos solo la tarea que se ha marcado
+
+    // Verificar si es la primera vez que se inicia el progreso
+    if (typeof inicializarProgreso === 'function' && validData.every(item => !item.completada)) {
+      await inicializarProgreso(); // Inicializar el progreso si es la primera tarea completada
+      progresoInicializado = true;
+    }
+
+    // Actualizar el progreso semanal
+    if (typeof actualizarProgreso === 'function') {
+      await actualizarProgreso(10); // Ajusta el incremento según corresponda (10% por tarea completada)
+    }
+    console.log(`Actividad con ID ${id} marcada como completada.`);
+  };
+
+
+
+/*     // Función para manejar cuando se marca una tarea como completada
     const marcarComoCompletada = (id) => {
       setValidData(prevState => 
         prevState.map(item => 
@@ -52,10 +79,10 @@ export default function ListaActividades({ route }) {
         )
       );
     };
-  
+   */
 
   const renderItem = ({ item }) => {
-    const marcarComoCompletado = async () => {
+/*     const marcarComoCompletado = async () => {
       // Actualizamos la tarea como completada en el estado local
       setValidData((prevData) => {
         return prevData.map((actividad) =>
@@ -67,7 +94,7 @@ export default function ListaActividades({ route }) {
       if (typeof route.params.actualizarProgreso === 'function') {
         await route.params.actualizarProgreso(10); // Ajusta el incremento del progreso según lo que necesites (ej. 10% por tarea completada)
       }
-    };
+    }; */
 
     switch (tipo) {
       case 'articulo':
@@ -79,9 +106,13 @@ export default function ListaActividades({ route }) {
               <Text style={styles.linkText}>Leer artículo completo</Text>
             </TouchableOpacity>
            {/* Botón para marcar como completado */}
-             <TouchableOpacity style={styles.completeButton} onPress={marcarComoCompletado}>
-            <Text style={styles.completeButtonText}>Marcar como completado</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.completeButton, item.completada && styles.completedButton]}
+              onPress={() => completarActividad(item.id)}
+              disabled={item.completada}  // Deshabilitar botón si ya está completada
+            >
+              <Text style={styles.buttonText}>{item.completada ? "Completada" : "Marcar como completada"}</Text>
+            </TouchableOpacity>
           </View>
         );
       case 'tecnica':
@@ -98,8 +129,12 @@ export default function ListaActividades({ route }) {
                 ))}
               </>
             )}
-            <TouchableOpacity style={styles.completeButton}>
-              <Text style={styles.completeButtonText}>Marcar como completado</Text>
+              <TouchableOpacity
+              style={[styles.completeButton, item.completada && styles.completedButton]}
+              onPress={() => completarActividad(item.id)}
+              disabled={item.completada}  // Deshabilitar botón si ya está completada
+            >
+              <Text style={styles.buttonText}>{item.completada ? "Completada" : "Marcar como completada"}</Text>
             </TouchableOpacity>
           </View>
         );
@@ -116,8 +151,12 @@ export default function ListaActividades({ route }) {
                 ))}
               </>
             )}
-            <TouchableOpacity style={styles.completeButton}>
-              <Text style={styles.completeButtonText}>Marcar como completado</Text>
+              <TouchableOpacity
+              style={[styles.completeButton, item.completada && styles.completedButton]}
+              onPress={() => completarActividad(item.id)}
+              disabled={item.completada}  // Deshabilitar botón si ya está completada
+            >
+              <Text style={styles.buttonText}>{item.completada ? "Completada" : "Marcar como completada"}</Text>
             </TouchableOpacity>
           </View>
         );
@@ -139,9 +178,13 @@ export default function ListaActividades({ route }) {
                   }
                 }}
               />
-              <TouchableOpacity style={styles.completeButton}>
-                <Text style={styles.completeButtonText}>Marcar como completado</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+              style={[styles.completeButton, item.completada && styles.completedButton]}
+              onPress={() => completarActividad(item.id)}
+              disabled={item.completada}  // Deshabilitar botón si ya está completada
+            >
+              <Text style={styles.buttonText}>{item.completada ? "Completada" : "Marcar como completada"}</Text>
+            </TouchableOpacity>
             </View>
           );
         default:

@@ -1,123 +1,62 @@
-// AsistenciaFunciones.js
-import { collection, getDocs, getAuth } from "firebase/firestore";
-import { db } from "../../services/CredencialesFirebase";
-
+import { collection, getDocs, addDoc, doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth"; // Firebase Authentication
+import { db } from "../../services/CredencialesFirebase"; // Asegúrate de que la configuración de Firebase esté correcta
 
 // Función para obtener los contactos desde Firebase
 export const obtenerContactos = async () => {
-    try {
-        const contactosCollection = collection(db, "contactos");
-        const contactosSnapshot = await getDocs(contactosCollection);
-        return contactosSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-    } catch (error) {
-        console.error("Error al obtener los especialistas:", error);
-        throw error;
-    }
+  try {
+    const contactosCollection = collection(db, "contactos");
+    const contactosSnapshot = await getDocs(contactosCollection);
+    return contactosSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error al obtener los especialistas:", error);
+    throw error;
+  }
 };
-
 
 // Función para enviar una solicitud de chat
 export const enviarSolicitudChat = async (especialista) => {
-    try {
-        const auth = getAuth();
-        const usuarioActual = auth.currentUser;
-        console.log("Usuario actual:", auth.currentUser);
+  const auth = getAuth();
+  const usuarioId = auth.currentUser?.uid;
 
+  if (!usuarioId) {
+    throw new Error("Usuario no autenticado");
+  }
 
-        if (!usuarioActual) {
-            throw new Error("El usuario no está autenticado.");
-        }
+  try {
+    const solicitud = {
+      usuarioId,  // ID del usuario que está enviando la solicitud
+      especialistaId: especialista.id,  // ID del especialista al que va dirigida la solicitud
+      estado: 'pendiente',  // Estado inicial de la solicitud
+      fecha: new Date(),
+    };
 
-        const nuevaSolicitud = {
-            especialistaId: especialista.id,
-            especialistaNombre: especialista.nombreCom,
-            usuarioId: usuarioActual.uid, // ID del usuario autenticado
-            usuarioNombre: usuarioActual.displayName || "Usuario Anónimo", // Nombre del usuario
-            usuarioEmail: usuarioActual.email, // Correo electrónico del usuario
-            estado: "pendiente", // Estado inicial de la solicitud
-            fecha: new Date().toISOString(), // Fecha de creación
-        };
-
-        await addDoc(collection(db, "solicitudes_chat"), nuevaSolicitud);
-    } catch (error) {
-        console.error("Error al enviar la solicitud de chat:", error);
-        throw error;
-    }
+    await addDoc(collection(db, 'contactos'), solicitud);  // Guardamos la solicitud en la colección 'contactos'
+  } catch (error) {
+    console.error("Error al enviar la solicitud:", error);
+    throw error;
+  }
 };
+// Función para obtener el estado de la solicitud
+export const obtenerEstadoSolicitud = async (usuarioId, especialistaId) => {
+  try {
+    const solicitudesCollection = collection(db, "solicitudes_chat");
+    const solicitudesSnapshot = await getDocs(solicitudesCollection);
+    const solicitud = solicitudesSnapshot.docs.find(
+      (doc) =>
+        doc.data().usuarioId === usuarioId && doc.data().especialistaId === especialistaId
+    );
 
-
-
-
-
-
-
-
-
-
-/* // Función para enviar una solicitud de chat
-export const enviarSolicitudChat = async (especialista) => {
-    try {
-        const nuevaSolicitud = {
-            especialistaId: especialista.id,
-            especialistaNombre: especialista.nombreCom,
-            usuarioId: "user.uid", // Cambia esto por el ID real del usuario
-            usuarioNombre: "NOMBRE_DEL_USUARIO_EN_SESION", // Cambia esto por el nombre real del usuario
-            estado: "pendiente", // Estado inicial
-            fecha: new Date().toISOString(),
-        }; 
-
-        await addDoc(collection(db, "solicitudes_chat"), nuevaSolicitud);
-    } catch (error) {
-        console.error("Error al enviar la solicitud de chat:", error);
-        throw error;
+    if (solicitud) {
+      return solicitud.data().estado;  // Devuelve el estado de la solicitud
+    } else {
+      throw new Error("No se ha encontrado una solicitud de chat para este usuario y especialista.");
     }
+  } catch (error) {
+    console.error("Error al obtener el estado de la solicitud:", error);
+    throw error;
+  }
 };
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* export const fetchEspecialistas = async () => {
-    try {
-        const querySnapshot = await getDocs(collection(db, "contactos"));
-        const especialistas = [];
-        querySnapshot.forEach((doc) => {
-            especialistas.push({ id: doc.id, ...doc.data() });
-        });
-        return especialistas;
-    } catch (error) {
-        console.error("Error obteniendo especialistas: ", error);
-        // Podrías retornar un mensaje de error o lanzar un error más específico
-        throw new Error("No se pudo obtener la lista de especialistas.");
-    }
-};
- */
-
-
-/* // Función para obtener los contactos desde Firebase
-export const obtenerContactos = async () => {
-    try {
-        const contactosCollection = collection(db, 'contactos');
-        const contactosSnapshot = await getDocs(contactosCollection);
-        return contactosSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-        }));
-    } catch (error) {
-        console.error("Error al obtener el especialista: ", error);
-        throw error;
-    }
-};
- */

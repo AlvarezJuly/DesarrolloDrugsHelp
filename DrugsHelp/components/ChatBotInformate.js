@@ -25,7 +25,7 @@ const ChatBotInformate = () => {
 
       const bot = {
         user: 'JuJo_Informa',
-        message: botResponse || 'Lo siento, no pude obtener una respuesta. Intenta nuevamente.',
+        message: botResponse || 'Lo siento, no pude obtener una respuesta. Intenta nuevamente.',//respuesta de la IA 
         type: 'bot',
       };
 

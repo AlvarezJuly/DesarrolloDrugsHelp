@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ProgressBar } from 'react-native-paper'; // Importa ProgressBar de React Native Paper
-//import { Ionicons } from '@expo/vector-icons';
 import { getProgress, updateProgress, getNotes } from '../../../services/MoReha/ProgresFunciones'; // Asegúrate de que esta ruta esté correcta
 
 export default function Progreso({ navigation }) {
@@ -77,7 +75,7 @@ export default function Progreso({ navigation }) {
       {/* Botón para ir a las notas */}
       <View style={styles.card}>
         <TouchableOpacity style={styles.button} onPress={handleGoToNotes}>
-          <Text style={styles.buttonText}>Agrega tus notas</Text>
+          <Text style={styles.buttonText}>Diario de Notas</Text>
         </TouchableOpacity>
       </View>
     </View>

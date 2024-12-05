@@ -72,25 +72,3 @@ export const obtenerGuia = async (userId) => {
     }
 };
 
-/* 
-// Actualizar una actividad específica como completada
-export const marcarActividadCompletada = async (userId, tipo, actividadId) => {
-  try {
-    if (!userId || !tipo || !actividadId) {
-      throw new Error('Faltan datos para actualizar la actividad.');
-    }
-
-    const guiaRef = doc(db, 'guiasAutocuidado', userId);
-
-    // Actualizar la actividad específica en la colección
-    await updateDoc(guiaRef, {
-      [`${tipo}.${actividadId}.completado`]: true,
-    });
-
-    console.log('Actividad actualizada correctamente.');
-    return true;
-  } catch (error) {
-    console.error('Error al marcar la actividad como completada:', error);
-    throw error;
-  }
-}; */

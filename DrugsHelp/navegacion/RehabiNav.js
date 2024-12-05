@@ -17,6 +17,7 @@ import RutaAutocuidado from '../screens/screensUsuReha/screensRutaAyuda/RutaAuto
 import ListaActividades from '../screens/screensUsuReha/screensRutaAyuda/ListaActividades';
 import DetalleEspecialista from '../screens/screensUsuReha/screensAsistencia/DetalleEspecialista';
 import Notas from '../screens/screensUsuReha/screensProgreso/Notas';
+import ChatScreenUR from '../screens/screensUsuReha/screensAsistencia/ChatScreenUR';
 
 import DropdownMenu from './MenuDraw';
 //Pantallas del menú draw
@@ -119,16 +120,26 @@ function RehabiNav({ userId }) {
               />
               <Stack.Screen name="DetalleEspecialista" component={DetalleEspecialista} 
                 options={{
-                title: 'Detalle',
+                title: 'Descripción',
                 headerTintColor: "white",
                 headerStyle: { backgroundColor: '#A7D8DE'}
               }}/>
+
+                <Stack.Screen
+                  name='ChatUser'
+                  component={ChatScreenUR}
+                  options={{
+                    title: 'Chat',
+                    headerTintColor: "white",
+                    headerStyle: { backgroundColor: '#A7D8DE' },
+                  }}
+              />
                     
               <Stack.Screen
                   name='Informate'
                   component={Informate}
                   options={{
-                    title: 'Informate',
+                    title: 'JUJO',
                     headerTintColor: "white",
                     headerStyle: { backgroundColor: '#A7D8DE'},
                   }}

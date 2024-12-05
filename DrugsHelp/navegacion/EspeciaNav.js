@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import GestionReha from '../screens/screensEspecia/GestionReha';
 import ConfiguracionesE from '../screens/screensEspecia/ConfiguracionesE';
 import ChatUsers from '../screens/screensEspecia/ChatUsers';
+import ChatRequestsScreen from '../screens/screensEspecia/ChatRequestsScreen';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -44,6 +45,19 @@ function EspeciaNav() {
                 headerShown: true,
               }}
             />
+
+          <Tab.Screen
+              name="Solicitudes"
+              component={ChatRequestsScreen}
+              options={{
+                tabBarLabel: 'Solicitudes',
+                tabBarIcon: ({ color, size }) => (
+                  <FontAwesome name="wechat" size={24} color="black" />
+                ),
+                headerShown: true,
+              }}
+            />
+
         <Tab.Screen
         name="Configuraciones"
         component={ConfiguracionesE}
