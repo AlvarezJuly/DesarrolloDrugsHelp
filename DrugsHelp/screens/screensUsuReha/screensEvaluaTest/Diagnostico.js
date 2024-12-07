@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { obtenerUltimoDiagnostico } from '../../../services/MoReha/EvaluaTestFunciones'; // Modelo
 
+
 const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;
   const [userData, setUserData] = useState(null);

@@ -1,5 +1,5 @@
-import { db } from '../../services/CredencialesFirebase';
 import { collection, getDocs, addDoc, query, where, orderBy, limit, getDoc } from 'firebase/firestore';
+import { db } from '../../services/CredencialesFirebase';
 
 // Función para obtener preguntas del test
 export const obtenerPreguntasTest = async () => {
@@ -88,5 +88,30 @@ export const obtenerUltimaGuia = async (userId) => {
   } catch (error) {
     console.error('Error al obtener la última guía:', error);
     throw new Error('No se pudo obtener la última guía del usuario');
+  }
+};
+
+
+export const obtenerUltimoDiagnostico = async (userId) => {
+  try {
+    // Consulta para obtener el último diagnóstico por usuario, ordenado por timestamp descendente
+    const q = query(
+      collection(db, 'diag_test'),
+      where('userId', '==', userId),
+      orderBy('timestamp', 'desc'),
+      limit(1)
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    // Verificar si hay resultados y retornar el más reciente
+    if (!querySnapshot.empty) {
+      return querySnapshot.docs[0].data(); // Retorna los datos del último diagnóstico
+    }
+
+    return null; // No hay diagnósticos disponibles
+  } catch (error) {
+    console.error('Error al obtener el último diagnóstico:', error);
+    throw new Error('No se pudo obtener el último diagnóstico');
   }
 };
