@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { obtenerUltimoDiagnostico } from '../../../services/MoReha/EvaluaTestFunciones'; // Modelo
 
-
 const Diagnostico = ({ route, navigation }) => {
   const { userId } = route.params;
   const [userData, setUserData] = useState(null);
@@ -87,7 +86,7 @@ const Diagnostico = ({ route, navigation }) => {
   onPress={() => {
     console.log("Navigando a RutaAyuda con diagnosticData:", diagnosticData);
     console.log("Navigando a RutaAyuda con userId:", userId);
-    navigation.navigate('RutaAyuda', { diagnosticData: { ...diagnosticData, userId }});
+    navigation.replace('RutaAyuda', { diagnosticData: { ...diagnosticData, userId }});
   }}
 >
   <Text style={styles.botonTexto}>Ver Ruta de Autocuidado</Text>

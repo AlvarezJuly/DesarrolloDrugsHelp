@@ -18,7 +18,6 @@ const TestScreen = ({ navigation }) => {
     const inicializarTest = async () => {
       try {
         setLoading(true);
-
         // Verificar si el usuario ya tiene una guía
         const ultimaGuia = await obtenerUltimaGuia(user.uid);
         if (ultimaGuia) {
@@ -38,7 +37,6 @@ const TestScreen = ({ navigation }) => {
           setLoading(false);
           return;
         }
-
 
         // Cargar preguntas del test
         const listaPreguntas = await obtenerPreguntasTest();
@@ -95,7 +93,7 @@ const TestScreen = ({ navigation }) => {
         <Text style={styles.completionText}>¡Test Completado!</Text>
         <TouchableOpacity
           style={styles.viewDiagnosisButton}
-          onPress={() => navigation.navigate("Diagnostico", { userId: user.uid })}
+          onPress={() => navigation.replace("Diagnostico", { userId: user.uid })}
         >
           <Text style={styles.viewDiagnosisButtonText}>Ver Diagnóstico</Text>
         </TouchableOpacity>

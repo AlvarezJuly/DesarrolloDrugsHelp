@@ -6,32 +6,39 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
   const [ageInput, setAgeInput] = useState('');
   const [error, setError] = useState('');
 
+  // Determinar si el botón "Siguiente" debe estar deshabilitado
+  const isNextButtonDisabled = isAgeQuestion
+    ? !ageInput || Boolean(error) // Asegura que error se evalúe como booleano
+    : !selectedAnswer;
+
+  // Manejar la selección de una opción
   const handleOptionSelect = (option) => {
     setSelectedAnswer(option);
   };
 
+  // Manejar la entrada de la edad
   const handleAgeInput = (text) => {
-    // Actualiza el estado sin validar inmediatamente
-    setAgeInput(text);
-    setError(''); // Resetea el error mientras el usuario escribe
-  };
+    // Limitar a caracteres numéricos
+    const sanitizedText = text.replace(/[^0-9]/g, '');
+    const age = parseInt(sanitizedText, 10);
 
-  const validateAgeAndProceed = () => {
-    const age = parseInt(ageInput, 10);
-    if (isNaN(age) || age < 16 || age > 99) {
-      setError('La edad debe estar entre 16 y 99 años');
-    } else {
+    if (!isNaN(age) && age >= 16 && age <= 99) {
+      setAgeInput(sanitizedText);
       setError('');
-      onNext(ageInput);
+    } else {
+      setAgeInput(sanitizedText);
+      setError('La edad debe estar entre 16 y 99 años');
     }
   };
 
   return (
     <View style={styles.card}>
+      {/* Mostrar la pregunta */}
       <View style={styles.containerQuestion}>
         <Text style={styles.questionText}>{question}</Text>
       </View>
 
+      {/* Mostrar entrada de edad o botones de opciones */}
       {isAgeQuestion ? (
         <>
           <TextInput
@@ -40,6 +47,7 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
             keyboardType="numeric"
             value={ageInput}
             onChangeText={handleAgeInput}
+            maxLength={2} // Limitar a 2 caracteres
           />
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </>
@@ -61,11 +69,15 @@ const QuestionCard = ({ question, options = [], onNext, isAgeQuestion }) => {
       {/* Botón Siguiente */}
       <View style={styles.botonSiguienteContenedor}>
         <TouchableOpacity
-          onPress={() =>
-            isAgeQuestion ? validateAgeAndProceed() : onNext(selectedAnswer)
-          }
-          style={styles.botonSiguiente}
-          disabled={isAgeQuestion && !ageInput || (!isAgeQuestion && !selectedAnswer)}
+          onPress={() => {
+            const valueToSend = isAgeQuestion ? parseInt(ageInput, 10) : selectedAnswer;
+            onNext(valueToSend);
+          }}
+          style={[
+            styles.botonSiguiente,
+            isNextButtonDisabled && styles.botonSiguienteDeshabilitado,
+          ]}
+          disabled={isNextButtonDisabled}
         >
           <Text style={styles.botonTexto}>Siguiente</Text>
         </TouchableOpacity>
@@ -111,22 +123,21 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: '#000',
+    color: '#002E46',
   },
   ageInput: {
-    width: '100%',
+    backgroundColor: '#FFF',
     padding: 15,
-    borderColor: '#002E46',
+    borderRadius: 10,
+    borderColor: '#84B6F4',
     borderWidth: 1,
-    borderRadius: 8,
-    backgroundColor: 'white',
-    marginVertical: 10,
     fontSize: 16,
+    marginBottom: 10,
   },
   errorText: {
-    color: 'red',
+    color: '#FF0000',
     fontSize: 14,
-    marginTop: 5,
+    marginBottom: 10,
   },
   botonSiguienteContenedor: {
     alignItems: 'flex-end',
@@ -138,8 +149,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     borderRadius: 15,
   },
+  botonSiguienteDeshabilitado: {
+    backgroundColor: '#B0BEC5',
+  },
   botonTexto: {
-    color: '#fff',
+    color: '#FFF',
     fontSize: 16,
     fontWeight: 'bold',
   },

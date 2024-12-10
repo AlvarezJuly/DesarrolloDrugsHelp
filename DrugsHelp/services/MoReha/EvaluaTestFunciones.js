@@ -1,4 +1,4 @@
-import { collection, getDocs, addDoc, query, where, orderBy, limit, getDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, query, where, orderBy, limit, getDoc, doc } from 'firebase/firestore';
 import { db } from '../../services/CredencialesFirebase';
 
 // Función para obtener preguntas del test
@@ -91,12 +91,11 @@ export const obtenerUltimaGuia = async (userId) => {
   }
 };
 
-
 export const obtenerUltimoDiagnostico = async (userId) => {
   try {
-    // Consulta para obtener el último diagnóstico por usuario, ordenado por timestamp descendente
+    // Buscar el último diagnóstico del usuario
     const q = query(
-      collection(db, 'diag_test'),
+      collection(db, 'diag_test'), // Cambia 'diag_test' si tu colección tiene otro nombre
       where('userId', '==', userId),
       orderBy('timestamp', 'desc'),
       limit(1)
@@ -104,14 +103,41 @@ export const obtenerUltimoDiagnostico = async (userId) => {
 
     const querySnapshot = await getDocs(q);
 
-    // Verificar si hay resultados y retornar el más reciente
     if (!querySnapshot.empty) {
-      return querySnapshot.docs[0].data(); // Retorna los datos del último diagnóstico
-    }
+      const diagData = querySnapshot.docs[0].data();
 
-    return null; // No hay diagnósticos disponibles
+      // Extraer las respuestas relacionadas con las palabras clave
+      const respuestasClave = diagData.answers.filter((respuesta) =>
+        ['frecuencia', 'edad', 'sexo', 'sustancia', 'motivos'].some((clave) =>
+          respuesta.question.toLowerCase().includes(clave)
+        )
+      );
+
+      // Estructurar las respuestas en un objeto claro
+      const diagnostico = {};
+      respuestasClave.forEach((respuesta) => {
+        const pregunta = respuesta.question.toLowerCase();
+        if (pregunta.includes('frecuencia')) diagnostico.frequency = respuesta.answer;
+        if (pregunta.includes('edad')) diagnostico.age = respuesta.answer;
+        if (pregunta.includes('sexo')) diagnostico.sex = respuesta.answer;
+        if (pregunta.includes('sustancia')) diagnostico.substance = respuesta.answer;
+        if (pregunta.includes('motivos')) diagnostico.reason = respuesta.answer;
+      });
+
+      // Buscar el nombre del usuario en la colección 'user'
+      const userDoc = await getDoc(doc(db, 'user', userId)); // Cambia 'user' si el nombre de la colección es otro
+      const userName = userDoc.exists() ? userDoc.data().nombre : 'Desconocido';
+
+      // Retornar el diagnóstico completo
+      return {
+        userName,
+        ...diagnostico,
+      };
+    } else {
+      throw new Error('No se encontró ningún diagnóstico para este usuario.');
+    }
   } catch (error) {
-    console.error('Error al obtener el último diagnóstico:', error);
-    throw new Error('No se pudo obtener el último diagnóstico');
+    console.error('Error en obtenerUltimoDiagnostico:', error);
+    throw error;
   }
 };
