@@ -30,16 +30,13 @@ const fetchDataFromIA = async (prompt) => {
 };
 
 // Declaración y exportación de funciones específicas enviar el prompt para generar la guía 
-export const fetchArticulos = async (userData) => { //recibe datos 
-  const prompt = `
-  Por favor recomienda 5 informes o artíulos de la web idioma Español (es) sobre temas que tengan que ver con la rehabilitación de la adicción a ${userData.substance} para una persona de ${userData.age} años y género ${userData.sex}, verifica que la fuente se confiable y el sitio o página web aún activao además que las publicaciones sean a partir del año 2020 en adelante. Procura que la información venga de estos sitios Sitios confiables
-  Organizaciones internacionales:World Health Organization, United Nations Office on Drugs and Crime (UNODC), Organizaciones nacionales, Asociaciones profesionales:Asociación Americana de Psicología (APA), Sociedad Española de Adicciones, Bases de datos académicas:Google Scholar, PubMed, en un caso que no puedas obtener las url o sean inválidas entonces no me las recomiendes y busca otros para con información válida y completa. Busca y presenta con los siguientes detalles para cada artículo:
+export const fetchArticulos = async (userData) => {
+  const prompt = `Recomiendame 7 artículos o sitios web que traten acerca el impacto de la adicción a ${userData.substance} en la salud mental, física y social en el género ${userData.sex} para crear conciencia. Me interesa conocer las consecuencias a largo plazo, los factores de riesgo y las opciones de tratamiento disponibles. Por favor, incluya solo fuentes confiables y actualizadas. Devuelve los siguientes datos específicos:
 - titulo: El título del artículo.
-- url: El enlace directo al artículo que sea válido.
 - descripcion: Una breve descripción o resumen del artículo.
-- Genera 3 preguntas en base al artículo, para validar la lectura que el usuario realizó todo en format json.
+- url enlace directo al artículo.
 `;
-  return await fetchDataFromIA(prompt);//se envía a la IA // retorno lo que da la IA en base al prompt enviado
+  return await fetchDataFromIA(prompt);
 };
 
 export const fetchTecnicasRelax = async (userData) => {
